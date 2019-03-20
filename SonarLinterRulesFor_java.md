@@ -7,7 +7,7 @@ This problem could be mitigated in any of the following ways:
  Validate the user provided data based on a whitelist and reject input not matching.
  Redesign the application to not perform redirects based on user provided data.
 **Noncompliant Code Example**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String location = req.getParameter("url");
   resp.sendRedirect(location); // Noncompliant
@@ -16,7 +16,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String location = req.getParameter("url");
 
@@ -30,6 +30,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 *See*
+
 OWASP Top 10 2017 - Category A5 - Broken Access Control
 MITRE, CWE-601 - URL Redirection to Untrusted Site ('Open Redirect')
 SANS Top 25 - Risky Resource Management
@@ -46,7 +47,7 @@ Typically, the solution is one of the following:
 When sanitizing or encoding data, it is recommended to only use libraries specifically designed for security purposes. Also, make sure that the library you are using is being actively maintained and is kept up-to-date with the latest discovered vulnerabilities.
 
 **Noncompliant Code Example**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String name = req.getParameter("name");
   PrintWriter out = resp.getWriter();
@@ -56,7 +57,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String name = req.getParameter("name");
   String encodedName = org.owasp.encoder.Encode.forHtml(name);
@@ -67,6 +68,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 *See*
+
 OWASP Cheat Sheet - XSS Prevention Cheat Sheet
 OWASP Top 10 2017 - Category A7 - Cross-Site Scripting (XSS)
 MITRE, CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
@@ -86,7 +88,7 @@ JNDI supports the deserialization of objects from LDAP directories, which is fun
 This rule raises an issue when an LDAP search query is executed with SearchControls configured to allow deserialization.
 
 **Noncompliant Code Example**
-```cs
+```java
 DirContext ctx = new InitialDirContext();
 // ...
 ctx.search(query, filter,
@@ -97,7 +99,7 @@ ctx.search(query, filter,
 
 ```
 **Compliant Solution**
-```cs
+```java
 DirContext ctx = new InitialDirContext();
 // ...
 ctx.search(query, filter,
@@ -108,6 +110,7 @@ ctx.search(query, filter,
 
 ```
 *See*
+
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 BlackHat presentation
@@ -119,7 +122,7 @@ When generating cryptographic keys (or key pairs), it is important to use a key 
 This rule raises an issue when a Blowfish key generator or RSA key-pair generator is initialized with too small a length parameter.
 
 **Noncompliant Code Example**
-```cs
+```java
 KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
 keyGen.init(64); // Noncompliant
 
@@ -129,7 +132,7 @@ keyPairGen.initialize(512); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 KeyGenerator keyGen = KeyGenerator.getInstance("Blowfish");
 keyGen.init(128);
 
@@ -139,6 +142,7 @@ keyPairGen.initialize(2048);
 
 ```
 *See*
+
 MITRE, CWE-326 - Inadequate Encryption Strength
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
  Derived from FindSecBugs rule BLOWFISH_KEY_SIZE
@@ -150,20 +154,21 @@ A @RequestMapping method handles all matching requests by default. That means th
 For that reason, you should always explicitly list the single HTTP method with which you expect your @RequestMapping Java method to be called. This rule raises an issue when method is missing.
 
 **Noncompliant Code Example**
-```cs
+```java
 @RequestMapping("/greet")  // Noncompliant
 public String greet(String greetee) {
 
 
 ```
 **Compliant Solution**
-```cs
+```java
   @RequestMapping("/greet", method = GET)
   public String greet(String greetee) {
 
 
 ```
 *See*
+
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 OWASP: Cross-Site Request Forgery
@@ -178,20 +183,21 @@ So marking a sensitive method private may seem like a good way to control how su
 In addition to @RequestMapping, this rule also considers the annotations introduced in Spring Framework 4.3: @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping.
 
 **Noncompliant Code Example**
-```cs
+```java
 @RequestMapping("/greet", method = GET)
 private String greet(String greetee) {  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 @RequestMapping("/greet", method = GET)
 public String greet(String greetee) {
 
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 #### Rule 7: SQL queries should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
@@ -200,7 +206,7 @@ User provided data, such as URL parameters, should always be considered untruste
 Typically, the solution is to rely on prepared statements rather than string concatenation to inject tainted data into SQL queries, which ensures that they will be properly escaped.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, java.sql.Connection connection) throws SQLException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -225,7 +231,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, java.
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, java.sql.Connection connection) throws SQLException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -242,6 +248,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, java.
 
 ```
 *See*
+
 MITRE, CWE-89 - Improper Neutralization of Special Elements used in an SQL Command
 MITRE, CWE-564 - SQL Injection: Hibernate
 MITRE, CWE-20 - Improper Input Validation
@@ -254,7 +261,7 @@ SANS Top 25 - Insecure Interaction Between Components
 To prevent URL spoofing, HostnameVerifier.verify() methods should do more than simply return true. Doing so may get you quickly past an exception, but that comes at the cost of opening a security hole in your application.
 
 **Noncompliant Code Example**
-```cs
+```java
 SSLContext sslcontext = SSLContext.getInstance( "TLS" );
 sslcontext.init(null, new TrustManager[]{new X509TrustManager() {
   public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
@@ -273,7 +280,7 @@ Client client = ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifi
 
 ```
 **Compliant Solution**
-```cs
+```java
 SSLContext sslcontext = SSLContext.getInstance( "TLSv1.2" );
 sslcontext.init(null, new TrustManager[]{new X509TrustManager() {
   @Override
@@ -295,6 +302,7 @@ Client client = ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifi
 
 ```
 *See*
+
 MITRE, CWE-295 - Improper Certificate Validation
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
  Derived from FindSecBugs rule WEAK_HOSTNAME_VERIFIER
@@ -307,7 +315,7 @@ If two validation forms have the same name, the Struts Validator arbitrarily cho
 In such a case, it is likely that the two forms should be combined. At the very least, one should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 <form-validation>
   <formset>
     <form name="BookForm"> ... </form>
@@ -318,7 +326,7 @@ In such a case, it is likely that the two forms should be combined. At the very 
 
 ```
 **Compliant Solution**
-```cs
+```java
 <form-validation>
   <formset>
     <form name="BookForm"> ... </form>
@@ -328,6 +336,7 @@ In such a case, it is likely that the two forms should be combined. At the very 
 
 ```
 *See*
+
 MITRE, CWE-102 - Struts: Duplicate Validation Forms
 OWASP, Improper Data Validation - Struts: Duplicate Validation Forms
 #### Rule 10: Default EJB interceptors should be declared in "ejb-jar.xml"
@@ -337,7 +346,7 @@ Default interceptors, such as application security interceptors, must be listed 
 This rule applies to projects that contain JEE Beans (any one of javax.ejb.Singleton, MessageDriven, Stateless or Stateful).
 
 **Noncompliant Code Example**
-```cs
+```java
 // file: ejb-interceptors.xml
 <assembly-descriptor>
  <interceptor-binding> <!-- should be declared in ejb-jar.xml -->
@@ -349,7 +358,7 @@ This rule applies to projects that contain JEE Beans (any one of javax.ejb.Singl
 
 ```
 **Compliant Solution**
-```cs
+```java
 // file: ejb-jar.xml
 <assembly-descriptor>
  <interceptor-binding>
@@ -361,6 +370,7 @@ This rule applies to projects that contain JEE Beans (any one of javax.ejb.Singl
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 #### Rule 11: Untrusted XML should be parsed with a local, static DTD
 ##### Quality Category: Vulnerability
@@ -381,7 +391,7 @@ To disable external entity processing for SAXParserFactory, XMLReader or Documen
 To disable external entity processing for Validator , configure both properties XMLConstants.ACCESS_EXTERNAL_DTD, XMLConstants.ACCESS_EXTERNAL_SCHEMA to the empty string "".
 
 **Noncompliant Code Example**
-```cs
+```java
 /* Load XML stream and display content */
 String maliciousSample = "xxe.xml";
 XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -395,7 +405,7 @@ try (FileInputStream fis = new FileInputStream(malicousSample)) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 /* Load XML stream and display content */
 String maliciousSample = "xxe.xml";
 XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -411,6 +421,7 @@ try (FileInputStream fis = new FileInputStream(malicousSample)) {
 
 ```
 *See*
+
 MITRE, CWE-611 - Information Exposure Through XML External Entity Reference
 MITRE, CWE-827 - Improper Control of Document Type Definition
  OWASP Top 10 2017 Category A1 - Injection
@@ -427,7 +438,7 @@ Evaluating regular expressions against input strings can be an extremely CPU-int
 Evaluating user-provided strings as regular expressions opens the door for Denial Of Service attacks. In the context of a web application, attackers can force the web server to spend all of its resources evaluating regular expressions thereby making the service inaccessible to genuine users.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean validate(javax.servlet.http.HttpServletRequest request) {
   String regex = request.getParameter("regex");
   String input = request.getParameter("input");
@@ -441,7 +452,7 @@ public boolean validate(javax.servlet.http.HttpServletRequest request) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean validate(javax.servlet.http.HttpServletRequest request) {
   String input = request.getParameter("input");
 
@@ -451,6 +462,7 @@ public boolean validate(javax.servlet.http.HttpServletRequest request) {
 
 ```
 *See*
+
 OWASP Regular expression Denial of Service - ReDoS
  OWASP Top 10 2017 Category A1 - Injection
 #### Rule 13: Neither DES (Data Encryption Standard) nor DESede (3DES) should be used
@@ -464,18 +476,19 @@ Federal agencies are encouraged to use the Advanced Encryption Standard, a faste
 For similar reasons, RC2 should also be avoided.
 
 **Noncompliant Code Example**
-```cs
+```java
 Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 
 
 ```
 *See*
+
 MITRE, CWE-326 - Inadequate Encryption Strength
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
@@ -487,12 +500,13 @@ SANS Top 25 - Porous Defenses
 By contract, the NullCipher class provides an "identity cipher" one that does not transform or encrypt the plaintext in any way. As a consequence, the ciphertext is identical to the plaintext. So this class should be used for testing, and never in production code.
 
 **Noncompliant Code Example**
-```cs
+```java
 NullCipher nc = new NullCipher();
 
 
 ```
 *See*
+
 CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
@@ -503,14 +517,14 @@ Failure to password-protect a database is so careless or naive as to be almost n
 This rule flags database connections with empty passwords.
 
 **Noncompliant Code Example**
-```cs
+```java
 Connection conn = DriverManager.getConnection("jdbc:derby:memory:myDB;create=true", "AppLogin", "");
 Connection conn2 = DriverManager.getConnection("jdbc:derby:memory:myDB;create=true?user=user&password=");
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 DriverManager.getConnection("jdbc:derby:memory:myDB;create=true?user=user&password=password");
 
 DriverManager.getConnection("jdbc:mysql://address=(host=myhost1)(port=1111)(key1=value1)(user=sandy)(password=secret),address=(host=myhost2)(port=2222)(key2=value2)(user=sandy)(password=secret)/db");
@@ -526,13 +540,14 @@ DriverManager.getConnection(url, props);
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 #### Rule 16: XPath expressions should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, should always be considered untrusted and tainted. Constructing XPath expressions directly from tainted data enables attackers to inject specially crafted values that changes the initial meaning of the expression itself. Successful XPath injection attacks can read sensitive information from XML documents.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, javax.xml.xpath.XPath xpath, org.w3c.dom.Document doc) throws XPathExpressionException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -548,7 +563,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, javax
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, javax.xml.xpath.XPath xpath, org.w3c.dom.Document doc) throws XPathExpressionException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -572,6 +587,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, javax
 
 ```
 *See*
+
 MITRE, CWE-643 - Improper Neutralization of Data within XPath Expressions
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS53-J. - Prevent XPath Injection
@@ -584,7 +600,7 @@ A successful attack might give an attacker the ability to read, modify, or delet
 The mitigation strategy should be based on the whitelisting of allowed paths or characters.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request) {
   String user = request.getParameter("user");
 
@@ -599,7 +615,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request) {
   String user = request.getParameter("user");
 
@@ -614,6 +630,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request) {
 
 ```
 *See*
+
 MITRE, CWE-22 - Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
 MITRE, CWE-23 - Relative Path Traversal
 MITRE, CWE-36 - Absolute Path Traversal
@@ -628,7 +645,7 @@ User provided data such as URL parameters should always be considered as untrust
 Within LDAP names, the special characters ' ', '#', '"', '+', ',', ';', '<', '>', '\' and null must be escaped according to RFC 4514, for example by replacing them with the backslash character '\' followed by the two hex digits corresponding to the ASCII code of the character to be escaped. Similarly, LDAP search filters must escape a different set of special characters (including but not limited to '*', '(', ')', '\' and null) according to RFC 4515.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, DirContext ctx) throws NamingException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -649,7 +666,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, DirCo
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean authenticate(javax.servlet.http.HttpServletRequest request, DirContext ctx) throws NamingException {
   String user = request.getParameter("user");
   String pass = request.getParameter("pass");
@@ -663,6 +680,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, DirCo
 
 ```
 *See*
+
 RFC 4514 - LDAP: String Representation of Distinguished Names
 RFC 4515 - LDAP: String Representation of Search Filters
 MITRE CWE-90 - Improper Neutralization of Special Elements used in an LDAP Query ('LDAP Injection')
@@ -675,7 +693,7 @@ Applications that execute operating system commands or execute commands that int
 The mitigation strategy should be based on whitelisting of allowed characters or commands.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void run(javax.servlet.http.HttpServletRequest request) throws IOException {
   String binary = request.getParameter("binary");
 
@@ -688,7 +706,7 @@ public void run(javax.servlet.http.HttpServletRequest request) throws IOExceptio
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void run(javax.servlet.http.HttpServletRequest request) throws IOException {
   String binary = request.getParameter("binary");
 
@@ -703,6 +721,7 @@ public void run(javax.servlet.http.HttpServletRequest request) throws IOExceptio
 
 ```
 *See*
+
 MITRE, CWE-78 - Improper Neutralization of Special Elements used in an OS Command
 MITRE, CWE-88 - Argument Injection or Modification
  OWASP Top 10 2017 Category A1 - Injection
@@ -716,7 +735,7 @@ Credentials should be stored outside of the code in a strongly-protected encrypt
 It's recommended to customize the configuration of this rule with additional credential words such as "oauthToken", "secret", ...
 
 **Noncompliant Code Example**
-```cs
+```java
 Connection conn = null;
 try {
   conn = DriverManager.getConnection("jdbc:mysql://localhost/test?" +
@@ -731,7 +750,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 Connection conn = null;
 try {
   String uname = getEncryptedUser();
@@ -742,6 +761,7 @@ try {
 
 ```
 *See*
+
 MITRE, CWE-798 - Use of Hard-coded Credentials
 MITRE, CWE-259 - Use of Hard-coded Password
 CERT, MSC03-J. - Never hard code sensitive information
@@ -761,7 +781,7 @@ This rule raises an issue when:
 - @ComponentScan is explicitly configured with the default package
 
 **Noncompliant Code Example**
-```cs
+```java
 import org.springframework.boot.SpringApplication;
 
 @SpringBootApplication // Noncompliant; RootBootApp is declared in the default package
@@ -777,7 +797,7 @@ public class Application {
 
 ```
 **Compliant Solution**
-```cs
+```java
 package hello;
 
 import org.springframework.boot.SpringApplication;
@@ -792,7 +812,7 @@ public class RootBootApp {
 A Spring @Controller that uses @SessionAttributes is designed to handle a stateful / multi-post form. Such @Controllers use the specified @SessionAttributes to store data on the server between requests. That data should be cleaned up when the session is over, but unless setComplete() is called on the SessionStatus object from a @RequestMapping method, neither Spring nor the JVM will know it's time to do that. Note that the SessionStatus object must be passed to that method as a parameter.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Controller
 @SessionAttributes("hello")  // Noncompliant; this doesn't get cleaned up
 public class HelloWorld {
@@ -807,7 +827,7 @@ public class HelloWorld {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Controller
 @SessionAttributes("hello")
 public class HelloWorld {
@@ -831,7 +851,7 @@ public class HelloWorld {
 When two locks are held simultaneously, a wait call only releases one of them. The other will be held until some other thread requests a lock on the awaited object. If no unrelated code tries to lock on that object, then all other threads will be locked out, resulting in a deadlock.
 
 **Noncompliant Code Example**
-```cs
+```java
 synchronized (this.mon1) {  // threadB can't enter this block to request this.mon2 lock & release threadA
 	synchronized (this.mon2) {
 		this.mon2.wait();  // Noncompliant; threadA is stuck here holding lock on this.mon1
@@ -843,7 +863,7 @@ synchronized (this.mon1) {  // threadB can't enter this block to request this.mo
 The parameters in a PreparedStatement are numbered from 1, not 0, so using any "set" method of a PreparedStatement with a number less than 1 is a bug, as is using an index higher than the number of parameters. Similarly, ResultSet indices also start at 1, rather than 0
 
 **Noncompliant Code Example**
-```cs
+```java
 PreparedStatement ps = con.prepareStatement("SELECT fname, lname FROM employees where hireDate > ? and salary < ?");
 ps.setDate(0, date);  // Noncompliant
 ps.setDouble(3, salary);  // Noncompliant
@@ -857,7 +877,7 @@ while (rs.next()) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 PreparedStatement ps = con.prepareStatement("SELECT fname, lname FROM employees where hireDate > ? and salary < ?");
 ps.setDate(1, date);
 ps.setDouble(2, salary);
@@ -875,14 +895,14 @@ ObjectOutputStreams are used with serialization, and the first thing an ObjectOu
 When you're trying to read your object(s) back from the file, only the first one will be read successfully, and a StreamCorruptedException will be thrown after that.
 
 **Noncompliant Code Example**
-```cs
+```java
 FileOutputStream fos = new FileOutputStream (fileName , true);  // fos opened in append mode
 ObjectOutputStream out = new ObjectOutputStream(fos);  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 FileOutputStream fos = new FileOutputStream (fileName);
 ObjectOutputStream out = new ObjectOutputStream(fos);
 ```
@@ -891,7 +911,7 @@ ObjectOutputStream out = new ObjectOutputStream(fos);
 If Thread.sleep(...) is called when the current thread holds a lock, it could lead to performance and scalability issues, or even worse to deadlocks because the execution of the thread holding the lock is frozen. It's better to call wait(...) on the monitor object to temporarily release the lock and allow other threads to run.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(){
   synchronized(monitor) {
     while(notReady()){
@@ -905,7 +925,7 @@ public void doSomething(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(){
   synchronized(monitor) {
     while(notReady()){
@@ -919,13 +939,14 @@ public void doSomething(){
 
 ```
 *See*
+
 CERT, LCK09-J. - Do not perform operations that can block while holding a lock
 #### Rule 27: Printf-style format strings should not lead to unexpected behavior at runtime
 ##### Quality Category: Bug
 Because printf-style format strings are interpreted at runtime, rather than validated by the Java compiler, they can contain errors that lead to unexpected behavior or runtime errors. This rule statically validates the good behavior of printf-style formats when calling the format(...) methods of java.util.Formatter, java.lang.String, java.io.PrintStream, MessageFormat, and java.io.PrintWriter classes and the printf(...) methods of java.io.PrintStream or java.io.PrintWriter classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 String.format("The value of my integer is %d", "Hello World");  // Noncompliant; an 'int' is expected rather than a String
 String.format("Duke's Birthday year is %tX", c);  //Noncompliant; X is not a supported time conversion character
 String.format("Display %0$d and then %d", 1);   //Noncompliant; arguments are numbered starting from 1
@@ -947,7 +968,7 @@ slf4jLog.debug(marker, "message {}"); // Noncompliant {{Not enough arguments.}}
 
 ```
 **Compliant Solution**
-```cs
+```java
 String.format("The value of my integer is %d", 3);
 String.format("Duke's Birthday year is %tY", c);
 String.format("Display %1$d and then %d", 1);
@@ -969,6 +990,7 @@ slf4jLog.debug(marker, "message {}", 1);
 
 ```
 *See*
+
 CERT, FIO47-C. - Use valid format strings
 #### Rule 28: Methods "wait(...)", "notify()" and "notifyAll()" should not be called on Thread instances
 ##### Quality Category: Bug
@@ -977,7 +999,7 @@ The methods wait(...), notify() and notifyAll() are available on a Thread instan
  Internally, the JVM relies on these methods to change the state of the Thread (BLOCKED, WAITING, ...), so calling them will corrupt the behavior of the JVM.
  It is not clear (perhaps even to the original coder) what is really expected. For instance, it is waiting for the execution of the Thread to suspended, or is it the acquisition of the object monitor that is waited for?
 **Noncompliant Code Example**
-```cs
+```java
 Thread myThread = new Thread(new RunnableJob());
 ...
 myThread.wait(2000);
@@ -998,7 +1020,7 @@ REQUIRED or @Transactional	NESTED, NEVER, NOT_SUPPORTED, REQUIRES_NEW
 REQUIRES_NEW	NESTED, NEVER, NOT_SUPPORTED, REQUIRES_NEW
 SUPPORTS	MANDATORY, NESTED, NEVER, NOT_SUPPORTED, REQUIRED, REQUIRES_NEW
 **Noncompliant Code Example**
-```cs
+```java
 
 @Override
 public void doTheThing() {
@@ -1017,7 +1039,7 @@ public void actuallyDoTheThing() {
 An infinite loop is one that will never end while the program is running, i.e., you have to kill the program to get out of the loop. Whether it is by meeting the loop's end condition or via a break, every loop should have an end condition.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (;;) {  // Noncompliant; end condition omitted
   // ...
 }
@@ -1036,7 +1058,7 @@ while (b) { // Noncompliant; b never written to in loop
 
 ```
 **Compliant Solution**
-```cs
+```java
 int j;
 while (true) { // reachable end condition added
   j++;
@@ -1055,6 +1077,7 @@ while (b) {
 
 ```
 *See*
+
 CERT, MSC01-J. - Do not use an empty infinite loop
 #### Rule 31: Double-checked locking should not be used
 ##### Quality Category: Bug
@@ -1065,7 +1088,7 @@ It does not work reliably in a platform-independent manner without additional sy
 There are multiple ways to fix this. The simplest one is to simply not use double checked locking at all, and synchronize the whole method instead. With early versions of the JVM, synchronizing the whole method was generally advised against for performance reasons. But synchronized performance has improved a lot in newer JVMs, so this is now a preferred solution. If you prefer to avoid using synchronized altogether, you can use an inner static class to hold the reference instead. Inner static classes are guaranteed to load lazily.
 
 **Noncompliant Code Example**
-```cs
+```java
 @NotThreadSafe
 public class DoubleCheckedLocking {
     private static Resource resource;
@@ -1088,7 +1111,7 @@ public class DoubleCheckedLocking {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @ThreadSafe
 public class SafeLazyInitialization {
     private static Resource resource;
@@ -1146,6 +1169,7 @@ class ResourceFactory {
 
 ```
 *See*
+
 The "Double-Checked Locking is Broken" Declaration
 CERT, LCK10-J. - Use a correct form of the double-checked locking idiom
 MITRE, CWE-609 - Double-checked locking
@@ -1158,7 +1182,7 @@ Connections, streams, files, and other classes that implement the Closeable inte
 Failure to properly close resources will result in a resource leak which could bring first the application and then perhaps the box it's on to their knees.
 
 **Noncompliant Code Example**
-```cs
+```java
 private void readTheFile() throws IOException {
   Path path = Paths.get(this.fileName);
   BufferedReader reader = Files.newBufferedReader(path, this.charset);
@@ -1185,7 +1209,7 @@ private void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private void readTheFile(String fileName) throws IOException {
     Path path = Paths.get(fileName);
     try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
@@ -1215,7 +1239,7 @@ private void doSomething() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Instances of the following classes are ignored by this rule because close has no effect:
 
@@ -1238,6 +1262,7 @@ catch ( ... ) {
 
 ```
 *See*
+
 MITRE, CWE-459 - Incomplete Cleanup
 CERT, FIO04-J. - Release resources when they are no longer needed
 CERT, FIO42-C. - Close files when they are no longer needed
@@ -1250,7 +1275,7 @@ When a method is designed to return an invariant value, it may be poor design, b
 This rule raises an issue when a method contains several return statements that all return the same value.
 
 **Noncompliant Code Example**
-```cs
+```java
 int foo(int a) {
   int b = 12;
   if (a == 1) {
@@ -1277,6 +1302,7 @@ executorPool.shutdown();
 
 ```
 *See*
+
 CERT, THI01-J. - Do not invoke ThreadGroup methods
 #### Rule 35: "clone" should not be overridden
 ##### Quality Category: Code Smell
@@ -1289,7 +1315,7 @@ A copy constructor or copy factory should be used instead.
 This rule raises an issue when clone is overridden, whether or not Cloneable is implemented.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   // ...
 
@@ -1301,7 +1327,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   // ...
 
@@ -1313,10 +1339,12 @@ public class MyClass {
 
 ```
 *See*
+
 Copy Constructor versus Cloning
 
 ```
-*See* Also
+*See*
+ Also
  {rule:squid:S2157} - "Cloneables" should implement "clone"
  {rule:squid:S1182} - Classes that override "clone" should be "Cloneable" and call "super.clone()"
 #### Rule 36: Assertions should be complete
@@ -1331,7 +1359,7 @@ It is very easy to write incomplete assertions when using some test frameworks. 
 In such cases, what is intended to be a test doesn't actually verify anything
 
 **Noncompliant Code Example**
-```cs
+```java
 // Fest
 boolean result = performAction();
 // let's now check that result value is true
@@ -1347,7 +1375,7 @@ Mockito.verify(mockedList); // Noncompliant; nothing is checked here, oups no ca
 
 ```
 **Compliant Solution**
-```cs
+```java
 // Fest
 boolean result = performAction();
 // let's now check that result value is true
@@ -1364,7 +1392,7 @@ Mockito.verify(mockedList).clear();
 
 ```
 **Exceptions**
-```cs
+```java
 
 Variable assignments and return statements are skipped to allow helper methods.
 
@@ -1410,7 +1438,7 @@ Furthermore, as new or custom assertion frameworks may be used, the rule can be 
 Example: com.company.CompareToTester#compare*,com.company.CustomAssert#customAssertMethod,com.company.CheckVerifier#<init>.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Test
 public void testDoSomething() {  // Noncompliant
   MyClass myClass = new MyClass();
@@ -1420,7 +1448,7 @@ public void testDoSomething() {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 
 Example when com.company.CompareToTester#compare* is used as parameter to the rule.
 
@@ -1444,7 +1472,7 @@ public void testDoSomethingElse() {
 ##### Quality Category: Code Smell
 Certain bit operations are just silly and should not be performed because their results are predictable.
 
-Specifically, using & -1 with any value will always result in the original value, as will anyValue ^ 0 and anyValue | 0.```
+Specifically, using & -1 with any value will always result in the original value, as will anyValue ^ 0 and anyValue | 0.
 #### Rule 39: JUnit framework methods should be declared properly
 ##### Quality Category: Code Smell
 If the suite method in a JUnit 3 TestCase is not declared correctly, it will not be used. Such a method must be named "suite", have no arguments, be public static, and must return either a junit.framework.Test or a junit.framework.TestSuite.
@@ -1452,7 +1480,7 @@ If the suite method in a JUnit 3 TestCase is not declared correctly, it will not
 Similarly, setUp and tearDown methods that aren't properly capitalized will also be ignored.
 
 **Noncompliant Code Example**
-```cs
+```java
 Test suite() { ... }  // Noncompliant; must be public static
 public static boolean suite() { ... }  // Noncompliant; wrong return type
 public static Test suit() { ... }  // Noncompliant; typo in method name
@@ -1464,7 +1492,7 @@ public void tearDwon() { ... }  // Noncompliant; should be tearDown
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static Test suite() { ... }
 public void setUp() { ... }
 public void tearDown() { ... }
@@ -1474,7 +1502,7 @@ public void tearDown() { ... }
 Having a variable with the same name in two unrelated classes is fine, but do the same thing within a class hierarchy and you'll get confusion at best, chaos at worst.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit {
   protected Season ripe;
   protected Color flesh;
@@ -1490,7 +1518,7 @@ public class Raspberry extends Fruit {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit {
   protected Season ripe;
   protected Color flesh;
@@ -1507,7 +1535,7 @@ public class Raspberry extends Fruit {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule ignores same-name fields that are static in both the parent and child classes. This rule ignores private parent class fields, but in all other such cases, the child class field should be renamed.
 
@@ -1527,7 +1555,7 @@ public class Raspberry extends Fruit {
 Overriding a parent class method prevents that method from being called unless an explicit super call is made in the overriding method. In some cases not calling the super method is acceptable, but not with setUp and tearDown in a JUnit 3 TestCase.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClassTest extends MyAbstractTestCase {
 
   private MyClass myClass;
@@ -1539,7 +1567,7 @@ public class MyClassTest extends MyAbstractTestCase {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClassTest extends MyAbstractTestCase {
 
   private MyClass myClass;
@@ -1553,24 +1581,25 @@ public class MyClassTest extends MyAbstractTestCase {
 ##### Quality Category: Code Smell
 There's no point in having a JUnit TestCase without any test methods. Similarly, you shouldn't have a file in the tests directory with "Test" in the name, but no tests in the file. Doing either of these things may lead someone to think that uncovered classes have been tested.
 
-This rule raises an issue when files in the test directory have "Test" in the name or implement TestCase but don't contain any tests.```
+This rule raises an issue when files in the test directory have "Test" in the name or implement TestCase but don't contain any tests.
 #### Rule 43: Short-circuit logic should be used in boolean contexts
 ##### Quality Category: Code Smell
 The use of non-short-circuit logic in a boolean context is likely a mistake - one that could cause serious program errors as conditions are evaluated under the wrong circumstances.
 
 **Noncompliant Code Example**
-```cs
+```java
 if(getTrue() | getFalse()) { ... } // Noncompliant; both sides evaluated
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if(getTrue() || getFalse()) { ... } // true short-circuit logic
 
 
 ```
 *See*
+
 CERT, EXP46-C. - Do not use a bitwise operator with a Boolean-like operand
 #### Rule 44: Methods and field names should not be the same or differ only by capitalization
 ##### Quality Category: Code Smell
@@ -1581,7 +1610,7 @@ In the case of methods, it may have been a mistake on the part of the original d
 Otherwise, this situation simply indicates poor naming. Method names should be action-oriented, and thus contain a verb, which is unlikely in the case where both a method and a member have the same name (with or without capitalization differences). However, renaming a public method could be disruptive to callers. Therefore renaming the member is the recommended action.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Car{
 
   public DriveTrain drive;
@@ -1602,7 +1631,7 @@ public class MyCar extends Car{
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Car{
 
   private DriveTrain drive;
@@ -1627,7 +1656,7 @@ public class MyCar extends Car{
 When the execution is not explicitly terminated at the end of a switch case, it continues to execute the statements of the following case. While this is sometimes intentional, it often is a mistake which leads to unexpected behavior.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (myVariable) {
   case 1:
     foo();
@@ -1642,7 +1671,7 @@ switch (myVariable) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch (myVariable) {
   case 1:
     foo();
@@ -1658,7 +1687,7 @@ switch (myVariable) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule is relaxed in the following cases:
 
@@ -1680,6 +1709,7 @@ switch (myVariable) {
 
 ```
 *See*
+
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C:2004, 15.2 - An unconditional break statement shall terminate every non-empty switch clause
  MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.
@@ -1695,7 +1725,7 @@ CERT, MSC52-J. - Finish every set of statements associated with a case label wit
 Even if it is legal, mixing case and non-case labels in the body of a switch statement is very confusing and can even be the result of a typing error.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (day) {
   case MONDAY:
   case TUESDAY:
@@ -1721,7 +1751,7 @@ switch (day) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch (day) {
   case MONDAY:
   case TUESDAY:
@@ -1744,6 +1774,7 @@ switch (day) {
 
 ```
 *See*
+
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.
  MISRA C:2012, 16.1 - All switch statements shall be well-formed
@@ -1760,7 +1791,7 @@ enum	5.0
 assert and strictfp are another example of valid identifiers which became keywords in later versions, however as documented in SONARJAVA-285, it is not easily possible to support parsing of the code for such old versions, therefore they are not supported by this rule.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething() {
   int enum = 42;            // Noncompliant
   String _ = "";   // Noncompliant
@@ -1769,7 +1800,7 @@ public void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething() {
   int magic = 42;
 }
@@ -1781,7 +1812,7 @@ User provided data, such as URL parameters, POST data payloads, or cookies, shou
 Most modern web application frameworks and servers mitigate this type of attack by default, but there might be rare cases where older versions are still vulnerable. As a best practice, applications that use user provided data to construct the response header should always validate the data first. Validation should be based on a whitelist.
 
 **Noncompliant Code Example**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String value = req.getParameter("value");
   resp.addHeader("X-Header", value); // Noncompliant
@@ -1791,7 +1822,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String value = req.getParameter("value");
 
@@ -1806,6 +1837,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 *See*
+
 OWASP Attack Category - HTTP Response Splitting
 OWASP Top 10 2017 - Category A7 - Cross-Site Scripting (XSS)
 MITRE, CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
@@ -1824,7 +1856,7 @@ For this reason, using @Entity or @Document objects as arguments of methods anno
 In addition to @RequestMapping, this rule also considers the annotations introduced in Spring Framework 4.3: @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping.
 
 **Noncompliant Code Example**
-```cs
+```java
 import javax.persistence.Entity;
 
 @Entity
@@ -1861,7 +1893,7 @@ public class WishListController {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class WishDTO {
   Long productId;
   Long quantity;
@@ -1894,6 +1926,7 @@ public class PurchaseOrderController {
 
 ```
 *See*
+
 MITRE, CWE-915 - Improperly Controlled Modification of Dynamically-Determined Object Attributes
  OWASP Top 10 2017 Category A5 - Broken Access Control
 Two Security Vulnerabilities in the Spring Framework’s MVC by Ryan Berg and Dinis Cruz
@@ -1908,7 +1941,7 @@ This rule raises an issue when:
 - A pattern without wildcard characters is preceded by another that matches. E.g.: /page-index/db is after /page*/**
 
 **Noncompliant Code Example**
-```cs
+```java
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
       .antMatchers("/resources/**", "/signup", "/about").permitAll() // Compliant
@@ -1922,7 +1955,7 @@ This rule raises an issue when:
 
 ```
 **Compliant Solution**
-```cs
+```java
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
       .antMatchers("/resources/**", "/signup", "/about").permitAll() // Compliant
@@ -1936,6 +1969,7 @@ This rule raises an issue when:
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 #### Rule 51: SMTP SSL connection should check server identity
 ##### Quality Category: Vulnerability
@@ -1946,7 +1980,7 @@ This rule raises an issue when:
 - a Apache Common Emails's org.apache.commons.mail.SimpleEmail is used with setSSLOnConnect(true) or setStartTLSEnabled(true) or setStartTLSRequired(true) without a call to setSSLCheckServerIdentity(true)
 
 **Noncompliant Code Example**
-```cs
+```java
 Email email = new SimpleEmail();
 email.setSmtpPort(465);
 email.setAuthenticator(new DefaultAuthenticator(username, password));
@@ -1968,7 +2002,7 @@ Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator
 
 ```
 **Compliant Solution**
-```cs
+```java
 Email email = new SimpleEmail();
 email.setSmtpPort(465);
 email.setAuthenticator(new DefaultAuthenticator(username, password));
@@ -1992,6 +2026,7 @@ Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator
 
 ```
 *See*
+
 CWE-297 - Improper Validation of Certificate with Host Mismatch
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 #### Rule 52: XML transformers should be secured
@@ -2001,14 +2036,14 @@ An XML External Entity or XSLT External Entity (XXE) vulnerability can occur whe
 This rule raises an issue when a Transformer is created without either of these settings.
 
 **Noncompliant Code Example**
-```cs
+```java
 Transformer transformer = TransformerFactory.newInstance().newTransformer();
 transformer.transform(input, result);
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 TransformerFactory factory = TransformerFactory.newInstance();
 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
@@ -2032,6 +2067,7 @@ transformer.transform(input, result);
 
 ```
 *See*
+
 MITRE, CWE-611 Improper Restriction of XML External Entity Reference ('XXE')
  OWASP Top 10 2017 Category A4 - XML External Entities
  [OWASP XXE cheat sheet| https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#TransformerFactory]
@@ -2044,7 +2080,7 @@ An un-authenticated LDAP connection can lead to transactions without access cont
 This rule raises an issue when an LDAP connection is created with Context.SECURITY_AUTHENTICATION set to "none".
 
 **Noncompliant Code Example**
-```cs
+```java
 // Set up the environment for creating the initial context
 Hashtable<String, Object> env = new Hashtable<String, Object>();
 env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -2059,7 +2095,7 @@ DirContext ctx = new InitialDirContext(env);
 
 ```
 **Compliant Solution**
-```cs
+```java
 // Set up the environment for creating the initial context
 Hashtable<String, Object> env = new Hashtable<String, Object>();
 env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -2076,6 +2112,7 @@ DirContext ctx = new InitialDirContext(env);
 
 ```
 *See*
+
 CWE-521 - Weak Password Requirements
  OWASP Top 10 2017 Category A2 - Broken Authentication
 Modes of Authenticating to LDAP
@@ -2092,19 +2129,20 @@ In both cases, Galois/Counter Mode (GCM) with no padding should be preferred.
 This rule raises an issue when a Cipher instance is created with either ECB or CBC/PKCS5Padding mode.
 
 **Noncompliant Code Example**
-```cs
+```java
 Cipher c1 = Cipher.getInstance("AES/ECB/NoPadding"); // Noncompliant
 Cipher c2 = Cipher.getInstance("AES/CBC/PKCS5Padding"); // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 
 
 ```
 *See*
+
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
@@ -2118,16 +2156,18 @@ The java.security.SecureRandom class provides a strong random number generator (
 
 This rule raises an issue when SecureRandom.set
 ```
-*See*d() or SecureRandom(byte[]) are called with a seed that is either of:
+*See*
+d() or SecureRandom(byte[]) are called with a seed that is either of:
 
  a constant
 System.currentTimeMillis()
 **Noncompliant Code Example**
-```cs
+```java
 SecureRandom sr = new SecureRandom();
 sr.set
 ```
-*See*d(123456L); // Noncompliant
+*See*
+d(123456L); // Noncompliant
 int v = sr.next(32);
 
 sr = new SecureRandom("abcdefghijklmnop".getBytes("us-ascii")); // Noncompliant
@@ -2136,21 +2176,24 @@ v = sr.next(32);
 
 ```
 **Compliant Solution**
-```cs
+```java
 SecureRandom sr = new SecureRandom();
 int v = sr.next(32);
 
 
 ```
 *See*
+
 MITRE, CWE-330 - Use of Insufficiently Random Values
 MITRE, CWE-332 - Insufficient Entropy in PRNG
 MITRE, CWE-336 - Same 
 ```
-*See*d in Pseudo-Random Number Generator (PRNG)
+*See*
+d in Pseudo-Random Number Generator (PRNG)
 MITRE, CWE-337 - Predictable 
 ```
-*See*d in Pseudo-Random Number Generator (PRNG)
+*See*
+d in Pseudo-Random Number Generator (PRNG)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 CERT, MSC63J. - Ensure that SecureRandom is properly seeded
 #### Rule 56: Defined filters should be used
@@ -2158,7 +2201,7 @@ CERT, MSC63J. - Ensure that SecureRandom is properly seeded
 Every filter defined in web.xml file should be used in a <filter-mapping> element. Otherwise such filters are not invoked.
 
 **Noncompliant Code Example**
-```cs
+```java
   <filter>
      <filter-name>DefinedNotUsed</filter-name>
      <filter-class>com.myco.servlet.ValidationFilter</filter-class>
@@ -2167,7 +2210,7 @@ Every filter defined in web.xml file should be used in a <filter-mapping> elemen
 
 ```
 **Compliant Solution**
-```cs
+```java
   <filter>
      <filter-name>ValidationFilter</filter-name>
      <filter-class>com.myco.servlet.ValidationFilter</filter-class>
@@ -2181,6 +2224,7 @@ Every filter defined in web.xml file should be used in a <filter-mapping> elemen
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 #### Rule 57: "HttpOnly" should be set on cookies
 ##### Quality Category: Vulnerability
@@ -2191,19 +2235,20 @@ When implementing Cross Site Request Forgery (XSRF) protection, a JavaScript-rea
 Setting the attribute can be done either programmatically, or globally via configuration files.
 
 **Noncompliant Code Example**
-```cs
+```java
 Cookie cookie = new Cookie("myCookieName", value); // Noncompliant; by default cookie.isHttpOnly() is returning false
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cookie cookie = new Cookie("myCookieName", value);
 cookie.setHttpOnly(true); // Compliant
 
 
 ```
 *See*
+
 CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
 CWE-1004 - Sensitive Cookie Without 'HttpOnly' Flag
  OWASP Top 10 2017 Category A7 - Cross-Site Scripting (XSS)
@@ -2223,7 +2268,7 @@ This rule raises an issue when the following steps are taken in immediate sequen
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 File tempDir;
 tempDir = File.createTempFile("", ".");
 tempDir.delete();
@@ -2232,13 +2277,14 @@ tempDir.mkdir();  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Path tempPath = Files.createTempDirectory("");
 File tempDir = tempPath.toFile();
 
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A9 - Using Components with Known Vulnerabilities
 #### Rule 59: Web applications should not have a "main" method
 ##### Quality Category: Vulnerability
@@ -2247,7 +2293,7 @@ There is no reason to have a main method in a web application. It may have been 
 This rule raises an issue when a main method is found in a servlet or an EJB.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyServlet extends HttpServlet {
   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
     if (userIsAuthorized(req)) {
@@ -2263,6 +2309,7 @@ public class MyServlet extends HttpServlet {
 
 ```
 *See*
+
 MITRE, CWE-489 - Leftover Debug Code
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, ENV06-J. - Production code must not contain debugging entry points
@@ -2271,7 +2318,7 @@ CERT, ENV06-J. - Production code must not contain debugging entry points
 Basic authentication's only means of obfuscation is Base64 encoding. Since Base64 encoding is easily recognized and reversed, it offers only the thinnest veil of protection to your users, and should not be used.
 
 **Noncompliant Code Example**
-```cs
+```java
 // Using HttpPost from Apache HttpClient
 String encoding = Base64Encoder.encode ("login:passwd");
 org.apache.http.client.methods.HttpPost httppost = new HttpPost(url);
@@ -2289,6 +2336,7 @@ conn.setRequestProperty("Authorization", "Basic " + encoding); // Noncompliant
 
 ```
 *See*
+
 MITRE, CWE-522 - Insufficiently Protected Credentials
 MITRE, CWE-311 - Missing Encryption of Sensitive Data
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
@@ -2299,18 +2347,19 @@ OWASP Basic Authentication
 Without OAEP in RSA encryption, it takes less work for an attacker to decrypt the data or infer patterns from the ciphertext. This rule logs an issue as soon as a literal value starts with RSA/NONE.
 
 **Noncompliant Code Example**
-```cs
+```java
 Cipher rsa = javax.crypto.Cipher.getInstance("RSA/NONE/NoPadding");
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cipher rsa = javax.crypto.Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
 
 
 ```
 *See*
+
 MITRE CWE-780 - Use of RSA Algorithm without OAEP
 MITRE CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
@@ -2336,7 +2385,7 @@ Cookie: JSESSIONID=Hacked_Session_Value'''">
 Due to the ability of the end-user to manually change the value, the session ID in the request should only be used by a servlet container (E.G. Tomcat or Jetty) to see if the value matches the ID of an an existing session. If it does not, the user should be considered unauthenticated. Moreover, this session ID should never be logged to prevent hijacking of active sessions.
 
 **Noncompliant Code Example**
-```cs
+```java
 if(isActiveSession(request.getRequestedSessionId()) ){
   ...
 }
@@ -2344,6 +2393,7 @@ if(isActiveSession(request.getRequestedSessionId()) ){
 
 ```
 *See*
+
 MITRE, CWE-807 - Reliance on Untrusted Inputs in a Security Decision
 SANS Top 25 - Porous Defenses
  OWASP Top 10 2017 Category A2 - Broken Authentication
@@ -2356,7 +2406,7 @@ This rule raises an issue in any of these cases:
  A setter does not update the field with the corresponding name.
  A getter does not access the field with the corresponding name.
 **Noncompliant Code Example**
-```cs
+```java
 class A {
   private int x;
   private int y;
@@ -2373,7 +2423,7 @@ class A {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class A {
   private int x;
   private int y;
@@ -2392,7 +2442,7 @@ class A {
 The use of any value but "validate" for hibernate.hbm2ddl.auto may cause the database schema used by your application to be changed, dropped, or cleaned of all data. In short, the use of this property is risky, and should only be used in production with the "validate" option, if it is used at all.
 
 **Noncompliant Code Example**
-```cs
+```java
 <session-factory>
   <property name="hibernate.hbm2ddl.auto">update</property>  <!-- Noncompliant -->
 </session-factory>
@@ -2400,7 +2450,7 @@ The use of any value but "validate" for hibernate.hbm2ddl.auto may cause the dat
 
 ```
 **Compliant Solution**
-```cs
+```java
 <session-factory>
   <property name="hibernate.hbm2ddl.auto">validate</property>  <!-- Compliant -->
 </session-factory>
@@ -2417,7 +2467,7 @@ or
 If the denominator to a division or modulo operation is zero it would result in a fatal error.
 
 **Noncompliant Code Example**
-```cs
+```java
 void test_divide() {
   int z = 0;
   if (unknown()) {
@@ -2432,7 +2482,7 @@ void test_divide() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 void test_divide() {
   int z = 0;
   if (unknown()) {
@@ -2448,6 +2498,7 @@ void test_divide() {
 
 ```
 *See*
+
 MITRE, CWE-369 - Divide by zero
 CERT, NUM02-J. - Ensure that division and remainder operations do not result in divide-by-zero errors
 CERT, INT33-C. - Ensure that division and remainder operations do not result in divide-by-zero errors
@@ -2456,7 +2507,7 @@ CERT, INT33-C. - Ensure that division and remainder operations do not result in 
 system dependencies are sought at a specific, specified path. This drastically reduces portability because if you deploy your artifact in an environment that's not configured just like yours is, your code won't work.
 
 **Noncompliant Code Example**
-```cs
+```java
 <dependency>
   <groupId>javax.sql</groupId>
   <artifactId>jdbc-stdext</artifactId>
@@ -2472,7 +2523,7 @@ If a lock is acquired and released within a method, then it must be released alo
 Failing to do so will expose the conditional locking logic to the method's callers and hence be deadlock-prone.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   private Lock lock = new Lock();
 
@@ -2488,7 +2539,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   private Lock lock = new Lock();
 
@@ -2504,6 +2555,7 @@ public class MyClass {
 
 ```
 *See*
+
 MITRE, CWE-459 - Incomplete Cleanup
 #### Rule 68: "runFinalizersOnExit" should not be called
 ##### Quality Category: Bug
@@ -2516,7 +2568,7 @@ It may result in finalizers being called on live objects while other threads are
 If you really want to be execute something when the virtual machine begins its shutdown sequence, you should attach a shutdown hook.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static void main(String [] args) {
   ...
   System.runFinalizersOnExit(true);  // Noncompliant
@@ -2530,7 +2582,7 @@ protected void finalize(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static void main(String [] args) {
   Runtime.addShutdownHook(new Runnable() {
     public void run(){
@@ -2542,6 +2594,7 @@ public static void main(String [] args) {
 
 ```
 *See*
+
 CERT, MET12-J. - Do not use finalizers
 #### Rule 69: "ScheduledThreadPoolExecutor" should not have 0 core threads
 ##### Quality Category: Bug
@@ -2550,7 +2603,7 @@ java.util.concurrent.ScheduledThreadPoolExecutor's pool is sized with corePoolSi
 This rule detects instances where corePoolSize is set to zero, via either its setter or the object constructor.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void do(){
 
   ScheduledThreadPoolExecutor stpe1 = new ScheduledThreadPoolExecutor(0); // Noncompliant
@@ -2567,7 +2620,7 @@ The Random() constructor tries to set the seed with a distinct value every time.
 This rule finds cases where a new Random is created each time a method is invoked and assigned to a local random variable.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomethingCommon() {
   Random rand = new Random();  // Noncompliant; new instance created with each invocation
   int rValue = rand.nextInt();
@@ -2576,7 +2629,7 @@ public void doSomethingCommon() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private Random rand = SecureRandom.getInstanceStrong();  // SecureRandom is preferred to Random
 
 public void doSomethingCommon() {
@@ -2586,13 +2639,14 @@ public void doSomethingCommon() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 A class which uses a Random in its constructor or in a static main function and nowhere else will be ignored by this rule.
 
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 ```
 #### Rule 71: The signature of "finalize()" should match that of "Object.finalize()"
@@ -2607,7 +2661,7 @@ In general, overloading Object.finalize() is a bad idea because:
 But beyond that it's a terrible idea to name a method "finalize" if it doesn't actually override Object.finalize().
 
 **Noncompliant Code Example**
-```cs
+```java
 public int finalize(int someParameter) {        // Noncompliant
   /* ... */
 }
@@ -2615,7 +2669,7 @@ public int finalize(int someParameter) {        // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int someBetterName(int someParameter) {  // Compliant
   /* ... */
 }
@@ -2627,7 +2681,7 @@ Using return, break, throw, and so on from a finally block suppresses the propag
 This rule raises an issue when a jump statement (break, continue, return, throw, and goto) would force control flow to leave a finally block.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static void main(String[] args) {
   try {
     doSomethingWhichThrowsException();
@@ -2656,7 +2710,7 @@ public static void doSomethingWhichThrowsException() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static void main(String[] args) {
   try {
     doSomethingWhichThrowsException();
@@ -2684,6 +2738,7 @@ public static void doSomethingWhichThrowsException() {
 
 ```
 *See*
+
 MITRE, CWE-584 - Return Inside Finally Block
 CERT, ERR04-J. - Do not complete abruptly from a finally block
 #### Rule 73: Expanding archive files is security-sensitive
@@ -2734,7 +2789,7 @@ while (entries.hasMoreElements()) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise an issue when a ZipEntry or a ArchiveEntry:
 
@@ -2743,6 +2798,7 @@ This rule doesn't raise an issue when a ZipEntry or a ArchiveEntry:
 
 ```
 *See*
+
 MITRE, CWE-409 - Improper Handling of Highly Compressed Data (Data Amplification)
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS04-J. - Safely extract files from ZipInputStream
@@ -2826,6 +2882,7 @@ Log and monitor refused access requests as they can reveal an attack.
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A5 - Broken Access Control
 SANS Top 25 - Porous Defenses
 #### Rule 75: Reading the Standard Input is security-sensitive
@@ -2870,7 +2927,7 @@ class A {
 
 ```
 **Exceptions**
-```cs
+```java
 
 All references to System.in will create issues except direct calls to System.in.close().
 
@@ -2878,7 +2935,8 @@ Command line parsing libraries such as JCommander often read standard input when
 
 
 ```
-*See*:
+*See*
+:
 MITRE, CWE-20 - Improper Input Validation
 ```
 #### Rule 76: Sending HTTP requests is security-sensitive
@@ -3021,6 +3079,7 @@ class GoogleHttpClient {
 
 ```
 *See*
+
 MITRE, CWE-20 - Improper Input Validation
 MITRE, CWE-400 - Uncontrolled Resource Consumption ('Resource Exhaustion')
 MITRE, CWE-200 - Information Exposure
@@ -3136,7 +3195,7 @@ public class Main {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The support of Argv4J without the use of org.kohsuke.argv4j.Option is out of scope as there is no way to know which Bean will be used as the mainclass.
 
@@ -3145,6 +3204,7 @@ No issue will be raised on public static void main(String[] argv) if argv is not
 
 ```
 *See*
+
 MITRE, CWE-88 - Argument Injection or Modification
 MITRE, CWE-214 - Information Exposure Through Process Environment
  OWASP Top 10 2017 Category A1 - Injection
@@ -3256,6 +3316,7 @@ class A {
 
 ```
 *See*
+
 MITRE, CWE-20 - Improper Input Validation
 MITRE, CWE-400 - Uncontrolled Resource Consumption ('Resource Exhaustion')
 MITRE, CWE-200 - Information Exposure
@@ -3362,6 +3423,7 @@ abstract class A extends JXPathContext{
 
 ```
 *See*
+
 MITRE, CWE-643 - Improper Neutralization of Data within XPath Expressions
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS53-J. - Prevent XPath Injection
@@ -3399,7 +3461,8 @@ Recommended Secure Coding Practices
 
 Avoid using paths provided by users or other untrusted sources if possible. If this is required, check that the path does not reference an unauthorized directory or file. 
 ```
-*See* OWASP recommendations as to how to test for directory traversal. Note that the paths length should be validated too.
+*See*
+ OWASP recommendations as to how to test for directory traversal. Note that the paths length should be validated too.
 
 No File and directory names should be exposed. They can contain sensitive information. This means that a user should not be able to list the content of unauthorized directories.
 
@@ -3517,7 +3580,7 @@ class M {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't highlight any function call receiving a Path or File arguments as the arguments themselves have been highlighted before.
 
@@ -3526,6 +3589,7 @@ For example we highlight new File(String parent, String child) but not new File(
 
 ```
 *See*
+
 MITRE, CWE-732 - Incorrect Permission Assignment for Critical Resource
 MITRE, CWE-73 - External Control of File Name or Path
 MITRE, CWE-20 - Improper Input Validation
@@ -3586,6 +3650,7 @@ Remember that configuring loggers properly doesn't make them bullet-proof. Here 
 
 ```
 *See*
+
 
 MITRE, CWE-532 - Information Exposure Through Log Files
 MITRE, CWE-117 - Improper Output Neutralization for Logs
@@ -3675,7 +3740,7 @@ class M {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Log4J 1.x is not covered as it has reached end of life.
 ```
@@ -3722,7 +3787,8 @@ class A {
 
 Regarding SecretKeyFactory. Any call to SecretKeyFactory.getInstance("...") with an argument starting by "PBKDF2" will be highlighted. 
 ```
-*See* OWASP guidelines, list of standard algorithms and algorithms on android.
+*See*
+ OWASP guidelines, list of standard algorithms and algorithms on android.
 
 // === javax.crypto ===
 import javax.crypto.spec.PBEKeySpec;
@@ -3824,6 +3890,7 @@ class A {
 
 ```
 *See*
+
 MITRE, CWE-916 - Use of Password Hash With Insufficient Computational Effort
 MITRE, CWE-759 - Use of a One-Way Hash without a Salt
 MITRE, CWE-760 - Use of a One-Way Hash with a Predictable Salt
@@ -3852,7 +3919,8 @@ Ask Yourself Whether
  the CBC (Cypher Block Chaining) algorithm is used for encryption, and it's IV (Initialization Vector) is not generated using a secure random algorithm, or it is reused.
  the Advanced Encryption Standard (AES) encryption algorithm is used with an unsecure mode. 
 ```
-*See* the recommended practices for more information.
+*See*
+ the recommended practices for more information.
 
 You are at risk if you answered yes to any of those questions.
 
@@ -3888,6 +3956,7 @@ Utils.getCipherInstance(transform, properties);  // Questionable
 
 ```
 *See*
+
 MITRE, CWE-321 - Use of Hard-coded Cryptographic Key
 MITRE, CWE-322 - Key Exchange without Entity Authentication
 MITRE, CWE-323 - Reusing a Nonce, Key Pair in Encryption
@@ -3977,7 +4046,7 @@ class BeansRegex implements Serializable {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Calls to java.util.regex.Pattern.matcher(...), java.util.regex.Pattern.split(...) and all methods of java.util.regex.Matcher are not highlighted as the pattern compilation is already highlighted.
 
@@ -3986,6 +4055,7 @@ Calls to String.split(regex) and String.split(regex, limit) will not raise an ex
 
 ```
 *See*
+
 MITRA, CWE-624 - Executable Regular Expression Error
 MITRA, CWE-185 - Incorrect Regular Expression
  OWASP Regular expression Denial of Service - ReDoS
@@ -4045,7 +4115,7 @@ executor.execute(cmdLine); // Questionable
 
 ```
 **Exceptions**
-```cs
+```java
 
 The following code will not raise any issue.
 
@@ -4055,6 +4125,7 @@ pb.command();
 
 ```
 *See*
+
 MITRE, CWE-78 - Improper Neutralization of Special Elements used in an OS Command
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
@@ -4073,7 +4144,7 @@ Recommended Secure Coding Practices
  Consider using @JsonTypeInfo instead of enabling globally PTH
  Use @JsonTypeInfo(use = Id.NAME) instead
 **Noncompliant Code Example**
-```cs
+```java
 ObjectMapper mapper = new ObjectMapper();
 mapper.enableDefaultTyping(); // Noncompliant
 
@@ -4084,7 +4155,7 @@ abstract class PhoneNumber {
 
 ```
 **Compliant Solution**
-```cs
+```java
 
 - use the latest patch versions of jackson-databind blocking the already discovered "deserialization gadgets"
 
@@ -4095,6 +4166,7 @@ abstract class PhoneNumber {
 
 ```
 *See*
+
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 OWASP Deserialization of untrusted data
@@ -4145,7 +4217,7 @@ Restrict security-sensitive actions, such as file upload, to authenticated users
 Be careful when errors are returned to the client, as they can provide sensitive information. Use 404 (Not Found) instead of 403 (Forbidden) when the existence of a resource is sensitive.
 
 **Noncompliant Code Example**
-```cs
+```java
 @RequestMapping(path = "/profile", method = RequestMethod.GET) // Noncompliant
 public UserProfile getUserProfile(String name) {
 ...
@@ -4154,6 +4226,7 @@ public UserProfile getUserProfile(String name) {
 
 ```
 *See*
+
 MITRE, CWE-20 - Improper Input Validation
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
 MITRE, CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
@@ -4190,7 +4263,7 @@ Sanitize all values used as JavaBean properties.
 Don't set any sensitive properties. Keep full control over which properties are set. If the property names are provided by an unstrusted source, filter them with a whitelist.
 
 **Noncompliant Code Example**
-```cs
+```java
 Company bean = new Company();
 HashMap map = new HashMap();
 Enumeration names = request.getParameterNames();
@@ -4203,6 +4276,7 @@ BeanUtils.populate(bean, map); // Noncompliant; "map" is populated with data com
 
 ```
 *See*
+
 MITRE, CWE-15 - External Control of System or Configuration Setting
  OWASP Top 10 2017 Category A1 - Injection
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
@@ -4230,7 +4304,7 @@ If you only need a simple deserialization, use instead one of the deserializatio
 If you really need to use XMLDecoder, make sure that the serialized data cannot be tampered with.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void decode(InputStream in) {
   XMLDecoder d = new XMLDecoder(in); // Noncompliant
   Object result = d.readObject();
@@ -4241,6 +4315,7 @@ public void decode(InputStream in) {
 
 ```
 *See*
+
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A1 - Injection
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
@@ -4261,7 +4336,8 @@ Ask Yourself Whether
  an attacker could have tampered with the source provided to the deserialization function.
  you are using an unsafe deserialization function. 
 ```
-*See* the Recommended Secure Coding Practices for examples of safe libraries.
+*See*
+ the Recommended Secure Coding Practices for examples of safe libraries.
 
 You are at risk if you answered yes to any of those questions.
 
@@ -4284,6 +4360,7 @@ You should also limit access to the serialized source. For example:
 
 ```
 *See*
+
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 OWASP Deserialization of untrusted data
@@ -4313,7 +4390,7 @@ Check that every debug feature is controlled by only very few configuration vari
 Do not enable debug features on production servers.
 
 **Noncompliant Code Example**
-```cs
+```java
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -4326,7 +4403,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 **Compliant Solution**
-```cs
+```java
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -4339,6 +4416,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 *See*
+
 MITRE, CWE-489 - Leftover Debug Code
 MITRE, CWE-215 - Information Exposure Through Debug Information
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
@@ -4349,7 +4427,7 @@ Spring Security is coming out of the box with a protection against CSRF attacks.
 Recommended Secure Coding Practices
  activate Spring Security's CSRF protection.
 **Noncompliant Code Example**
-```cs
+```java
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -4362,6 +4440,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 *See*
+
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 OWASP: Cross-Site Request Forgery
@@ -4375,7 +4454,7 @@ A cookie's domain specifies which websites should be able to read it. Left blank
 Cookie domains can be set either programmatically or via configuration. This rule raises an issue when any cookie domain is set with a single level, as in .com.
 
 **Noncompliant Code Example**
-```cs
+```java
 Cookie myCookie = new Cookie("name", "val");
 myCookie.setDomain(".com"); // Noncompliant
 java.net.HttpCookie myOtherCookie = new java.net.HttpCookie("name", "val");
@@ -4384,7 +4463,7 @@ myOtherCookie.setDomain(".com"); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cookie myCookie = new Cookie("name", "val"); // Compliant; by default, cookies are only returned to the server that sent them.
 
 // or
@@ -4398,6 +4477,7 @@ myOtherCookie.setDomain(".myDomain.com"); // Compliant
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A7 - Cross-Site Scripting (XSS)
 #### Rule 94: Changing or bypassing accessibility is security-sensitive
 ##### Quality Category: Security Hotspot
@@ -4438,6 +4518,7 @@ public void setItAnyway(String fieldName, int value) {
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, SEC05-J. - Do not use reflection to increase accessibility of classes, methods, or fields
 #### Rule 95: Using non-standard cryptographic algorithms is security-sensitive
@@ -4449,7 +4530,7 @@ This rule tracks creation of java.security.MessageDigest subclasses.
 Recommended Secure Coding Practices
  use a standard algorithm instead of creating a custom one.
 **Noncompliant Code Example**
-```cs
+```java
 MyCryptographicAlgorithm extends MessageDigest {
   ...
 }
@@ -4457,6 +4538,7 @@ MyCryptographicAlgorithm extends MessageDigest {
 
 ```
 *See*
+
 CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Porous Defenses
@@ -4498,6 +4580,7 @@ random.nextBytes(bytes);
 
 ```
 *See*
+
 MITRE, CWE-338 - Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
 MITRE, CWE-330 - Use of Insufficiently Random Values
 MITRE, CWE-326 - Inadequate Encryption Strength
@@ -4564,7 +4647,7 @@ Sanitize every unsafe input.
 You can also reduce the impact of an attack by using a database account with low privileges.
 
 **Noncompliant Code Example**
-```cs
+```java
 public User getUser(Connection con, String user) throws SQLException {
 
   Statement stmt1 = null;
@@ -4595,7 +4678,7 @@ public User getUserHibernate(org.hibernate.Session session, String userInput) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public User getUser(Connection con, String user) throws SQLException {
 
   Statement stmt1 = null;
@@ -4623,6 +4706,7 @@ public User getUserHibernate(org.hibernate.Session session, String userInput) {
 
 ```
 *See*
+
 MITRE, CWE-89 - Improper Neutralization of Special Elements used in an SQL Command
 MITRE, CWE-564 - SQL Injection: Hibernate
 MITRE, CWE-20 - Improper Input Validation
@@ -4684,13 +4768,14 @@ public class Reflection {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Calling reflection methods with a hard-coded type name, method name or field name will not raise an issue.
 
 
 ```
 *See*
+
 MITRE CWE-95 - Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')
 MITRE CWE-470 - Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection')
  OWASP Top 10 2017 Category A1 - Injection
@@ -4717,13 +4802,13 @@ For each of these methods, another method with an additional parameter is availa
 Using these methods gives the same result while avoiding the creation of additional String instances.
 
 **Noncompliant Code Example**
-```cs
+```java
 str.substring(beginIndex).indexOf(char1); // Noncompliant; a new String is going to be created by "substring"
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 str.indexOf(char1, beginIndex);
 ```
 #### Rule 100: "default" clauses should be last
@@ -4733,7 +4818,7 @@ switch can contain a default clause for various reasons: to handle unexpected va
 For readability purpose, to help a developer to quickly find the default behavior of a switch statement, it is recommended to put the default clause at the end of the switch statement. This rule raises an issue if the default clause is not the last one of the switch's cases.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (param) {
   case 0:
     doSomething();
@@ -4749,7 +4834,7 @@ switch (param) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch (param) {
   case 0:
     doSomething();
@@ -4765,6 +4850,7 @@ switch (param) {
 
 ```
 *See*
+
  MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause
  MISRA C++:2008, 6-4-6 - The final clause of a switch statement shall be the default-clause
  MISRA C:2012, 16.4 - Every switch statement shall have a default label
@@ -4778,7 +4864,7 @@ Assuming that the argument to equals is always non-null, and enforcing that assu
 The rule raises an issue when the equals method is overridden and its parameter annotated with any kind of @Nonnull annotation.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean equals(@javax.annotation.Nonnull Object obj) { // Noncompliant
   // ...
 }
@@ -4786,7 +4872,7 @@ public boolean equals(@javax.annotation.Nonnull Object obj) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean equals(Object obj) {
   if (obj == null) {
     return false;
@@ -4799,7 +4885,7 @@ public boolean equals(Object obj) {
 In the absence of enclosing curly braces, the line immediately after a conditional is the one that is conditionally executed. By both convention and good practice, such lines are indented. In the absence of both curly braces and indentation the intent of the original programmer is entirely unclear and perhaps not actually what is executed. Additionally, such code is highly likely to be confusing to maintainers.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (condition)  // Noncompliant
 doTheThing();
 
@@ -4811,7 +4897,7 @@ foo();
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (condition)
   doTheThing();
 
@@ -4825,7 +4911,7 @@ foo();
 Code is clearest when each statement has its own line. Nonetheless, it is a common pattern to combine on the same line an if and its resulting then statement. However, when an if is placed on the same line as the closing } from a preceding else or else if, it is either an error - else is missing - or the invitation to a future error as maintainers fail to understand that the two statements are unconnected.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (condition1) {
   // ...
 } if (condition2) {  // Noncompliant
@@ -4835,7 +4921,7 @@ if (condition1) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (condition1) {
   // ...
 } else if (condition2) {
@@ -4860,13 +4946,14 @@ Cognitive Complexity is a measure of how hard the control flow of a method is to
 
 ```
 *See*
+
 Cognitive Complexity
 #### Rule 105: Factory method injection should be used in "@Configuration" classes
 ##### Quality Category: Code Smell
 When @Autowired is used, dependencies need to be resolved when the class is instantiated, which may cause early initialization of beans or lead the context to look in places it shouldn't to find the bean. To avoid this tricky issue and optimize the way the context loads, dependencies should be requested as late as possible. That means using parameter injection instead of field injection for dependencies that are only used in a single @Bean method.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Configuration
 public class ​FooConfiguration {
 
@@ -4881,7 +4968,7 @@ public class ​FooConfiguration {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Configuration
 public class ​FooConfiguration {
 
@@ -4894,7 +4981,7 @@ public class ​FooConfiguration {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Fields used in methods that are called directly by other methods in the application (as opposed to being invoked automatically by the Spring framework) are ignored by this rule so that direct callers don't have to provide the dependencies themselves.
 ```
@@ -4905,7 +4992,7 @@ Correctly updating a static field from a non-static method is tricky to get righ
 This rule raises an issue each time a static field is updated from a non-static method.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   private static int count = 0;
@@ -4923,7 +5010,7 @@ Most checks against an indexOf value compare it with -1 because 0 is a valid ind
 This rule raises an issue when an indexOf value retrieved either from a String or a List is tested against >0.
 
 **Noncompliant Code Example**
-```cs
+```java
 String color = "blue";
 String name = "ishmael";
 
@@ -4944,7 +5031,7 @@ if (name.indexOf("ae") > 0) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 String color = "blue";
 String name = "ishmael";
 
@@ -4967,7 +5054,7 @@ if (name.contains("ae") {
 Because a subclass instance may be cast to and treated as an instance of the superclass, overriding methods should uphold the aspects of the superclass contract that relate to the Liskov Substitution Principle. Specifically, if the parameters or return type of the superclass method are marked with any of the following: @Nullable, @CheckForNull, @NotNull, @NonNull, and @Nonnull, then subclass parameters are not allowed to tighten the contract, and return values are not allowed to loosen it.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit {
 
   private Season ripe;
@@ -4996,13 +5083,14 @@ public class Raspberry extends Fruit {
 
 ```
 *See*
+
  https://en.wikipedia.org/wiki/Liskov_substitution_principle
 #### Rule 109: Null should not be returned from a "Boolean" method
 ##### Quality Category: Code Smell
 While null is technically a valid Boolean value, that fact, and the distinction between Boolean and boolean is easy to forget. So returning null from a Boolean method is likely to cause problems with callers' code.
 
 **Noncompliant Code Example**
-```cs
+```java
 public Boolean isUsable() {
   // ...
   return null;  // Noncompliant
@@ -5011,6 +5099,7 @@ public Boolean isUsable() {
 
 ```
 *See*
+
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
 #### Rule 110: Classes should not access their own subclasses during initialization
@@ -5020,7 +5109,7 @@ When a parent class references a member of a subclass during its own initializat
 To make things worse, these issues are very hard to diagnose so it is highly recommended you avoid creating this kind of dependencies.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Parent {
   static int field1 = Child.method(); // Noncompliant
   static int field2 = 42;
@@ -5039,6 +5128,7 @@ class Child extends Parent {
 
 ```
 *See*
+
 CERT, DCL00-J. - Prevent class initialization cycles
  Java Language Specifications - Section 12.4: Initialization of Classes and Interfaces
 #### Rule 111: "Object.wait(...)" and "Condition.await(...)" should be called inside a "while" loop
@@ -5059,7 +5149,7 @@ synchronized (obj) {
 }
 
 **Noncompliant Code Example**
-```cs
+```java
 synchronized (obj) {
   if (!suitableCondition()){
     obj.wait(timeout);   //the thread can wake up even if the condition is still false
@@ -5070,7 +5160,7 @@ synchronized (obj) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 synchronized (obj) {
   while (!suitableCondition()){
     obj.wait(timeout);
@@ -5081,6 +5171,7 @@ synchronized (obj) {
 
 ```
 *See*
+
 CERT THI03-J. - Always invoke wait() and await() methods inside a loop
 #### Rule 112: IllegalMonitorStateException should not be caught
 ##### Quality Category: Code Smell
@@ -5091,7 +5182,7 @@ IllegalMonitorStateException is thrown when a thread has attempted to wait on an
 In other words, this exception can be thrown only in case of bad design because Object.wait(...), Object.notify() and Object.notifyAll() methods should never be called on an object whose monitor is not held.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(){
   ...
   try {
@@ -5106,7 +5197,7 @@ public void doSomething(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(){
   ...
   synchronized(anObject) {
@@ -5121,7 +5212,7 @@ public void doSomething(){
 JUnit assertions should not be made from the run method of a Runnable, because failed assertions result in AssertionErrors being thrown. If the error is thrown from a thread other than the one that ran the test, the thread will exit but the test won't fail.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void run() {
   // ...
   Assert.assertEquals(expected, actual);  // Noncompliant
@@ -5132,7 +5223,7 @@ public void run() {
 While it's perfectly legal to give a class the same simple name as a class in another package that it extends or interface it implements, it's confusing and could cause problems in the future.
 
 **Noncompliant Code Example**
-```cs
+```java
 package my.mypackage;
 
 public class Foo implements a.b.Foo { // Noncompliant
@@ -5140,7 +5231,7 @@ public class Foo implements a.b.Foo { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 package my.mypackage;
 
 public class FooJr implements a.b.Foo {
@@ -5152,7 +5243,7 @@ Simply implementing Cloneable without also overriding Object.clone() does not ne
 Removing the Cloneable implementation and providing a good copy constructor is another viable (some say preferable) way of allowing a class to be copied.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Team implements Cloneable {  // Noncompliant
   private Person coach;
   private List<Person> players;
@@ -5163,7 +5254,7 @@ class Team implements Cloneable {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Team implements Cloneable {
   private Person coach;
   private List<Person> players;
@@ -5186,7 +5277,7 @@ This rule checks that close-able resources are opened in a try-with-resources st
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 FileReader fr = null;
 BufferedReader br = null;
 try {
@@ -5210,7 +5301,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try (
     FileReader fr = new FileReader(fileName);
     BufferedReader br = new BufferedReader(fr)
@@ -5231,13 +5322,14 @@ catch (...) {}
 
 ```
 *See*
+
 CERT, ERR54-J. - Use a try-with-resources statement to safely handle closeable resources
 #### Rule 117: "readResolve" methods should be inheritable
 ##### Quality Category: Code Smell
 The readResolve() method allows final tweaks to the state of an object during deserialization. Non-final classes which implement readResolve(), should not set its visibility to private since it will then be unavailable to child classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit implements Serializable {
   private static final long serialVersionUID = 1;
 
@@ -5254,7 +5346,7 @@ public class Raspberry extends Fruit implements Serializable {  // No access to 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit implements Serializable {
   private static final long serialVersionUID = 1;
 
@@ -5273,7 +5365,7 @@ public class Raspberry extends Fruit implements Serializable {
 It can be extremely confusing when a for loop's counter is incremented outside of its increment clause. In such cases, the increment should be moved to the loop's increment clause if at all possible.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (i = 0; i < 10; j++) { // Noncompliant
   // ...
   i++;
@@ -5282,7 +5374,7 @@ for (i = 0; i < 10; j++) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (i = 0; i < 10; i++, j++) {
   // ...
 }
@@ -5302,7 +5394,7 @@ Fields in a Serializable class must themselves be either Serializable or transie
 This rule raises an issue on non-Serializable fields, and on collection fields when they are not private (because they could be assigned non-Serializable values externally), and when they are assigned non-Serializable types within the class.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Address {
   //...
 }
@@ -5317,7 +5409,7 @@ public class Person implements Serializable {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Address implements Serializable {
   private static final long serialVersionUID = 2405172041950251807L;
 }
@@ -5332,7 +5424,7 @@ public class Person implements Serializable {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The alternative to making all members serializable or transient is to implement special methods which take on the responsibility of properly serializing and de-serializing the object. This rule ignores classes which implement the following methods:
 
@@ -5344,6 +5436,7 @@ The alternative to making all members serializable or transient is to implement 
 
 ```
 *See*
+
 MITRE, CWE-594 - Saving Unserializable Objects to Disk
 Oracle Java 6, Serializable
 Oracle Java 7, Serializable
@@ -5354,7 +5447,7 @@ By convention, a Java class' physical location (source directories) and its logi
 
 Unfortunately, this convention is not enforced by Java compilers, and nothing prevents a developer from making the "Foo.java" class part of the "com.apple" package, which could degrade the maintainability of both the class and its application.
 
-Similarly, source placed in a folder with dots in its name instead of having the equivalent folder structure will compile but cause problems at run time. For instance, code with a package declaration of org.foo.bar that is placed in org/foo.bar will compile, but the classloader will always search for the class into the folder based on package structure, and will consequently expect sources to be in org/foo/bar folder. foo.bar is therefore not a proper folder name for sources.```
+Similarly, source placed in a folder with dots in its name instead of having the equivalent folder structure will compile but cause problems at run time. For instance, code with a package declaration of org.foo.bar that is placed in org/foo.bar will compile, but the classloader will always search for the class into the folder based on package structure, and will consequently expect sources to be in org/foo/bar folder. foo.bar is therefore not a proper folder name for sources.
 #### Rule 121: Generic wildcard types should not be used in return parameters
 ##### Quality Category: Code Smell
 It is highly recommended not to use wildcard types as return types. Because the type inference rules are fairly complex it is unlikely the user of that API will know how to use it correctly.
@@ -5364,13 +5457,13 @@ Let's take the example of method returning a "List<? extends Animal>". Is it pos
 This rule raises an issue when a method returns a wildcard type.
 
 **Noncompliant Code Example**
-```cs
+```java
 List<? extends Animal> getAnimals(){...}
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 List<Animal> getAnimals(){...}
 
 
@@ -5383,7 +5476,7 @@ List<Dog> getAnimals(){...}
 The requirement for a final default clause is defensive programming. The clause should either take appropriate action, or contain a suitable comment as to why no action is taken.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (param) {  //missing default clause
   case 0:
     doSomething();
@@ -5408,7 +5501,7 @@ switch (param) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch (param) {
   case 0:
     doSomething();
@@ -5424,7 +5517,7 @@ switch (param) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 If the switch parameter is an Enum and if all the constants of this enum are used in the case statements, then no default clause is expected.
 
@@ -5446,6 +5539,7 @@ switch(day) {
 
 ```
 *See*
+
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause
  MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.
@@ -5465,7 +5559,7 @@ Calling System.gc() or Runtime.getRuntime().gc() is a bad idea for a simple reas
  Will the JVM simply ignore the call?
  ...
 
-An application relying on these unpredictable methods is also unpredictable and therefore broken. The task of running the garbage collector should be left exclusively to the JVM.```
+An application relying on these unpredictable methods is also unpredictable and therefore broken. The task of running the garbage collector should be left exclusively to the JVM.
 #### Rule 124: Constants should not be defined in interfaces
 ##### Quality Category: Code Smell
 According to Joshua Bloch, author of "Effective Java":
@@ -5479,7 +5573,7 @@ Implementing a constant interface causes this implementation detail to leak into
 all of its subclasses will have their namespaces polluted by the constants in the interface.
 
 **Noncompliant Code Example**
-```cs
+```java
 interface Status {                      // Noncompliant
    int OPEN = 1;
    int CLOSED = 2;
@@ -5488,7 +5582,7 @@ interface Status {                      // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public enum Status {                    // Compliant
   OPEN,
   CLOSED;
@@ -5509,7 +5603,7 @@ Duplicated string literals make the process of refactoring error-prone, since yo
 On the other hand, constants can be referenced from many places, but only need to be updated in a single place.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold of 3:
 
@@ -5532,7 +5626,7 @@ public String method3(String a) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private static final String ACTION_1 = "action1";  // Compliant
 
 public void run() {
@@ -5544,7 +5638,7 @@ public void run() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 To prevent generating some false-positives, literals having less than 5 characters are excluded.
 ```
@@ -5556,7 +5650,7 @@ There are several reasons for a method not to have a method body:
  It is not yet, or never will be, supported. In this case an UnsupportedOperationException should be thrown.
  The method is an intentionally-blank override. In this case a nested comment should explain the reason for the blank override.
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething() {
 }
 
@@ -5566,7 +5660,7 @@ public void doSomethingElse() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Override
 public void doSomething() {
   // Do nothing because of X and Y.
@@ -5580,7 +5674,7 @@ public void doSomethingElse() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Default (no-argument) constructors are ignored when there are other constructors in the class, as are empty methods in abstract classes.
 
@@ -5597,7 +5691,7 @@ The contract of the Object.finalize() method is clear: only the Garbage Collecto
 Making this method public is misleading, because it implies that any caller can use it.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   @Override
@@ -5609,6 +5703,7 @@ public class MyClass {
 
 ```
 *See*
+
 MITRE, CWE-583 - finalize() Method Declared Public
 CERT, MET12-J. - Do not use finalizers
 #### Rule 128: Exceptions should not be thrown in finally blocks
@@ -5616,7 +5711,7 @@ CERT, MET12-J. - Do not use finalizers
 Throwing an exception from within a finally block will mask any exception which was previously thrown in the try or catch block, and the masked's exception message and stack trace will be lost.
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   /* some work which end up throwing an exception */
   throw new IllegalArgumentException();
@@ -5628,7 +5723,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try {
   /* some work which end up throwing an exception */
   throw new IllegalArgumentException();
@@ -5639,13 +5734,14 @@ try {
 
 ```
 *See*
+
 CERT, ERR05-J. - Do not let checked exceptions escape from a finally block
 #### Rule 129: Constant names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all constant names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$:
 
@@ -5660,7 +5756,7 @@ public enum MyEnum {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   public static final int FIRST = 1;
 }
@@ -5678,7 +5774,7 @@ The problem could be mitigated in any of the following ways:
  Validate the user provided data based on a whitelist and reject input not matching.
  Redesign the application to not send requests based on user provided data.
 **Noncompliant Code Example**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   URL url = new URL(req.getParameter("url"));
   HttpURLConnection conn = (HttpURLConnection) url.openConnection(); // Noncompliant
@@ -5688,7 +5784,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   URL url = new URL(req.getParameter("url"));
 
@@ -5711,6 +5807,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 *See*
+
 OWASP Attack Category - Server Side Request Forgery
 OWASP Top 10 2017 - Category A5 - Broken Access Control
 MITRE, CWE-918 - Server-Side Request Forgery (SSRF)
@@ -5723,7 +5820,7 @@ Empty implementations of the X509TrustManager interface are often created to all
 This rule raises an issue when an implementation of X509TrustManager never throws exception.
 
 **Noncompliant Code Example**
-```cs
+```java
 class TrustAllManager implements X509TrustManager {
 
     @Override
@@ -5744,6 +5841,7 @@ class TrustAllManager implements X509TrustManager {
 
 ```
 *See*
+
 MITRE, CWE-295 - Improper Certificate Validation
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
@@ -5758,18 +5856,19 @@ The recommended value is "TLS" or "DTLS" as it will always use the latest versio
 Note that calling SSLContext.getInstance(...) with "TLSv1.2" or "DTLSv1.2" doesn't prevent protocol version negotiation. For example, if a client connects with "TLSv1.1" and the server used SSLContext.getInstance("TLSv1.2"), the connection will use "TLSv1.1". It is possible to enable only specific protocol versions by calling setEnabledProtocols on SSLSocket, SSLServerSocket or SSLEngine. However this should be rarely needed as clients usually ask for the most secure protocol supported.
 
 **Noncompliant Code Example**
-```cs
+```java
 context = SSLContext.getInstance("SSL"); // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 context = SSLContext.getInstance("TLSv1.2");
 
 
 ```
 *See*
+
 MITRE, CWE-327 - Inadequate Encryption Strength
 MITRE, CWE-326 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
@@ -5781,7 +5880,7 @@ Diagnosing TLS, SSL, and HTTPS
 It's almost always a mistake to compare two instances of java.lang.String or boxed types like java.lang.Integer using reference equality == or !=, because it is not comparing actual value but locations in memory.
 
 **Noncompliant Code Example**
-```cs
+```java
 String firstName = getFirstName(); // String overrides equals
 String lastName = getLastName();
 
@@ -5790,7 +5889,7 @@ if (firstName == lastName) { ... }; // Non-compliant; false even if the strings 
 
 ```
 **Compliant Solution**
-```cs
+```java
 String firstName = getFirstName();
 String lastName = getLastName();
 
@@ -5799,6 +5898,7 @@ if (firstName != null && firstName.equals(lastName)) { ... };
 
 ```
 *See*
+
 MITRE, CWE-595 - Comparison of Object References Instead of Object Contents
 MITRE, CWE-597 - Use of Wrong Operator in String Comparison
 CERT, EXP03-J. - Do not use the equality operators when comparing values of boxed primitives
@@ -5810,7 +5910,7 @@ According to the Java documentation, any implementation of the InputSteam.read()
 But in Java, the byte primitive data type is an 8-bit signed two's complement integer. It has a minimum value of -128 and a maximum value of 127. So by contract, the implementation of an InputSteam.read() method should never directly return a byte primitive data type. A conversion into an unsigned byte must be done before by applying a bitmask.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Override
 public int read() throws IOException {
   if (pos == buffer.length()) {
@@ -5822,7 +5922,7 @@ public int read() throws IOException {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Override
 public int read() throws IOException {
   if (pos == buffer.length()) {
@@ -5838,7 +5938,7 @@ When implementing the Comparable<T>.compareTo method, the parameter's type has t
 This rule raises an issue when the parameter of the compareTo method of a class implementing Comparable<T> is not same as the one used in the Comparable declaration.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
   static class Bar implements Comparable<Bar> {
     public int compareTo(Bar rhs) {
@@ -5856,7 +5956,7 @@ public class Foo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo {
   static class Bar implements Comparable<Bar> {
     public int compareTo(Bar rhs) {
@@ -5880,7 +5980,7 @@ An Iterator<T> that also implements Iterable<t> by returning itself as its itera
 This rule raises an issue when the iterator() method of a class implementing both Iterable<T> and Iterator<t> returns this.
 
 **Noncompliant Code Example**
-```cs
+```java
 class FooIterator implements Iterator<Foo>, Iterable<Foo> {
   private Foo[] seq;
   private int idx = 0;
@@ -5902,7 +6002,7 @@ class FooIterator implements Iterator<Foo>, Iterable<Foo> {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class FooSequence implements Iterable<Foo> {
   private Foo[] seq;
 
@@ -5927,7 +6027,7 @@ class FooSequence implements Iterable<Foo> {
 It is highly suspicious when a value is saved for a key or index and then unconditionally overwritten. Such replacements are likely in error.
 
 **Noncompliant Code Example**
-```cs
+```java
 letters.put("a", "Apple");
 letters.put("a", "Boy");  // Noncompliant
 
@@ -5945,21 +6045,21 @@ A week year is in sync with a WEEK_OF_YEAR cycle. All weeks between the first an
 For example, January 1, 1998 is a Thursday. If getFirstDayOfWeek() is MONDAY and getMinimalDaysInFirstWeek() is 4 (ISO 8601 standard compatible setting), then week 1 of 1998 starts on December 29, 1997, and ends on January 4, 1998. The week year is 1998 for the last three days of calendar year 1997. If, however, getFirstDayOfWeek() is SUNDAY, then week 1 of 1998 starts on January 4, 1998, and ends on January 10, 1998; the first three days of 1998 then are part of week 53 of 1997 and their week year is 1997.
 
 **Noncompliant Code Example**
-```cs
+```java
 Date date = new SimpleDateFormat("yyyy/MM/dd").parse("2015/12/31");
 String result = new SimpleDateFormat("YYYY/MM/dd").format(date);   //Noncompliant; yields '2016/12/31'
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Date date = new SimpleDateFormat("yyyy/MM/dd").parse("2015/12/31");
 String result = new SimpleDateFormat("yyyy/MM/dd").format(date);   //Yields '2015/12/31' as expected
 
 
 ```
 **Exceptions**
-```cs
+```java
 Date date = new SimpleDateFormat("yyyy/MM/dd").parse("2015/12/31");
 String result = new SimpleDateFormat("YYYY-ww").format(date);  //compliant, 'Week year' is used along with 'Week of year'. result = '2016-01'
 
@@ -5969,14 +6069,14 @@ String result = new SimpleDateFormat("YYYY-ww").format(date);  //compliant, 'Wee
 Creating a new Throwable without actually throwing it is useless and is probably due to a mistake.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (x < 0)
   new IllegalArgumentException("x must be nonnegative");
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (x < 0)
   throw new IllegalArgumentException("x must be nonnegative");
 ```
@@ -5985,7 +6085,7 @@ if (x < 0)
 The size of a collection and the length of an array are always greater than or equal to zero. So testing that a size or length is greater than or equal to zero doesn't make sense, since the result is always true. Similarly testing that it is less than zero will always return false. Perhaps the intent was to check the non-emptiness of the collection or array instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (myList.size() >= 0) { ... }
 
 if (myList.size() < 0) { ... }
@@ -5997,7 +6097,7 @@ if (0 > myArray.length) { ... }
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (!myList.isEmpty()) { ... }
 
 if (myArray.length >= 42) { ... }
@@ -6007,7 +6107,7 @@ if (myArray.length >= 42) { ... }
 Stream operations are divided into intermediate and terminal operations, and are combined to form stream pipelines. After the terminal operation is performed, the stream pipeline is considered consumed, and cannot be used again. Such a reuse will yield unexpected results.
 
 **Noncompliant Code Example**
-```cs
+```java
 Stream<Widget> pipeline = widgets.stream().filter(b -> b.getColor() == RED);
 int sum1 = pipeline.sum();
 int sum2 = pipeline.mapToInt(b -> b.getWeight()).sum(); // Noncompliant
@@ -6016,19 +6116,20 @@ int sum2 = pipeline.mapToInt(b -> b.getWeight()).sum(); // Noncompliant
 ```
 *See*
 
+
 Stream Operations
 #### Rule 142: Intermediate Stream methods should not be left unused
 ##### Quality Category: Bug
 There are two types of stream operations: intermediate operations, which return another stream, and terminal operations, which return something other than a stream. Intermediate operations are lazy, meaning they aren't actually executed until and unless a terminal stream operation is performed on their results. Consequently if the result of an intermediate stream operation is not fed to a terminal operation, it serves no purpose, which is almost certainly an error.
 
 **Noncompliant Code Example**
-```cs
+```java
 widgets.stream().filter(b -> b.getColor() == RED); // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 int sum = widgets.stream()
                       .filter(b -> b.getColor() == RED)
                       .mapToInt(b -> b.getWeight())
@@ -6042,13 +6143,14 @@ sum = pipeline.sum();
 ```
 *See*
 
+
 Stream Operations
 #### Rule 143: All branches in a conditional structure should not have exactly the same implementation
 ##### Quality Category: Bug
 Having all branches in a switch or if chain with the same implementation is an error. Either a copy-paste error was made and something different should be executed, or there shouldn't be a switch/if chain at all.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (b == 0) {  // Noncompliant
   doOneMoreThing();
 } else {
@@ -6074,7 +6176,7 @@ switch (i) {  // Noncompliant
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule does not apply to if chains without else-s, or to switch-es without default clauses.
 
@@ -6094,7 +6196,7 @@ NoSuchElementException if there is no value present. To avoid the exception, cal
 Alternatively, note that other methods such as orElse(...), orElseGet(...) or orElseThrow(...) can be used to specify what to do with an empty Optional.
 
 **Noncompliant Code Example**
-```cs
+```java
 Optional<String> value = this.getOptionalValue();
 
 // ...
@@ -6104,7 +6206,7 @@ String stringValue = value.get(); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Optional<String> value = this.getOptionalValue();
 
 // ...
@@ -6125,13 +6227,14 @@ String stringValue = value.orElse("default");
 
 ```
 *See*
+
 MITRE, CWE-476 - NULL Pointer Dereference
 #### Rule 145: Overrides should match their parent class methods in synchronization
 ##### Quality Category: Bug
 When @Overrides of synchronized methods are not themselves synchronized, the result can be improper synchronization as callers rely on the thread-safety promised by the parent class.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Parent {
 
   synchronized void foo() {
@@ -6151,7 +6254,7 @@ public class Child extends Parent {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Parent {
 
   synchronized void foo() {
@@ -6171,6 +6274,7 @@ public class Child extends Parent {
 
 ```
 *See*
+
 CERT, TSM00-J - Do not override thread-safe methods with methods that are not thread-safe
 #### Rule 146: "DefaultMessageListenerContainer" instances should not drop messages during restarts
 ##### Quality Category: Bug
@@ -6179,7 +6283,7 @@ DefaultMessageListenerContainer is implemented as a JMS poller. While the Spring
 To prevent message loss during restart operations, set acceptMessagesWhileStopping to true so that such messages will be processed before shut down.
 
 **Noncompliant Code Example**
-```cs
+```java
 <bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  <!-- Noncompliant -->
    <property name="connectionFactory" ref="connFactory" />
    <property name="destination" ref="dest" />
@@ -6194,7 +6298,7 @@ To prevent message loss during restart operations, set acceptMessagesWhileStoppi
 
 ```
 **Compliant Solution**
-```cs
+```java
 <bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
    <property name="connectionFactory" ref="connFactory" />
    <property name="destination" ref="dest" />
@@ -6213,7 +6317,7 @@ Use of a Spring SingleConnectionFactory without enabling the reconnectOnExceptio
 That's because the reconnectOnException property defaults to false. As a result, even if the code that uses this connection factory (Spring's DefaultMessageListenerContainer or your own code) has reconnect logic, that code won't work because the SingleConnectionFactory will act like a single-connection pool by preventing connection close calls from actually closing anything. As a result, subsequent factory create operations will just hand back the original broken Connection.
 
 **Noncompliant Code Example**
-```cs
+```java
  <bean id="singleCF" class="org.springframework.jms.connection.SingleConnectionFactory">  <!-- Noncompliant -->
    <constructor-arg ref="dummyConnectionFactory" />
  </bean>
@@ -6221,7 +6325,7 @@ That's because the reconnectOnException property defaults to false. As a result,
 
 ```
 **Compliant Solution**
-```cs
+```java
  <bean id="singleCF" class="org.springframework.jms.connection.SingleConnectionFactory" p:reconnectOnException="true">
    <constructor-arg ref="dummyConnectionFactory" />
  </bean>
@@ -6255,7 +6359,7 @@ This rule raises an issue when a known value-based class is used for synchroniza
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 Optional<Foo> fOpt = doSomething();
 synchronized (fOpt) {  // Noncompliant
   // ...
@@ -6264,32 +6368,34 @@ synchronized (fOpt) {  // Noncompliant
 
 ```
 *See*
+
 Value-based classes
 #### Rule 149: Expressions used in "assert" should not produce side effects
 ##### Quality Category: Bug
 Since assert statements aren't executed by default (they must be enabled with JVM flags) developers should never rely on their execution the evaluation of any logic required for correct program function.
 
 **Noncompliant Code Example**
-```cs
+```java
 assert myList.remove(myList.get(0));  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 boolean removed = myList.remove(myList.get(0));
 assert removed;
 
 
 ```
 *See*
+
 CERT, EXP06-J. - Expressions used in assertions must not produce side effects
 #### Rule 150: "volatile" variables should not be used with compound operators
 ##### Quality Category: Bug
 Using compound operators as well as increments and decrements (and toggling, in the case of booleans) on primitive fields are not atomic operations. That is, they don't happen in a single step. For instance, when a volatile primitive field is incremented or decremented you run the risk of data loss if threads interleave in the steps of the update. Instead, use a guaranteed-atomic class such as AtomicInteger, or synchronize the access.
 
 **Noncompliant Code Example**
-```cs
+```java
 private volatile int count = 0;
 private volatile boolean boo = false;
 
@@ -6304,7 +6410,7 @@ public void toggleBoo(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 private AtomicInteger count = 0;
 private boolean boo = false;
 
@@ -6319,6 +6425,7 @@ public synchronized void toggleBoo() {
 
 ```
 *See*
+
 CERT, VNA02-J. - Ensure that compound operations on shared variables are atomic
 #### Rule 151: "getClass" should not be used for synchronization
 ##### Quality Category: Bug
@@ -6327,7 +6434,7 @@ getClass should not be used for synchronization in non-final classes because chi
 Instead, hard code the name of the class on which to synchronize or make the class final.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   public void doSomethingSynchronized(){
     synchronized (this.getClass()) {  // Noncompliant
@@ -6338,7 +6445,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   public void doSomethingSynchronized(){
     synchronized (MyClass.class) {
@@ -6349,13 +6456,14 @@ public class MyClass {
 
 ```
 *See*
+
 CERT, LCK02-J. - Do not synchronize on the class object returned by getClass()
 #### Rule 152: Min and max used in combination should not always return the same value
 ##### Quality Category: Bug
 When using Math.min() and Math.max() together for bounds checking, it's important to feed the right operands to each method. Math.min() should be used with the upper end of the range being checked, and Math.max() should be used with the lower end of the range. Get it backwards, and the result will always be the same end of the range.
 
 **Noncompliant Code Example**
-```cs
+```java
   private static final int UPPER = 20;
   private static final int LOWER = 0;
 
@@ -6367,7 +6475,7 @@ When using Math.min() and Math.max() together for bounds checking, it's importan
 
 ```
 **Compliant Solution**
-```cs
+```java
 
 Swapping method min() and max() invocations without changing parameters.
 
@@ -6401,7 +6509,7 @@ To prevent such accidental value conversion, use bitwise and (&) to combine the 
 This rule raises an issue any time a byte value is used as an operand without & 0xff, when combined with shifts.
 
 **Noncompliant Code Example**
-```cs
+```java
   int intFromBuffer() {
     int result = 0;
     for (int i = 0; i < 4; i++) {
@@ -6413,7 +6521,7 @@ This rule raises an issue any time a byte value is used as an operand without & 
 
 ```
 **Compliant Solution**
-```cs
+```java
   int intFromBuffer() {
     int result = 0;
     for (int i = 0; i < 4; i++) {
@@ -6425,6 +6533,7 @@ This rule raises an issue any time a byte value is used as an operand without & 
 
 ```
 *See*
+
 CERT, NUM52-J. - Be aware of numeric promotion behavior
 #### Rule 154: Getters and setters should be synchronized in pairs
 ##### Quality Category: Bug
@@ -6433,7 +6542,7 @@ When one part of a getter/setter pair is synchronized the other part should be t
 This rule raises an issue when either the method or the contents of one method in a getter/setter pair are synchrnoized but the other is not.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Person {
   String name;
   int age;
@@ -6460,7 +6569,7 @@ public class Person {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Person {
   String name;
   int age;
@@ -6489,6 +6598,7 @@ public class Person {
 
 ```
 *See*
+
 CERT, VNA01-J. - Ensure visibility of shared references to immutable objects
 #### Rule 155: Non-thread-safe fields should not be static
 ##### Quality Category: Bug
@@ -6497,7 +6607,7 @@ Not all classes in the standard Java library were written to be thread-safe. Usi
 This rule raises an issue when an instance of Calendar, DateFormat, javax.xml.xpath.XPath, or javax.xml.validation.SchemaFactory is marked static.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   private static SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");  // Noncompliant
   private static Calendar calendar = Calendar.getInstance();  // Noncompliant
@@ -6505,7 +6615,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   private SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");
   private Calendar calendar = Calendar.getInstance();
@@ -6515,7 +6625,7 @@ public class MyClass {
 The concept of Optional is that it will be used when null could cause errors. In a way, it replaces null, and when Optional is in use, there should never be a question of returning or receiving null from a call.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething () {
   Optional<String> optional = getOptional();
   if (optional != null) {  // Noncompliant
@@ -6532,7 +6642,7 @@ public Optional<String> getOptional() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething () {
   Optional<String> optional = getOptional();
   optional.ifPresent(
@@ -6554,7 +6664,7 @@ On the other hand, the repetition of increment and decrement operators may have 
 This rule raises an issue for sequences of: !, ~, -, and +.
 
 **Noncompliant Code Example**
-```cs
+```java
 int i = 1;
 
 int j = - - -i;  // Noncompliant; just use -i
@@ -6567,7 +6677,7 @@ boolean c = !!!b;   // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 int i =  1;
 
 int j = -i;
@@ -6580,7 +6690,7 @@ boolean c = !b;
 
 ```
 **Exceptions**
-```cs
+```java
 
 Overflow handling for GWT compilation using ~~ is ignored.
 ```
@@ -6591,7 +6701,7 @@ The use of operators pairs ( =+, =- or =! ) where the reversed, single operator 
 This rule raises an issue when =+, =-, or =! is used without any spacing between the two operators and when there is at least one whitespace character after.
 
 **Noncompliant Code Example**
-```cs
+```java
 int target = -5;
 int num = 3;
 
@@ -6601,7 +6711,7 @@ target =+ num; // Noncompliant; target = 3
 
 ```
 **Compliant Solution**
-```cs
+```java
 int target = -5;
 int num = 3;
 
@@ -6615,7 +6725,7 @@ When a method is called that returns data read from some data source, that data 
 This rule raises an issue when the return value of any of the following is ignored or merely null-checked: BufferedReader.readLine(), Reader.read(), and these methods in any child classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomethingWithFile(String fileName) {
   BufferedReader buffReader = null;
   try {
@@ -6631,7 +6741,7 @@ public void doSomethingWithFile(String fileName) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomethingWithFile(String fileName) {
   BufferedReader buffReader = null;
   try {
@@ -6655,7 +6765,7 @@ The following should not be used as regular expressions:
 | - normally used as an option delimiter. Used stand-alone, it matches the space between characters
 File.separator - matches the platform-specific file path delimiter. On Windows, this will be taken as an escape character
 **Noncompliant Code Example**
-```cs
+```java
 String str = "/File|Name.txt";
 
 String clean = str.replaceAll(".",""); // Noncompliant; probably meant to remove only dot chars, but returns an empty string
@@ -6671,7 +6781,7 @@ String clean6 = str.replaceFirst(File.separator,""); // Noncompliant;
 Conditional expressions which are always true or false can lead to dead code. Such code is always buggy and should never be used in production.
 
 **Noncompliant Code Example**
-```cs
+```java
 a = false;
 if (a) { // Noncompliant
   doSomething(); // never executed
@@ -6686,7 +6796,7 @@ if (!a || b) { // Noncompliant; "!a" is always "true", "b" is never evaluated
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule will not raise an issue in either of these cases:
 
@@ -6708,6 +6818,7 @@ In these cases it is obvious the code is as intended.
 
 ```
 *See*
+
  MISRA C:2004, 13.7 - Boolean operations whose results are invariant shall not be permitted.
  MISRA C:2012, 14.3 - Controlling expressions shall not be invariant
 MITRE, CWE-570 - Expression is Always False
@@ -6719,7 +6830,7 @@ CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 notify and notifyAll both wake up sleeping threads, but notify only rouses one, while notifyAll rouses all of them. Since notify might not wake up the right thread, notifyAll should be used instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyThread extends Thread{
 
   @Override
@@ -6734,7 +6845,7 @@ class MyThread extends Thread{
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyThread extends Thread{
 
   @Override
@@ -6749,6 +6860,7 @@ class MyThread extends Thread{
 
 ```
 *See*
+
 CERT, THI02-J. - Notify all waiting threads rather than a single thread
 #### Rule 163: Blocks should be synchronized on "private final" fields
 ##### Quality Category: Bug
@@ -6757,7 +6869,7 @@ Synchronizing on a class field synchronizes not on the field itself, but on the 
 The story is very similar for synchronizing on parameters; two different threads running the method in parallel could pass two different object instances in to the method as parameters, completely undermining the synchronization.
 
 **Noncompliant Code Example**
-```cs
+```java
 private String color = "red";
 
 private void doSomething(){
@@ -6774,7 +6886,7 @@ private void doSomething(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 private String color = "red";
 private final Object lockObj = new Object();
 
@@ -6789,6 +6901,7 @@ private void doSomething(){
 
 ```
 *See*
+
 MITRE, CWE-412 - Unrestricted Externally Accessible Lock
 MITRE, CWE-413 - Improper Resource Locking
 CERT, LCK00-J. - Use private final lock objects to synchronize classes that may interact with untrusted code
@@ -6799,7 +6912,7 @@ If you have no intention of writting an HttpSession object to file, then storing
 The point is, that even though HttpSession does not extend Serializable, you must nonetheless assume that it will be serialized, and understand that if you've stored non-serializable objects in the session, errors will result.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Address {
   //...
 }
@@ -6811,13 +6924,14 @@ session.setAttribute("address", new Address());  // Noncompliant; Address isn't 
 
 ```
 *See*
+
 MITRE, CWE-579 - J2EE Bad Practices: Non-serializable Object Stored in Session
 #### Rule 165: "wait", "notify" and "notifyAll" should only be called when a lock is obviously held on an object
 ##### Quality Category: Bug
 By contract, the method Object.wait(...), Object.notify() and Object.notifyAll() should be called by a thread that is the owner of the object's monitor. If this is not the case an IllegalMonitorStateException exception is thrown. This rule reinforces this constraint by making it mandatory to call one of these methods only inside a synchronized method or statement.
 
 **Noncompliant Code Example**
-```cs
+```java
 private void removeElement() {
   while (!suitableCondition()){
     obj.wait();
@@ -6838,7 +6952,7 @@ private void removeElement() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private void removeElement() {
   synchronized(obj) {
     while (!suitableCondition()){
@@ -6865,7 +6979,7 @@ A reference to null should never be dereferenced/accessed. Doing so will cause a
 Note that when they are present, this rule takes advantage of @CheckForNull and @Nonnull annotations defined in JSR-305 to understand which values are and are not nullable except when @Nonnull is used on the parameter to equals, which by contract should always work with null.
 
 **Noncompliant Code Example**
-```cs
+```java
 @CheckForNull
 String getName(){...}
 
@@ -6904,6 +7018,7 @@ void paint(Color color) {
 
 ```
 *See*
+
 MITRE, CWE-476 - NULL Pointer Dereference
 CERT, EXP34-C. - Do not dereference null pointers
 CERT, EXP01-J. - Do not use a null in a case where an object is required
@@ -6912,7 +7027,7 @@ CERT, EXP01-J. - Do not use a null in a case where an object is required
 If a for loop's condition is false before the first loop iteration, the loop will never be executed. Such loops are almost always bugs, particularly when the initial value and stop conditions are hard-coded.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 10; i < 10; i++) {  // Noncompliant
   // ...
 ```
@@ -6921,7 +7036,7 @@ for (int i = 10; i < 10; i++) {  // Noncompliant
 A for loop with a counter that moves in the wrong direction is not an infinite loop. Because of wraparound, the loop will eventually reach its stop condition, but in doing so, it will run many, many more times than anticipated, potentially causing unexpected behavior.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(String [] strings) {
   for (int i = 0; i < strings.length; i--) { // Noncompliant;
     String string = strings[i];  // ArrayIndexOutOfBoundsException when i reaches -1
@@ -6931,7 +7046,7 @@ public void doSomething(String [] strings) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(String [] strings) {
   for (int i = 0; i < strings.length; i++) {
     String string = strings[i];
@@ -6941,6 +7056,7 @@ public void doSomething(String [] strings) {
 
 ```
 *See*
+
 CERT, MSC54-J. - Avoid inadvertent wrapping of loop counters
 #### Rule 169: Non-public methods should not be "@Transactional"
 ##### Quality Category: Bug
@@ -6949,7 +7065,7 @@ Marking a non-public method @Transactional is both useless and misleading becaus
 Therefore marking a private method, for instance, @Transactional can only result in a runtime error or exception if the method is actually written to be @Transactional.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Transactional  // Noncompliant
 private void doTheThing(ArgClass arg) {
   // ...
@@ -6962,7 +7078,7 @@ By contract, a servlet container creates one instance of each servlet and then a
 With Struts 1.X, the same constraint exists on org.apache.struts.action.Action.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyServlet extends HttpServlet {
   private String userName;  //As this field is shared by all users, it's obvious that this piece of information should be managed differently
   ...
@@ -6979,13 +7095,14 @@ public class MyAction extends Action {
 
 ```
 *See*
+
 CERT, MSC11-J. - Do not let session information leak within a servlet
 #### Rule 171: "toString()" and "clone()" methods should not return null
 ##### Quality Category: Bug
 Calling toString() or clone() on an object should always return a string or an object. Returning null instead contravenes the method's implicit contract.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String toString () {
   if (this.collection.isEmpty()) {
     return null; // Noncompliant
@@ -6996,7 +7113,7 @@ public String toString () {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public String toString () {
   if (this.collection.isEmpty()) {
     return "";
@@ -7006,6 +7123,7 @@ public String toString () {
 
 ```
 *See*
+
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
 #### Rule 172: ".equals()" should not be used to test the values of "Atomic" classes
@@ -7015,7 +7133,7 @@ AtomicInteger, and AtomicLong extend Number, but they're distinct from Integer a
 This applies to all the atomic, seeming-primitive wrapper classes: AtomicInteger, AtomicLong, and AtomicBoolean.
 
 **Noncompliant Code Example**
-```cs
+```java
 AtomicInteger aInt1 = new AtomicInteger(0);
 AtomicInteger aInt2 = new AtomicInteger(0);
 
@@ -7024,7 +7142,7 @@ if (aInt1.equals(aInt2)) { ... }  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 AtomicInteger aInt1 = new AtomicInteger(0);
 AtomicInteger aInt2 = new AtomicInteger(0);
 
@@ -7066,7 +7184,7 @@ java.util.Optional
 and also on ConcurrentMap.putIfAbsent calls ignored return value.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void handle(String command){
   command.toLowerCase(); // Noncompliant; result of method thrown away
   ...
@@ -7075,7 +7193,7 @@ public void handle(String command){
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void handle(String command){
   String formattedCommand = command.toLowerCase();
   ...
@@ -7084,7 +7202,7 @@ public void handle(String command){
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule will not raise an issue when both these conditions are met:
 
@@ -7103,6 +7221,7 @@ private boolean textIsInteger(String textToCheck) {
 
 ```
 *See*
+
  MISRA C:2012, 17.7 - The value returned by a function having non-void return type shall be used
 CERT, EXP12-C. - Do not ignore values returned by functions
 CERT, EXP00-J. - Do not ignore values returned by methods
@@ -7118,7 +7237,7 @@ When a method in a child class has the same signature as a method in a parent cl
 Typically, these things are done unintentionally; the private parent class method is overlooked, the static keyword in the parent declaration is overlooked, or the wrong class is imported in the child. But if the intent is truly for the child class method to be different, then the method should be renamed to prevent confusion.
 
 **Noncompliant Code Example**
-```cs
+```java
 // Parent.java
 import computer.Pear;
 public class Parent {
@@ -7149,7 +7268,7 @@ public class Child extends Parent {
 
 ```
 **Compliant Solution**
-```cs
+```java
 // Parent.java
 import computer.Pear;
 public class Parent {
@@ -7181,7 +7300,7 @@ public class Child extends Parent {
 A couple Collection methods can be called with arguments of an incorrect type, but doing so is pointless and likely the result of using the wrong argument. This rule will raise an issue when the type of the argument to List.contains or List.remove is unrelated to the type used for the list declaration.
 
 **Noncompliant Code Example**
-```cs
+```java
 List<String> list = new ArrayList<String>();
 Integer integer = Integer.valueOf(1);
 
@@ -7192,6 +7311,7 @@ if (list.contains(integer)) {  // Noncompliant. Always false.
 
 ```
 *See*
+
 CERT, EXP04-J. - Do not pass arguments to certain Java Collections Framework methods that are a different type than the collection parameter type
 #### Rule 176: Silly equality checks should not be made
 ##### Quality Category: Bug
@@ -7210,7 +7330,7 @@ Specifically in the case of arrays, since arrays don't override Object.equals(),
 However, some developers might expect Array.equals(Object obj) to do more than a simple memory address comparison, comparing for instance the size and content of the two arrays. Instead, the == operator or Arrays.equals(array1, array2) should always be used with arrays.
 
 **Noncompliant Code Example**
-```cs
+```java
 interface KitchenTool { ... };
 interface Plant {...}
 
@@ -7249,13 +7369,14 @@ else if (tree.equals(null)) {  // Noncompliant
 
 ```
 *See*
+
 CERT, EXP02-J. - Do not use the Object.equals() method to compare two arrays
 #### Rule 177: Dissimilar primitive wrappers should not be used with the ternary operator without explicit casting
 ##### Quality Category: Bug
 If wrapped primitive values (e.g. Integers and Floats) are used in a ternary operator (e.g. a?b:c), both values will be unboxed and coerced to a common type, potentially leading to unexpected results. To avoid this, add an explicit cast to a compatible type.
 
 **Noncompliant Code Example**
-```cs
+```java
 Integer i = 123456789;
 Float f = 1.0f;
 Number n = condition ? i : f;  // Noncompliant; i is coerced to float. n = 1.23456792E8
@@ -7263,7 +7384,7 @@ Number n = condition ? i : f;  // Noncompliant; i is coerced to float. n = 1.234
 
 ```
 **Compliant Solution**
-```cs
+```java
 Integer i = 123456789;
 Float f = 1.0f;
 Number n = condition ? (Number) i : f;  // n = 123456789
@@ -7273,17 +7394,17 @@ Number n = condition ? (Number) i : f;  // n = 123456789
 Interrupted
 ```
 **Exceptions**
-```cs should never be ignored in the code, and simply logging the exception counts in this case as "ignoring". The throwing of the InterruptedException clears the interrupted state of the Thread, so if the exception is not handled properly the fact that the thread was interrupted will be lost. Instead, Interrupted
+```java should never be ignored in the code, and simply logging the exception counts in this case as "ignoring". The throwing of the InterruptedException clears the interrupted state of the Thread, so if the exception is not handled properly the fact that the thread was interrupted will be lost. Instead, Interrupted
 ```
 **Exceptions**
-```cs should either be rethrown - immediately or after cleaning up the method's state - or the thread should be re-interrupted by calling Thread.interrupt() even if this is supposed to be a single-threaded application. Any other course of action risks delaying thread shutdown and loses the information that the thread was interrupted - probably without finishing its task.
+```java should either be rethrown - immediately or after cleaning up the method's state - or the thread should be re-interrupted by calling Thread.interrupt() even if this is supposed to be a single-threaded application. Any other course of action risks delaying thread shutdown and loses the information that the thread was interrupted - probably without finishing its task.
 
 Similarly, the ThreadDeath exception should also be propagated. According to its JavaDoc:
 
 If ThreadDeath is caught by a method, it is important that it be rethrown so that the thread actually dies.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void run () {
   try {
     while (true) {
@@ -7297,7 +7418,7 @@ public void run () {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void run () {
   try {
     while (true) {
@@ -7313,6 +7434,7 @@ public void run () {
 
 ```
 *See*
+
 MITRE, CWE-391 - Unchecked Error Condition
 Dealing with InterruptedException
 ```
@@ -7327,7 +7449,7 @@ The other way to create a thread is to declare a class that implements the Runna
 By definition, extending the Thread class without overriding the run method doesn't make sense, and implies that the contract of the Thread class is not well understood.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyRunner extends Thread { // Noncompliant; run method not overridden
 
   public void doSometing() {...}
@@ -7336,7 +7458,7 @@ public class MyRunner extends Thread { // Noncompliant; run method not overridde
 
 ```
 **Exceptions**
-```cs
+```java
 
 If run() is not overridden in a class extending Thread, it means that starting the thread will actually call Thread.run(). However, Thread.run() does nothing if it has not been fed with a target Runnable. The rule consequently ignore classes extending Thread if they are calling, in their constructors, the super(...) constructor with a proper Runnable target.
 
@@ -7353,7 +7475,7 @@ class MyThread extends Thread { // Compliant - calling super constructor with a 
 Double.longBitsToDouble expects a 64-bit, long argument. Pass it a smaller value, such as an int and the mathematical conversion into a double simply won't work as anticipated because the layout of the bits will be interpreted incorrectly, as if a child were trying to use an adult's gloves.
 
 **Noncompliant Code Example**
-```cs
+```java
 int i = 42;
 double d = Double.longBitsToDouble(i);  // Noncompliant
 ```
@@ -7362,7 +7484,7 @@ double d = Double.longBitsToDouble(i);  // Noncompliant
 A value that is incremented or decremented and then not stored is at best wasted code and at worst a bug.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int pickNumber() {
   int i = 0;
   int j = 0;
@@ -7375,7 +7497,7 @@ public int pickNumber() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int pickNumber() {
   int i = 0;
   int j = 0;
@@ -7389,7 +7511,7 @@ public int pickNumber() {
 Nothing in a non-serializable class will be written out to file, and attempting to serialize such a class will result in an exception being thrown. Only a class that implements Serializable or one that extends such a class can successfully be serialized (or de-serialized).
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Vegetable {  // neither implements Serializable nor extends a class that does
   //...
 }
@@ -7407,7 +7529,7 @@ public class Menu {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Vegetable implements Serializable {  // can now be serialized
   //...
 }
@@ -7427,7 +7549,7 @@ public class Menu {
 While hashCode and toString are available on arrays, they are largely useless. hashCode returns the array's "identity hash code", and toString returns nearly the same value. Neither method's output actually reflects the array's contents. Instead, you should pass the array to the relevant static Arrays method.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static void main( String[] args )
 {
     String argStr = args.toString(); // Noncompliant
@@ -7437,7 +7559,7 @@ public static void main( String[] args )
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static void main( String[] args )
 {
     String argStr = Arrays.toString(args);
@@ -7451,7 +7573,7 @@ Passing a collection as an argument to the collection's own method is either an 
 Further, because some methods require that the argument remain unmodified during the execution, passing a collection to itself can result in undefined behavior.
 
 **Noncompliant Code Example**
-```cs
+```java
 List <Object> objs = new ArrayList<Object>();
 objs.add("Hello");
 
@@ -7472,7 +7594,7 @@ The results of this constructor can be somewhat unpredictable. One might assume 
 Instead, you should use BigDecimal.valueOf, which uses a string under the covers to eliminate floating point rounding errors, or the constructor that takes a String argument.
 
 **Noncompliant Code Example**
-```cs
+```java
 double d = 1.1;
 
 BigDecimal bd1 = new BigDecimal(d); // Noncompliant; see comment above
@@ -7481,7 +7603,7 @@ BigDecimal bd2 = new BigDecimal(1.1); // Noncompliant; same result
 
 ```
 **Compliant Solution**
-```cs
+```java
 double d = 1.1;
 
 BigDecimal bd1 = BigDecimal.valueOf(d);
@@ -7490,6 +7612,7 @@ BigDecimal bd2 = new BigDecimal("1.1"); // using String constructor will result 
 
 ```
 *See*
+
 CERT, NUM10-J. - Do not construct BigDecimal objects from floating-point literals
 #### Rule 186: Invalid "Date" values should not be used
 ##### Quality Category: Bug
@@ -7507,7 +7630,7 @@ second	0-61
 Note that this rule does not check for invalid leap years, leap seconds (second = 61), or invalid uses of the 31st day of the month.
 
 **Noncompliant Code Example**
-```cs
+```java
 Date d = new Date();
 d.setDate(25);
 d.setYear(2014);
@@ -7521,7 +7644,7 @@ if (c.get(Calendar.MONTH) == 12) {  // Noncompliant; invalid comparison
 
 ```
 **Compliant Solution**
-```cs
+```java
 Date d = new Date();
 d.setDate(25);
 d.setYear(2014);
@@ -7545,7 +7668,7 @@ Only annotations that have been given a RUNTIME retention policy will be availab
 This rule checks that reflection is not used to detect annotations that do not have RUNTIME retention.
 
 **Noncompliant Code Example**
-```cs
+```java
 Method m = String.class.getMethod("getBytes", new Class[] {int.class,
 int.class, byte[].class, int.class});
 if (m.isAnnotationPresent(Override.class)) {  // Noncompliant; test will always return false, even when @Override is present in the code
@@ -7555,7 +7678,7 @@ if (m.isAnnotationPresent(Override.class)) {  // Noncompliant; test will always 
 Writers of Serializable classes can choose to let Java's automatic mechanisms handle serialization and deserialization, or they can choose to handle it themselves by implementing specific methods. However, if the signatures of those methods are not exactly what is expected, they will be ignored and the default serialization mechanisms will kick back in.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Watermelon implements Serializable {
   // ...
   void writeObject(java.io.ObjectOutputStream out)// Noncompliant; not private
@@ -7577,7 +7700,7 @@ public class Watermelon implements Serializable {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Watermelon implements Serializable {
   // ...
   private void writeObject(java.io.ObjectOutputStream out)
@@ -7601,13 +7724,14 @@ public class Watermelon implements Serializable {
 
 ```
 *See*
+
 CERT, SER01-J. - Do not deviate from the proper signatures of serialization methods
 #### Rule 189: "Externalizable" classes should have no-arguments constructors
 ##### Quality Category: Bug
 An Externalizable class is one which handles its own Serialization and deserialization. During deserialization, the first step in the process is a default instantiation using the class' no-argument constructor. Therefore an Externalizable class without a no-arg constructor cannot be deserialized.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Tomato implements Externalizable {  // Noncompliant; no no-arg constructor
 
   public Tomato (String color, int weight) { ... }
@@ -7616,7 +7740,7 @@ public class Tomato implements Externalizable {  // Noncompliant; no no-arg cons
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Tomato implements Externalizable {
 
   public Tomato() { ... }
@@ -7630,7 +7754,7 @@ There is no requirement that class names be unique, only that they be unique wit
 Instead, the instanceof operator or the Class.isAssignableFrom() method should be used to check the object's underlying type.
 
 **Noncompliant Code Example**
-```cs
+```java
 package computer;
 class Pear extends Laptop { ... }
 
@@ -7657,7 +7781,7 @@ class Store {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Store {
 
   public boolean hasSellByDate(Object item) {
@@ -7678,6 +7802,7 @@ class Store {
 
 ```
 *See*
+
 MITRE, CWE-486 - Comparison of Classes by Name
 CERT, OBJ09-J. - Compare classes and not class names
 #### Rule 191: Related "if/else if" statements should not have the same condition
@@ -7687,7 +7812,7 @@ A chain of if/else if statements is evaluated from top to bottom. At most, only 
 Therefore, duplicating a condition automatically leads to dead code. Usually, this is due to a copy/paste error. At best, it's simply dead code and at worst, it's a bug that is likely to induce further bugs as the code is maintained, and obviously it could lead to unexpected behavior.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (param == 1)
   openWindow();
 else if (param == 2)
@@ -7699,7 +7824,7 @@ else if (param == 1)  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (param == 1)
   openWindow();
 else if (param == 2)
@@ -7712,13 +7837,14 @@ else if (param == 3)
 
 ```
 *See*
+
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 #### Rule 192: Synchronization should not be based on Strings or boxed primitives
 ##### Quality Category: Bug
 Objects which are pooled and potentially reused should not be used for synchronization. If they are, it can cause unrelated threads to deadlock with unhelpful stacktraces. Specifically, String literals, and boxed primitives such as Integers should not be used as lock objects because they are pooled and reused. The story is even worse for Boolean objects, because there are only two instances of Boolean, Boolean.TRUE and Boolean.FALSE and every class that uses a Boolean will be referring to one of the two.
 
 **Noncompliant Code Example**
-```cs
+```java
 private static final Boolean bLock = Boolean.FALSE;
 private static final Integer iLock = Integer.valueOf(0);
 private static final String sLock = "LOCK";
@@ -7738,7 +7864,7 @@ public void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private static final Object lock1 = new Object();
 private static final Object lock2 = new Object();
 private static final Object lock3 = new Object();
@@ -7758,13 +7884,14 @@ public void doSomething() {
 
 ```
 *See*
+
 CERT, LCK01-J. - Do not synchronize on objects that may be reused
 #### Rule 193: "Iterator.hasNext()" should not call "Iterator.next()"
 ##### Quality Category: Bug
 Calling Iterator.hasNext() is not supposed to have any side effects, and therefore should not change the state of the iterator. Iterator.next() advances the iterator by one item. So calling it inside Iterator.hasNext(), breaks the hasNext() contract, and will lead to unexpected behavior in production.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class FibonacciIterator implements Iterator<Integer>{
 ...
 @Override
@@ -7782,7 +7909,7 @@ public boolean hasNext() {
 Using the same value on either side of a binary operator is almost always a mistake. In the case of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted code, and should be simplified. In the case of bitwise operators and most binary mathematical operators, having the same value on both sides of an operator yields predictable results, and should be simplified.
 
 **Noncompliant Code Example**
-```cs
+```java
 if ( a == a ) { // always true
   doZ();
 }
@@ -7804,7 +7931,7 @@ c.equals(c); //always true
 
 ```
 **Exceptions**
-```cs
+```java
  This rule ignores *, +, and =.
  The specific case of testing a floating point value against itself is a valid test for NaN and is therefore ignored.
  Similarly, left-shifting 1 onto 1 is common in the construction of bit masks, and is ignored.
@@ -7819,6 +7946,7 @@ int j = a << a; // Noncompliant
 
 ```
 *See*
+
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
  {rule:squid:S1656} - Implements a check on =.
 ```
@@ -7829,7 +7957,7 @@ A loop with at most one iteration is equivalent to the use of an if statement to
 At worst that was not the initial intention of the author and so the body of the loop should be fixed to use the nested return, break or throw statements in a more appropriate way.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
   printf("i is %d", i);
   break;
@@ -7847,7 +7975,7 @@ for (int i = 0; i < 10; i++) { // noncompliant, loop only executes once
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (int i = 0; i < 10; i++) {
   printf("i is %d", i);
 }
@@ -7865,7 +7993,7 @@ for (int i = 0; i < 10; i++) {
 There is no reason to re-assign a variable to itself. Either this statement is redundant and should be removed, or the re-assignment is a mistake and some other value or variable was intended for the assignment instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void setName(String name) {
   name = name;
 }
@@ -7873,7 +8001,7 @@ public void setName(String name) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void setName(String name) {
   this.name = name;
 }
@@ -7881,6 +8009,7 @@ public void setName(String name) {
 
 ```
 *See*
+
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 #### Rule 197: "StringBuilder" and "StringBuffer" should not be instantiated with a character
 ##### Quality Category: Bug
@@ -7889,13 +8018,13 @@ Instantiating a StringBuilder or a StringBuffer with a character is misleading b
 What actually happens is that the int representation of the character is used to determine the initial size of the StringBuffer.
 
 **Noncompliant Code Example**
-```cs
+```java
 StringBuffer foo = new StringBuffer('x');   //equivalent to StringBuffer foo = new StringBuffer(120);
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 StringBuffer foo = new StringBuffer("x");
 ```
 #### Rule 198: Methods should not be named "tostring", "hashcode" or "equal"
@@ -7908,7 +8037,7 @@ Naming a method tostring, hashcode() or equal is either:
 In both cases, the method should be renamed.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int hashcode() { /* ... */ }  // Noncompliant
 
 public String tostring() { /* ... */ } // Noncompliant
@@ -7918,7 +8047,7 @@ public boolean equal(Object obj) { /* ... */ }  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Override
 public int hashCode() { /* ... */ }
 
@@ -7935,20 +8064,21 @@ The purpose of the Thread.run() method is to execute code in a separate, dedicat
 To get the expected behavior, call the Thread.start() method instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 Thread myThread = new Thread(runnable);
 myThread.run(); // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Thread myThread = new Thread(runnable);
 myThread.start(); // Compliant
 
 
 ```
 *See*
+
 MITRE, CWE-572 - Call to Thread run() instead of start()
 CERT THI00-J. - Do not invoke Thread.run()
 #### Rule 200: "equals" method overrides should accept "Object" parameters
@@ -7958,7 +8088,7 @@ CERT THI00-J. - Do not invoke Thread.run()
 It is tempting to overload the method to take a specific class instead of Object as parameter, to save the class comparison check. However, this will not work as expected when that is the only override.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass {
   private int foo = 1;
 
@@ -7986,7 +8116,7 @@ class MyClass2 {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
   private int foo = 1;
 
@@ -8037,7 +8167,7 @@ org.h2.Driver
 org.firebirdsql.jdbc.FBDriver
 net.sourceforge.jtds.jdbc.Driver
 **Noncompliant Code Example**
-```cs
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8055,7 +8185,7 @@ public class Demo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8084,7 +8214,7 @@ com.google.common.base.Optional#fromNullable()	java.util.Optional#ofNullable()
 com.google.common.base.Optional	java.util.Optional
 com.google.common.base.Predicate	java.util.function.Predicate
 com.google.common.base.Function	java.util.function.Function
-com.google.common.base.Supplier	java.util.function.Supplier```
+com.google.common.base.Supplier	java.util.function.Supplier
 #### Rule 203: Nullness of parameters should be guaranteed
 ##### Quality Category: Code Smell
 When using null-related annotations at global scope level, for instance using javax.annotation.ParametersAreNonnullByDefault (from JSR-305) at package level, it means that all the parameters to all the methods included in the package will, or should, be considered Non-null. It is equivalent to annotating every parameter in every method with non-null annotations (such as @Nonnull).
@@ -8092,7 +8222,7 @@ When using null-related annotations at global scope level, for instance using ja
 The rule raises an issue every time a parameter could be null for a method invocation, where the method is annotated as forbidding null parameters.
 
 **Noncompliant Code Example**
-```cs
+```java
 @javax.annotation.ParametersAreNonnullByDefault
 class A {
 
@@ -8111,7 +8241,7 @@ class A {
 
 ```
 **Compliant Solution**
-```cs
+```java
 
 Two solutions are possible:
 
@@ -8162,7 +8292,7 @@ This is particularly damaging when converting hash-codes and could lead to a sec
 This rule raises an issue when Integer.toHexString is used in any kind of string concatenations.
 
 **Noncompliant Code Example**
-```cs
+```java
 MessageDigest md = MessageDigest.getInstance("SHA-256");
 byte[] bytes = md.digest(password.getBytes("UTF-8"));
 
@@ -8174,7 +8304,7 @@ for (byte b : bytes) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 MessageDigest md = MessageDigest.getInstance("SHA-256");
 byte[] bytes = md.digest(password.getBytes("UTF-8"));
 
@@ -8186,6 +8316,7 @@ for (byte b : bytes) {
 
 ```
 *See*
+
 MITRE, CWE-704 - Incorrect Type Conversion or Cast
  Derived from FindSecBugs rule BAD_HEXA_CONVERSION
 #### Rule 205: Asserts should not be used to check the parameters of a public method
@@ -8195,7 +8326,7 @@ An assert is inappropriate for parameter validation because assertions can be di
 This rule raises an issue when a public method uses one or more of its parameters with asserts.
 
 **Noncompliant Code Example**
-```cs
+```java
  public void setPrice(int price) {
   assert price >= 0 && price <= MAX_PRICE;
   // Set the price
@@ -8204,7 +8335,7 @@ This rule raises an issue when a public method uses one or more of its parameter
 
 ```
 **Compliant Solution**
-```cs
+```java
  public void setPrice(int price) {
   if (price < 0 || price > MAX_PRICE) {
     throw new IllegalArgumentException("Invalid price: " + price);
@@ -8216,6 +8347,7 @@ This rule raises an issue when a public method uses one or more of its parameter
 ```
 *See*
 
+
 Programming With Assertions
 #### Rule 206: Assignments should not be redundant
 ##### Quality Category: Code Smell
@@ -8224,7 +8356,7 @@ The transitive property says that if a == b and b == c, then a == c. In such cas
 This rule raises an issue when an assignment is useless because the assigned-to variable already holds the value on all execution paths.
 
 **Noncompliant Code Example**
-```cs
+```java
 a = b;
 c = a;
 b = c; // Noncompliant: c and b are already the same
@@ -8232,7 +8364,7 @@ b = c; // Noncompliant: c and b are already the same
 
 ```
 **Compliant Solution**
-```cs
+```java
 a = b;
 c = a;
 ```
@@ -8241,7 +8373,7 @@ c = a;
 When two methods have the same implementation, either it was a mistake - something else was intended - or the duplication was intentional, but may be confusing to maintainers. In the latter case, one implementation should invoke the other. Numerical and string literals are not taken into account.
 
 **Noncompliant Code Example**
-```cs
+```java
 private final static String CODE = "bounteous";
 
 public String calculateCode() {
@@ -8257,7 +8389,7 @@ public String getName() {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 private final static String CODE = "bounteous";
 
 public String getCode() {
@@ -8272,7 +8404,7 @@ public String getName() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Methods that are not accessors (getters and setters), with fewer than 2 statements are ignored.
 ```
@@ -8281,7 +8413,7 @@ Methods that are not accessors (getters and setters), with fewer than 2 statemen
 When java.io.File#delete fails, this boolean method simply returns false with no indication of the cause. On the other hand, when java.nio.Files#delete fails, this void method returns one of a series of exception types to better indicate the cause of the failure. And since more information is generally better in a debugging situation, java.nio.Files#delete is the preferred option.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void cleanUp(Path path) {
   File file = new File(path);
   if (!file.delete()) {  // Noncompliant
@@ -8292,7 +8424,7 @@ public void cleanUp(Path path) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void cleanUp(Path path) throws NoSuchFileException, DirectoryNotEmptyException, IOException{
   Files.delete(path);
 }
@@ -8302,7 +8434,7 @@ public void cleanUp(Path path) throws NoSuchFileException, DirectoryNotEmptyExce
 private classes that are never used are dead code: unnecessary, inoperative code that should be removed. Cleaning out dead code decreases the size of the maintained codebase, making it easier to understand the program and preventing bugs from being introduced.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo
 {
   ...
@@ -8319,7 +8451,7 @@ According to its JavaDocs, java.util.Stream.peek() “exists mainly to support d
 This rule raises an issue for each use of peek() to be sure that it is challenged and validated by the team to be meant for production debugging/logging purposes.
 
 **Noncompliant Code Example**
-```cs
+```java
 Stream.of("one", "two", "three", "four")
          .filter(e -> e.length() > 3)
          .peek(e -> System.out.println("Filtered value: " + e)); // Noncompliant
@@ -8327,6 +8459,7 @@ Stream.of("one", "two", "three", "four")
 
 ```
 *See*
+
 Java 8 API Documentation
  4comprehension: Idiomatic Peeking with Java Stream API
  Data Geekery: 10 Subtle Mistakes When Using the Streams API
@@ -8337,7 +8470,7 @@ It's a common pattern to test the result of a java.util.Map.get() against null b
 Note that this rule is automatically disabled when the project's sonar.java.source is not 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 V value = map.get(key);
 if (value == null) {  // Noncompliant
   value = V.createFor(key);
@@ -8350,7 +8483,7 @@ return value;
 
 ```
 **Compliant Solution**
-```cs
+```java
 return map.computeIfAbsent(key, k -> V.createFor(k));
 ```
 #### Rule 212: Java 8's "Files.exists" should not be used
@@ -8362,7 +8495,7 @@ The same goes for Files.notExists, Files.isDirectory and Files.isRegularFile.
 Note that this rule is automatically disabled when the project's sonar.java.source is not 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 Path myPath;
 if(java.nio.Files.exists(myPath)) {  // Noncompliant
  // do something
@@ -8371,7 +8504,7 @@ if(java.nio.Files.exists(myPath)) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Path myPath;
 if(myPath.toFile().exists())) {
  // do something
@@ -8380,6 +8513,7 @@ if(myPath.toFile().exists())) {
 
 ```
 *See*
+
 https://bugs.openjdk.java.net/browse/JDK-8153414
 https://bugs.openjdk.java.net/browse/JDK-8154077
 #### Rule 213: "Arrays.stream" should be used for primitive arrays
@@ -8387,7 +8521,7 @@ https://bugs.openjdk.java.net/browse/JDK-8154077
 For arrays of objects, Arrays.asList(T ... a).stream() and Arrays.stream(array) are basically equivalent in terms of performance. However, for arrays of primitives, using Arrays.asList will force the construction of a list of boxed types, and then use that list as a stream. On the other hand, Arrays.stream uses the appropriate primitive stream type (IntStream, LongStream, DoubleStream) when applicable, with much better performance.
 
 **Noncompliant Code Example**
-```cs
+```java
 Arrays.asList("a1", "a2", "b1", "c2", "c1").stream()
     .filter(...)
     .forEach(...);
@@ -8399,7 +8533,7 @@ Arrays.asList(1, 2, 3, 4).stream() // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Arrays.asList("a1", "a2", "b1", "c2", "c1").stream()
     .filter(...)
     .forEach(...);
@@ -8414,7 +8548,7 @@ Arrays.stream(intArray)
 Because printf-style format strings are interpreted at runtime, rather than validated by the compiler, they can contain errors that result in the wrong strings being created. This rule statically validates the correlation of printf-style format strings to their arguments when calling the format(...) methods of java.util.Formatter, java.lang.String, java.io.PrintStream, MessageFormat, and java.io.PrintWriter classes and the printf(...) methods of java.io.PrintStream or java.io.PrintWriter classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 String.format("First {0} and then {1}", "foo", "bar");  //Noncompliant. Looks like there is a confusion with the use of {{java.text.MessageFormat}}, parameters "foo" and "bar" will be simply ignored here
 String.format("Display %3$d and then %d", 1, 2, 3);   //Noncompliant; the second argument '2' is unused
 String.format("Too many arguments %d and %d", 1, 2, 3);  //Noncompliant; the third argument '3' is unused
@@ -8441,7 +8575,7 @@ slf4jLog.debug(marker, "message ", 1); // Noncompliant {{String contains no form
 
 ```
 **Compliant Solution**
-```cs
+```java
 String.format("First %s and then %s", "foo", "bar");
 String.format("Display %2$d and then %d", 1, 3);
 String.format("Too many arguments %d %d", 1, 2);
@@ -8468,6 +8602,7 @@ slf4jLog.debug(marker, "message {}", 1);
 
 ```
 *See*
+
 CERT, FIO47-C. - Use valid format strings
 #### Rule 215: Assertion arguments should be passed in the correct order
 ##### Quality Category: Code Smell
@@ -8476,13 +8611,13 @@ The standard assertions library methods such as org.junit.Assert.assertEquals, a
 This rule raises an issue when the second argument to an assertions library method is a hard-coded value and the first argument is not.
 
 **Noncompliant Code Example**
-```cs
+```java
 org.junit.Assert.assertEquals(runner.exitCode(), 0, "Unexpected exit code");  // Noncompliant; Yields error message like: Expected:<-1>. Actual:<0>.
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 org.junit.Assert.assertEquals(0, runner.exitCode(), "Unexpected exit code");
 ```
 #### Rule 216: Ternary operators should not be nested
@@ -8492,7 +8627,7 @@ Just because you can do something, doesn't mean you should, and that's the case 
 Instead, err on the side of clarity, and use another line to express the nested operation as a separate statement.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String getTitle(Person p) {
   return p.gender == Person.MALE ? "Mr. " : p.isMarried() ? "Mrs. " : "Miss ";  // Noncompliant
 }
@@ -8500,7 +8635,7 @@ public String getTitle(Person p) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public String getTitle(Person p) {
   if (p.gender == Person.MALE) {
     return "Mr. ";
@@ -8513,7 +8648,7 @@ public String getTitle(Person p) {
 The purpose of synchronization is to ensure that only one thread executes a given block of code at a time. There's no real problem with marking writeObject synchronized, but it's highly suspicious if this serialization-related method is the only synchronized code in a class.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class RubberBall {
 
   private Color color;
@@ -8535,7 +8670,7 @@ public class RubberBall {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class RubberBall {
 
   private Color color;
@@ -8559,7 +8694,7 @@ public class RubberBall {
 An indexOf or lastIndexOf call with a single letter String can be made more performant by switching to a call with a char argument.
 
 **Noncompliant Code Example**
-```cs
+```java
 String myStr = "Hello World";
 // ...
 int pos = myStr.indexOf("W");  // Noncompliant
@@ -8570,7 +8705,7 @@ int otherPos = myStr.lastIndexOf("r"); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 String myStr = "Hello World";
 // ...
 int pos = myStr.indexOf('W');
@@ -8585,7 +8720,7 @@ Assigning a value to a static field in a constructor could cause unreliable beha
 Instead remove the field's static modifier, or initialize it statically.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Person {
   static Date dateOfBirth;
   static int expectedFingers;
@@ -8599,7 +8734,7 @@ public class Person {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Person {
   Date dateOfBirth;
   static int expectedFingers = 10;
@@ -8614,7 +8749,7 @@ public class Person {
 Using Thread.sleep in a test is just generally a bad idea. It creates brittle tests that can fail unpredictably depending on environment ("Passes on my machine!") or load. Don't rely on timing (use mocks) or use libraries such as Awaitility for asynchroneous testing.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Test
 public void testDoTheThing(){
 
@@ -8628,7 +8763,7 @@ public void testDoTheThing(){
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Test
 public void testDoTheThing(){
 
@@ -8652,7 +8787,7 @@ private Callable<Boolean> didTheThing() {
 When only the keys from a map are needed in a loop, iterating the keySet makes sense. But when both the key and the value are needed, it's more efficient to iterate the entrySet, which will give access to both the key and value, instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomethingWithMap(Map<String,Object> map) {
   for (String key : map.keySet()) {  // Noncompliant; for each key the value is retrieved
     Object value = map.get(key);
@@ -8663,7 +8798,7 @@ public void doSomethingWithMap(Map<String,Object> map) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomethingWithMap(Map<String,Object> map) {
   for (Map.Entry<String,Object> entry : map.entrySet()) {
     String key = entry.getKey();
@@ -8679,7 +8814,7 @@ The use of the ZonedDateTime class introduced in Java 8 to truncate a date can b
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 public Date trunc(Date date) {
   return DateUtils.truncate(date, Calendar.SECOND);  // Noncompliant
 }
@@ -8687,7 +8822,7 @@ public Date trunc(Date date) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public Date trunc(Date date) {
   Instant instant = date.toInstant();
   ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
@@ -8703,7 +8838,7 @@ Curly braces can be omitted from a one-line block, such as with an if statement 
 This rule raises an issue when the whitespacing of the lines after a one line block indicates an intent to include those lines in the block, but the omission of curly braces means the lines will be unconditionally executed once.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (condition)
   firstActionInBlock();
   secondAction();  // Noncompliant; executed unconditionally
@@ -8724,7 +8859,7 @@ for (int i = 0; i < array.length; i++)
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (condition) {
   firstActionInBlock();
   secondAction();
@@ -8740,6 +8875,7 @@ for (int i = 0; i < array.length; i++) {
 
 ```
 *See*
+
 MITRE, CWE-483 - Incorrect Block Delimitation
 CERT, EXP52-J. - Use braces for the body of an if, for, or while statement
 #### Rule 224: "readObject" should not be "synchronized"
@@ -8747,7 +8883,7 @@ CERT, EXP52-J. - Use braces for the body of an if, for, or while statement
 A readObject method is written when a Serializable object needs special handling to be rehydrated from file. It should be the case that the object being created by readObject is only visible to the thread that invoked the method, and the synchronized keyword is not needed, and using synchronized anyway is just confusing. If this is not the case, the method should be refactored to make it the case.
 
 **Noncompliant Code Example**
-```cs
+```java
 private synchronized void readObject(java.io.ObjectInputStream in)
      throws IOException, ClassNotFoundException { // Noncompliant
   //...
@@ -8756,7 +8892,7 @@ private synchronized void readObject(java.io.ObjectInputStream in)
 
 ```
 **Compliant Solution**
-```cs
+```java
 private void readObject(java.io.ObjectInputStream in)
      throws IOException, ClassNotFoundException { // Compliant
   //...
@@ -8773,7 +8909,7 @@ Instead, you should structure your code to pass static or pre-computed values in
 Specifically, the built-in string formatting should be used instead of string concatenation, and if the message is the result of a method call, then Preconditions should be skipped altoghether, and the relevant exception should be conditionally thrown instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 logger.log(Level.DEBUG, "Something went wrong: " + message);  // Noncompliant; string concatenation performed even when log level too high to show DEBUG messages
 
 logger.fine("An exception occurred with message: " + message); // Noncompliant
@@ -8789,7 +8925,7 @@ Preconditions.checkState(condition, "message: %s", formatMessage());  // Noncomp
 
 ```
 **Compliant Solution**
-```cs
+```java
 logger.log(Level.SEVERE, "Something went wrong: {0} ", message);  // String formatting only applied if needed
 
 logger.fine("An exception occurred with message: {}", message);  // SLF4J, Log4j
@@ -8815,7 +8951,7 @@ if (!condition) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 catch blocks are ignored, because the performance penalty is unimportant on exceptional paths (catch block should not be a part of standard program flow). Getters are ignored as well as methods called on annotations which can be considered as getters. This rule accounts for explicit test-level testing with SLF4J methods isXXXEnabled and ignores the bodies of such if statements.
 ```
@@ -8824,7 +8960,7 @@ catch blocks are ignored, because the performance penalty is unimportant on exce
 If a boolean expression doesn't change the evaluation of the condition, then it is entirely unnecessary, and can be removed. If it is gratuitous because it does not match the programmer's intent, then it's a bug and the expression should be fixed.
 
 **Noncompliant Code Example**
-```cs
+```java
 a = true;
 if (a) { // Noncompliant
   doSomething();
@@ -8841,7 +8977,7 @@ if (c || !a) { // Noncompliant; "!a" is always "false"
 
 ```
 **Compliant Solution**
-```cs
+```java
 a = true;
 if (foo(a)) {
   doSomething();
@@ -8858,6 +8994,7 @@ if (c) {
 
 ```
 *See*
+
  MISRA C:2004, 13.7 - Boolean operations whose results are invariant shall not be permitted.
  MISRA C:2012, 14.3 - Controlling expressions shall not be invariant
 MITRE, CWE-571 - Expression is Always True
@@ -8869,7 +9006,7 @@ CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 java.util.concurrent.locks.Lock offers far more powerful and flexible locking operations than are available with synchronized blocks. So synchronizing on a Lock throws away the power of the object, and is just silly. Instead, such objects should be locked and unlocked using tryLock() and unlock().
 
 **Noncompliant Code Example**
-```cs
+```java
 Lock lock = new MyLockImpl();
 synchronized(lock) {  // Noncompliant
   //...
@@ -8878,7 +9015,7 @@ synchronized(lock) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Lock lock = new MyLockImpl();
 lock.tryLock();
 //...
@@ -8886,13 +9023,14 @@ lock.tryLock();
 
 ```
 *See*
+
 CERT, LCK03-J. - Do not synchronize on the intrinsic locks of high-level concurrency objects
 #### Rule 228: Classes with only "static" methods should not be instantiated
 ##### Quality Category: Code Smell
 static methods can be accessed without an instance of the enclosing class, so there's no reason to instantiate a class that has only static methods.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class TextUtils {
   public static String stripHtml(String source) {
     return source.replaceAll("<[^>]+>", "");
@@ -8915,7 +9053,7 @@ public class TextManipulator {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class TextUtils {
   public static String stripHtml(String source) {
     return source.replaceAll("<[^>]+>", "");
@@ -8935,7 +9073,8 @@ public class TextManipulator {
 
 
 ```
-*See* Also
+*See*
+ Also
  {rule:squid:S1118} - Utility classes should not have public constructors
 #### Rule 229: "Threads" should not be used where "Runnables" are expected
 ##### Quality Category: Code Smell
@@ -8944,7 +9083,7 @@ While it is technically correct to use a Thread where a Runnable is called for, 
 The crux of the issue is that Thread is a larger concept than Runnable. A Runnable is an object whose running should be managed. A Thread expects to manage the running of itself or other Runnables.
 
 **Noncompliant Code Example**
-```cs
+```java
 	public static void main(String[] args) {
 		Thread r =new Thread() {
 			int p;
@@ -8959,7 +9098,7 @@ The crux of the issue is that Thread is a larger concept than Runnable. A Runnab
 
 ```
 **Compliant Solution**
-```cs
+```java
 	public static void main(String[] args) {
 		Runnable r =new Runnable() {
 			int p;
@@ -8976,7 +9115,7 @@ The crux of the issue is that Thread is a larger concept than Runnable. A Runnab
 When an inner class extends another class, and both its outer class and its parent class have a method with the same name, calls to that method can be confusing. The compiler will resolve the call to the superclass method, but maintainers may be confused, so the superclass method should be called explicitly, using super..
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Parent {
   public void foo() { ... }
 }
@@ -8997,7 +9136,7 @@ public class Outer {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Parent {
   public void foo() { ... }
 }
@@ -9020,7 +9159,7 @@ public class Outer {
 Type parameters that aren't used are dead code, which can only distract and possibly confuse developers during maintenance. Therefore, unused type parameters should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 int <T> Add(int a, int b) // Noncompliant; <T> is ignored
 {
   return a + b;
@@ -9029,7 +9168,7 @@ int <T> Add(int a, int b) // Noncompliant; <T> is ignored
 
 ```
 **Compliant Solution**
-```cs
+```java
 int Add(int a, int b)
 {
   return a + b;
@@ -9040,7 +9179,7 @@ int Add(int a, int b)
 When the names of parameters in a method call match the names of the method arguments, it contributes to clearer, more readable code. However, when the names match, but are passed in a different order than the method arguments, it indicates a mistake in the parameter order which will likely lead to unexpected results.
 
 **Noncompliant Code Example**
-```cs
+```java
 public double divide(int divisor, int dividend) {
   return divisor/dividend;
 }
@@ -9056,7 +9195,7 @@ public void doTheThing() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public double divide(int divisor, int dividend) {
   return divisor/dividend;
 }
@@ -9074,7 +9213,7 @@ public void doTheThing() {
 There are several reasons to avoid ResultSet.isLast(). First, support for this method is optional for TYPE_FORWARD_ONLY result sets. Second, it can be expensive (the driver may need to fetch the next row to answer the question). Finally, the specification is not clear on what should be returned when the ResultSet is empty, so some drivers may return the opposite of what is expected.
 
 **Noncompliant Code Example**
-```cs
+```java
 stmt.executeQuery("SELECT name, address FROM PERSON");
 ResultSet rs = stmt.getResultSet();
 while (! rs.isLast()) { // Noncompliant
@@ -9084,7 +9223,7 @@ while (! rs.isLast()) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 ResultSet rs = stmt.executeQuery("SELECT name, address FROM PERSON");
 while (! rs.next()) {
   // process row
@@ -9095,7 +9234,7 @@ while (! rs.next()) {
 While it is possible to access static members from a class instance, it's bad form, and considered by most to be misleading because it implies to the readers of your code that there's an instance of the member per class instance.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class A {
   public static int counter = 0;
 }
@@ -9113,7 +9252,7 @@ public class B {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class A {
   public static int counter = 0;
 }
@@ -9160,7 +9299,7 @@ tanh	0.0
 toDegrees	0.0 or 1.0
 toRadians	0.0
 **Noncompliant Code Example**
-```cs
+```java
 public void doMath(int a) {
   double floor = Math.floor((double)a); // Noncompliant
   double ceiling = Math.ceil(4.2);  // Noncompliant
@@ -9172,7 +9311,7 @@ public void doMath(int a) {
 Clear, communicative naming is important in code. It helps maintainers and API users understand the intentions for and uses of a unit of code. Using "exception" in the name of a class that does not extend Exception or one of its subclasses is a clear violation of the expectation that a class' name will indicate what it is and/or does.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class FruitException {  // Noncompliant; this has nothing to do with Exception
   private Fruit expected;
   private String unusualCharacteristics;
@@ -9187,7 +9326,7 @@ public class CarException {  // Noncompliant; the extends clause was forgotten?
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class FruitSport {
   private Fruit expected;
   private String unusualCharacteristics;
@@ -9204,7 +9343,7 @@ public class CarException extends Exception {
 In applications where the accepted practice is to log an Exception and then rethrow it, you end up with miles-long logs that contain multiple instances of the same exception. In multi-threaded applications debugging this type of log can be particularly hellish because messages from other threads will be interwoven with the repetitions of the logged-and-thrown Exception. Instead, exceptions should be either logged or rethrown, not both.
 
 **Noncompliant Code Example**
-```cs
+```java
 catch (SQLException e) {
   ...
   LOGGER.log(Level.ERROR,  contextInfo, e);
@@ -9214,7 +9353,7 @@ catch (SQLException e) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 catch (SQLException e) {
   ...
   throw new MySQLException(contextInfo, e);
@@ -9234,14 +9373,14 @@ catch (SQLException e) {
 Creating an object for the sole purpose of calling getClass on it is a waste of memory and cycles. Instead, simply use the class' .class property.
 
 **Noncompliant Code Example**
-```cs
+```java
 MyObject myOb = new MyObject();  // Noncompliant
 Class c = myOb.getClass();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Class c = MyObject.class;
 ```
 #### Rule 239: Primitives should not be boxed just for "String" conversion
@@ -9249,7 +9388,7 @@ Class c = MyObject.class;
 "Boxing" is the process of putting a primitive value into a primitive-wrapper object. When that's done purely to use the wrapper class' toString method, it's a waste of memory and cycles because those methods are static, and can therefore be used without a class instance. Similarly, using the static method valueOf in the primitive-wrapper classes with a non-String argument should be avoided.
 
 **Noncompliant Code Example**
-```cs
+```java
 int myInt = 4;
 String myIntString = (new Integer(myInt)).toString(); // Noncompliant; creates & discards an Integer object
 myIntString = Integer.valueOf(myInt).toString(); // Noncompliant
@@ -9257,7 +9396,7 @@ myIntString = Integer.valueOf(myInt).toString(); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 int myInt = 4;
 String myIntString = Integer.toString(myInt);
 ```
@@ -9266,7 +9405,7 @@ String myIntString = Integer.toString(myInt);
 Constructors for String, BigInteger, BigDecimal and the objects used to wrap primitives should never be used. Doing so is less clear and uses more memory than simply using the desired value in the case of strings, and using valueOf for everything else.
 
 **Noncompliant Code Example**
-```cs
+```java
 String empty = new String(); // Noncompliant; yields essentially "", so just use that.
 String nonempty = new String("Hello world"); // Noncompliant
 Double myDouble = new Double(1.1); // Noncompliant; use valueOf
@@ -9279,7 +9418,7 @@ BigInteger bigInteger3 = new BigInteger("111222333444555666777888999"); // Compl
 
 ```
 **Compliant Solution**
-```cs
+```java
 String empty = "";
 String nonempty = "Hello world";
 Double myDouble = Double.valueOf(1.1);
@@ -9292,11 +9431,12 @@ BigInteger bigInteger3 = new BigInteger("111222333444555666777888999");
 
 ```
 **Exceptions**
-```cs
+```java
 
 BigDecimal constructor with double argument is ignored as using valueOf instead might change resulting value. 
 ```
-*See* {rule:squid:S2111}.
+*See*
+ {rule:squid:S2111}.
 ```
 #### Rule 241: "URL.hashCode" and "URL.equals" should be avoided
 ##### Quality Category: Code Smell
@@ -9307,7 +9447,7 @@ In general it is better to use the URI class until access to the resource is act
 This rule checks for uses of URL 's in Map and Set , and for explicit calls to the equals and hashCode methods.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void checkUrl(URL url) {
   Set<URL> sites = new HashSet<URL>();  // Noncompliant
 
@@ -9320,7 +9460,7 @@ public void checkUrl(URL url) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void checkUrl(URL url) {
   Set<URI> sites = new HashSet<URI>();  // Compliant
 
@@ -9336,7 +9476,7 @@ public void checkUrl(URL url) {
 Having two cases in a switch statement or two branches in an if chain with the same implementation is at best duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then in an if chain they should be combined, or for a switch, one should fall through to the other.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (i) {
   case 1:
     doFirstThing();
@@ -9371,7 +9511,7 @@ else {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Blocks in an if chain that contain a single line of code are ignored, as are blocks in a switch statement that contain a single line of code with or without a following break.
 
@@ -9398,27 +9538,28 @@ if(a == 1) {
 A dead store happens when a local variable is assigned a value that is not read by any subsequent instruction. Calculating or retrieving a value only to then overwrite it or throw it away, could indicate a serious error in the code. Even if it's not an error, it is at best a waste of resources. Therefore all calculated values should be used.
 
 **Noncompliant Code Example**
-```cs
+```java
 i = a + b; // Noncompliant; calculation result not used before value is overwritten
 i = compute();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 i = a + b;
 i += compute();
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule ignores initializations to -1, 0, 1, null, true, false and "".
 
 
 ```
 *See*
+
 MITRE, CWE-563 - Assignment to Variable without Use ('Unused Variable')
 CERT, MSC13-C. - Detect and remove unused values
 CERT, MSC56-J. - Detect and remove superfluous code and values
@@ -9432,7 +9573,7 @@ Condition factors out the Object monitor methods (wait, notify and notifyAll) in
 The purpose of implementing the Condition interface is to gain access to its more nuanced await methods. Therefore, calling the method Object.wait(...) on a class implementing the Condition interface is silly and confusing.
 
 **Noncompliant Code Example**
-```cs
+```java
 final Lock lock = new ReentrantLock();
 final Condition notFull  = lock.newCondition();
 ...
@@ -9441,7 +9582,7 @@ notFull.wait();
 
 ```
 **Compliant Solution**
-```cs
+```java
 final Lock lock = new ReentrantLock();
 final Condition notFull  = lock.newCondition();
 ...
@@ -9454,7 +9595,7 @@ It's confusing to have a class member with the same name (case differences aside
 Best practice dictates that any field or member with the same name as the enclosing class be renamed to be more descriptive of the particular aspect of the class it represents or holds.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
   private String foo;
 
@@ -9467,7 +9608,7 @@ foo.getFoo() // what does this return?
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo {
   private String name;
 
@@ -9483,7 +9624,7 @@ foo.getName()
 
 ```
 **Exceptions**
-```cs
+```java
 
 When the type of the field is the containing class and that field is static, no issue is raised to allow singletons named like the type.
 
@@ -9507,7 +9648,7 @@ When a test fails due, for example, to infrastructure issues, you might want to 
 This rule raises an issue for each ignored test that does not have a notation about why it is being skipped.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Ignore  // Noncompliant
 @Test
 public void testDoTheThing() {
@@ -9516,7 +9657,7 @@ public void testDoTheThing() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Test
 public void testDoTheThing() {
   // ...
@@ -9524,7 +9665,7 @@ public void testDoTheThing() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The rule doesn't raise an issue if there is a comment in the @Ignore annotation
 ```
@@ -9537,7 +9678,7 @@ With Java 8, most uses of anonymous inner classes should be replaced by lambdas 
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 myCollection.stream().map(new Mapper<String,String>() {
   public String map(String input) {
     return new StringBuilder(input).reverse().toString();
@@ -9553,7 +9694,7 @@ Predicate<String> isEmpty = new Predicate<String> {
 
 ```
 **Compliant Solution**
-```cs
+```java
 myCollection.stream().map(input -> new StringBuilder(input).reverse().toString());
 
 Predicate<String> isEmpty = myString -> myString.isEmpty();
@@ -9565,7 +9706,7 @@ When switch statements have large sets of case clauses, it is usually an attempt
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule ignores switches over Enums and empty, fall-through cases.
 ```
@@ -9581,7 +9722,7 @@ This rule tracks three types of non-invariant stop conditions:
  When the stop condition depend upon a method call
  When the stop condition depends on an object property, since such properties could change during the execution of the loop.
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 0; i < 10; i++) {
   ...
   i = i - 1; // Noncompliant; counter updated in the body of the loop
@@ -9591,12 +9732,13 @@ for (int i = 0; i < 10; i++) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (int i = 0; i < 10; i++) {...}
 
 
 ```
 *See*
+
  MISRA C:2004, 13.6 - Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.
  MISRA C++:2008, 6-5-3 - The loop-counter shall not be modified within condition or statement.
 #### Rule 250: Sections of code should not be commented out
@@ -9608,6 +9750,7 @@ Unused code should be deleted and can be retrieved from source control history i
 
 ```
 *See*
+
  MISRA C:2004, 2.4 - Sections of code should not be "commented out".
  MISRA C++:2008, 2-7-2 - Sections of code shall not be "commented out" using C-style comments.
  MISRA C++:2008, 2-7-3 - Sections of code should not be "commented out" using C++ comments.
@@ -9617,7 +9760,7 @@ Unused code should be deleted and can be retrieved from source control history i
 Having a class and some of its methods sharing the same name is misleading, and leaves others to wonder whether it was done that way on purpose, or was the methods supposed to be a constructor.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
    public Foo() {...}
    public void Foo(String label) {...}  // Noncompliant
@@ -9626,7 +9769,7 @@ public class Foo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo {
    public Foo() {...}
    public void foo(String label) {...}  // Compliant
@@ -9637,7 +9780,7 @@ public class Foo {
 Multiple catch blocks of the appropriate type should be used instead of catching a general exception, and then testing on the type.
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   /* ... */
 } catch (Exception e) {
@@ -9648,7 +9791,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try {
   /* ... */
 } catch (IOException e) { /* ... */ }                // Compliant
@@ -9657,6 +9800,7 @@ try {
 
 ```
 *See*
+
 CERT, ERR51-J. - Prefer user-defined exceptions over more general exception types
 #### Rule 253: Classes from "sun.*" packages should not be used
 ##### Quality Category: Code Smell
@@ -9667,7 +9811,7 @@ They can cause problems when moving to new versions of Java because there is no 
 Such classes are almost always wrapped by Java API classes that should be used instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 import com.sun.jna.Native;     // Noncompliant
 import sun.misc.BASE64Encoder; // Noncompliant
 ```
@@ -9678,20 +9822,21 @@ Throwable is the superclass of all errors and exceptions in Java. Error is the s
 Catching either Throwable or Error will also catch OutOfMemoryError and InternalError, from which an application should not attempt to recover.
 
 **Noncompliant Code Example**
-```cs
+```java
 try { /* ... */ } catch (Throwable t) { /* ... */ }
 try { /* ... */ } catch (Error e) { /* ... */ }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 try { /* ... */ } catch (RuntimeException e) { /* ... */ }
 try { /* ... */ } catch (MyException e) { /* ... */ }
 
 
 ```
 *See*
+
 MITRE, CWE-396 - Declaration of Catch for Generic Exception
 CERT, ERR08-J. - Do not catch NullPointerException or any of its ancestors
 #### Rule 255: Unused method parameters should be removed
@@ -9699,7 +9844,7 @@ CERT, ERR08-J. - Do not catch NullPointerException or any of its ancestors
 Unused parameters are misleading. Whatever the values passed to such parameters, the behavior will be the same.
 
 **Noncompliant Code Example**
-```cs
+```java
 void doSomething(int a, int b) {     // "b" is unused
   compute(a);
 }
@@ -9707,7 +9852,7 @@ void doSomething(int a, int b) {     // "b" is unused
 
 ```
 **Compliant Solution**
-```cs
+```java
 void doSomething(int a) {
   compute(a);
 }
@@ -9715,7 +9860,7 @@ void doSomething(int a) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The rule will not raise issues for unused parameters:
 
@@ -9752,6 +9897,7 @@ protected void foobar(int a, String s) { // no issue, method is overridable and 
 
 ```
 *See*
+
  MISRA C++:2008, 0-1-11 - There shall be no unused parameters (named or unnamed) in nonvirtual functions.
  MISRA C:2012, 2.7 - There should be no unused parameters in functions
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
@@ -9761,7 +9907,7 @@ CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 Non-static initializers are rarely used, and can be confusing for most developers because they only run when new class instances are created. When possible, non-static initializers should be refactored into standard constructors or field initializers.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass {
   private static final Map<String, String> MY_MAP = new HashMap<String, String>() {
 
@@ -9776,7 +9922,7 @@ class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
   private static final Map<String, String> MY_MAP = new HashMap<String, String>();
 
@@ -9800,7 +9946,7 @@ Returning null instead of an actual array or collection forces callers of the me
 Moreover, in many cases, null is used as a synonym for empty.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static List<Result> getResults() {
   return null;                             // Noncompliant
 }
@@ -9823,7 +9969,7 @@ public static void main(String[] args) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static List<Result> getResults() {
   return Collections.emptyList();          // Compliant
 }
@@ -9841,6 +9987,7 @@ public static void main(String[] args) {
 
 ```
 *See*
+
 CERT, MSC19-C. - For functions that return an array, prefer returning an empty array over a null value
 CERT, MET55-J. - Return an empty array or collection instead of a null value for methods that return an array or collection
 #### Rule 258: "@Override" should be used on overriding and implementing methods
@@ -9850,7 +9997,7 @@ Using the @Override annotation is useful for two reasons :
  It elicits a warning from the compiler if the annotated method doesn't actually override anything, as in the case of a misspelling.
  It improves the readability of the source code by making it obvious that methods are overridden.
 **Noncompliant Code Example**
-```cs
+```java
 class ParentClass {
   public boolean doSomething(){...}
 }
@@ -9861,7 +10008,7 @@ class FirstChildClass extends ParentClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class ParentClass {
   public boolean doSomething(){...}
 }
@@ -9873,7 +10020,7 @@ class FirstChildClass extends ParentClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule is relaxed when overriding a method from the Object class like toString(), hashCode(), ...
 ```
@@ -9884,7 +10031,7 @@ From the official Oracle Javadoc:
 NOTE: The functionality of this Enumeration interface is duplicated by the Iterator interface. In addition, Iterator adds an optional remove operation, and has shorter method names. New implementations should consider using Iterator in preference to Enumeration.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass implements Enumeration {  // Non-Compliant
   /* ... */
 }
@@ -9892,7 +10039,7 @@ public class MyClass implements Enumeration {  // Non-Compliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass implements Iterator {     // Compliant
   /* ... */
 }
@@ -9908,19 +10055,19 @@ Deque instead of Stack
 HashMap instead of Hashtable
 StringBuilder instead of StringBuffer
 **Noncompliant Code Example**
-```cs
+```java
 Vector cats = new Vector();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 ArrayList cats = new ArrayList();
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 Use of those synchronized classes is ignored in the signatures of overriding methods.
 
@@ -9935,7 +10082,7 @@ private methods that are never executed are dead code: unnecessary, inoperative 
 Note that this rule does not take reflection into account, which means that issues will be raised on private methods that are only accessed using the reflection API.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo implements Serializable
 {
   private Foo(){}     //Compliant, private empty constructor intentionally used to prevent any direct instantiation of a class.
@@ -9951,7 +10098,7 @@ public class Foo implements Serializable
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo implements Serializable
 {
   private Foo(){}     //Compliant, private empty constructor intentionally used to prevent any direct instantiation of a class.
@@ -9968,13 +10115,13 @@ public class Foo implements Serializable
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise any issue on annotated methods.
 ```
 #### Rule 262: Try-catch blocks should not be nested
 ##### Quality Category: Code Smell
-Nesting try/catch blocks severely impacts the readability of source code because it makes it too difficult to understand which block will catch which exception.```
+Nesting try/catch blocks severely impacts the readability of source code because it makes it too difficult to understand which block will catch which exception.
 #### Rule 263: Track uses of "FIXME" tags
 ##### Quality Category: Code Smell
 FIXME tags are commonly used to mark places where a bug is suspected, but which the developer wants to deal with later.
@@ -9984,7 +10131,7 @@ Sometimes the developer will not have the time or will simply forget to get back
 This rule is meant to track those tags and to ensure that they do not go unnoticed.
 
 **Noncompliant Code Example**
-```cs
+```java
 int divide(int numerator, int denominator) {
   return numerator / denominator;              // FIXME denominator value might be  0
 }
@@ -9992,6 +10139,7 @@ int divide(int numerator, int denominator) {
 
 ```
 *See*
+
 MITRE, CWE-546 - Suspicious Comment
 #### Rule 264: Deprecated elements should have both the annotation and the Javadoc tag
 ##### Quality Category: Code Smell
@@ -10005,7 +10153,7 @@ forRemoval, indicates whether the deprecated element will be removed at some fut
 If your compile level is Java 9 or higher, you should be using one or both of these arguments.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass {
 
   @Deprecated
@@ -10023,7 +10171,7 @@ class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
 
   /**
@@ -10054,7 +10202,7 @@ class MyClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The members and methods of a deprecated class or interface are ignored by this rule. The classes and interfaces themselves are still subject to it.
 
@@ -10084,14 +10232,14 @@ interface Plop {
 Assignments within sub-expressions are hard to spot and therefore make the code less readable. Ideally, sub-expressions should not have side-effects.
 
 **Noncompliant Code Example**
-```cs
+```java
 if ((str = cont.substring(pos1, pos2)).isEmpty()) {  // Noncompliant
   //...
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 str = cont.substring(pos1, pos2);
 if (str.isEmpty()) {
   //...
@@ -10099,7 +10247,7 @@ if (str.isEmpty()) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Assignments in while statement conditions, and assignments enclosed in relational expressions are ignored.
 
@@ -10117,6 +10265,7 @@ result = (bresult = new byte[len]);
 
 ```
 *See*
+
  MISRA C:2004, 13.1 - Assignment operators shall not be used in expressions that yield a Boolean value
  MISRA C++:2008, 6-2-1 - Assignment operators shall not be used in sub-expressions
  MISRA C:2012, 13.4 - The result of an assignment operator should not be used
@@ -10129,7 +10278,7 @@ CERT, EXP51-J. - Do not perform assignments in conditional expressions
 Using such generic exceptions as Error, RuntimeException, Throwable, and Exception prevents calling methods from handling true, system-generated exceptions differently than application-generated errors.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void foo(String bar) throws Throwable {  // Noncompliant
   throw new RuntimeException("My Message");     // Noncompliant
 }
@@ -10137,7 +10286,7 @@ public void foo(String bar) throws Throwable {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void foo(String bar) {
   throw new MyOwnRuntimeException("My Message");
 }
@@ -10145,7 +10294,7 @@ public void foo(String bar) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Generic exceptions in the signatures of overriding methods are ignored, because overriding method has to follow signature of the throw declaration in the superclass. The issue will be raised on superclass declaration of the method (or won't be raised at all if superclass is not part of the analysis).
 
@@ -10162,6 +10311,7 @@ public void myOtherMethod throws Exception {
 
 ```
 *See*
+
 MITRE, CWE-397 - Declaration of Throws for Generic Exception
 CERT, ERR07-J. - Do not throw RuntimeException, Exception, or Throwable
 ```
@@ -10172,7 +10322,7 @@ Utility classes, which are collections of static members, are not meant to be in
 Java adds an implicit public constructor to every class which does not define at least one explicitly. Hence, at least one non-public constructor should be defined.
 
 **Noncompliant Code Example**
-```cs
+```java
 class StringUtils { // Noncompliant
 
   public static String concatenate(String s1, String s2) {
@@ -10184,7 +10334,7 @@ class StringUtils { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 class StringUtils { // Compliant
 
   private StringUtils() {
@@ -10200,7 +10350,7 @@ class StringUtils { // Compliant
 
 ```
 **Exceptions**
-```cs
+```java
 
 When class contains public static void main(String[] args) method it is not considered as utility class and will be ignored by this rule.
 ```
@@ -10209,7 +10359,7 @@ When class contains public static void main(String[] args) method it is not cons
 Shadowing fields with a local variable is a bad practice that reduces code readability: it makes it confusing to know whether the field or the variable is being used.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Foo {
   public int myField;
 
@@ -10222,13 +10372,14 @@ class Foo {
 
 ```
 *See*
+
 CERT, DCL51-J. - Do not shadow or obscure identifiers in subscopes
 #### Rule 269: Redundant pairs of parentheses should be removed
 ##### Quality Category: Code Smell
 The use of parentheses, even those not required to enforce a desired order of operations, can clarify the intent behind a piece of code. But redundant pairs of parentheses could be misleading, and should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 int x = (y / 2 + 1);   //Compliant even if the parenthesis are ignored by the compiler
 
 if (a && ((x+y > 0))) {  // Noncompliant
@@ -10240,7 +10391,7 @@ return ((x + 1));  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 int x = (y / 2 + 1);
 
 if (a && (x+y > 0)) {
@@ -10253,19 +10404,19 @@ return (x + 1);
 ##### Quality Category: Code Smell
 Inheritance is certainly one of the most valuable concepts in object-oriented programming. It's a way to compartmentalize and reuse code by creating collections of attributes and behaviors called classes which can be based on previously created classes. But abusing this concept by creating a deep inheritance tree can lead to very complex and unmaintainable source code. Most of the time a too deep inheritance tree is due to bad object oriented design which has led to systematically use 'inheritance' when for instance 'composition' would suit better.
 
-This rule raises an issue when the inheritance tree, starting from Object has a greater depth than is allowed.```
+This rule raises an issue when the inheritance tree, starting from Object has a greater depth than is allowed.
 #### Rule 271: Nested blocks of code should not be left empty
 ##### Quality Category: Code Smell
 Most of the time a block of code is empty when a piece of code is really missing. So such empty block must be either filled or removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 0; i < 42; i++){}  // Empty on purpose or missing piece of code ?
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 When a block contains a comment, this block is not considered to be empty unless it is a synchronized block. synchronized blocks are still considered empty even with comments because they can still affect program flow.
 ```
@@ -10274,7 +10425,7 @@ When a block contains a comment, this block is not considered to be empty unless
 A long parameter list can indicate that a new structure should be created to wrap the numerous parameters or that the function is doing too many things.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With a maximum number of 4 parameters:
 
@@ -10285,7 +10436,7 @@ public void doSomething(int param1, int param2, int param3, String param4, long 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(int param1, int param2, int param3, String param4) {
 ...
 }
@@ -10293,7 +10444,7 @@ public void doSomething(int param1, int param2, int param3, String param4) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Methods annotated with Spring's @RequestMapping (and related shortcut annotations, like @GetRequest) or @JsonCreator may have a lot of parameters, encapsulation being possible. Such methods are therefore ignored.
 ```
@@ -10304,7 +10455,7 @@ If a private field is declared but not used in the program, it can be considered
 Note that this rule does not take reflection into account, which means that issues will be raised on private fields that are only accessed using the reflection API.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   private int foo = 42;
 
@@ -10317,7 +10468,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
   public int compute(int a) {
     return a * 42;
@@ -10327,7 +10478,7 @@ public class MyClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 The Java serialization runtime associates with each serializable class a version number, called serialVersionUID, which is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization.
 
@@ -10345,7 +10496,7 @@ Moreover, this rule doesn't raise any issue on annotated fields.
 Merging collapsible if statements increases the code's readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (file != null) {
   if (file.isFile() || file.isDirectory()) {
     /* ... */
@@ -10355,7 +10506,7 @@ if (file != null) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (file != null && isFileOrDirectory(file)) {
   /* ... */
 }
@@ -10371,7 +10522,7 @@ If a label is declared but not used in the program, it can be considered as dead
 This will improve maintainability as developers will not wonder what this label is used for.
 
 **Noncompliant Code Example**
-```cs
+```java
 void foo() {
   outer: //label is not used.
   for(int i = 0; i<10; i++) {
@@ -10382,7 +10533,7 @@ void foo() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 void foo() {
   for(int i = 0; i<10; i++) {
     break;
@@ -10392,6 +10543,7 @@ void foo() {
 
 ```
 *See*
+
  MISRA C:2012, 2.6 - A function should not contain unused label declarations
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 #### Rule 276: Standard outputs should not be used directly to log anything
@@ -10406,18 +10558,19 @@ When logging a message there are several important requirements which must be fu
 If a program directly writes to the standard outputs, there is absolutely no way to comply with those requirements. That's why defining and using a dedicated logger is highly recommended.
 
 **Noncompliant Code Example**
-```cs
+```java
 System.out.println("My Message");  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 logger.log("My Message");
 
 
 ```
 *See*
+
 CERT, ERR02-J. - Prevent exceptions while logging data
 #### Rule 277: Return values should not be ignored when they contain the operation status code
 ##### Quality Category: Vulnerability
@@ -10434,7 +10587,7 @@ CountDownLatch.await(long, TimeUnit)
 Semaphore.tryAcquire
 BlockingQueue: offer, remove
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(File file, Lock lock) {
   file.delete();  // Noncompliant
   // ...
@@ -10444,7 +10597,7 @@ public void doSomething(File file, Lock lock) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(File file, Lock lock) {
   if (!lock.tryLock()) {
     // lock failed; take appropriate action
@@ -10457,6 +10610,7 @@ public void doSomething(File file, Lock lock) {
 
 ```
 *See*
+
  MISRA C:2004, 16.10 - If a function returns error information, then that error information shall be tested
  MISRA C++:2008, 0-1-7 - The value returned by a function having a non-void return type that is not an overloaded operator shall always be used.
  MISRA C:2012, Dir. 4.7 - If a function returns error information, then that error information shall be tested
@@ -10474,7 +10628,7 @@ User provided data, such as URL parameters, POST data payloads or cookies, shoul
 This problem could be mitigated by sanitizing the user provided data before logging it.
 
 **Noncompliant Code Example**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String param1 = req.getParameter("param1");
   Logger.info("Param1: " + param1 + " " + Logger.getName()); // Noncompliant
@@ -10484,7 +10638,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
   String param1 = req.getParameter("param1");
 
@@ -10498,6 +10652,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 
 ```
 *See*
+
 OWASP Cheat Sheet - Logging
 OWASP Attack Category - Log Injection
 OWASP Top 10 2017 - Category A1 - Injection
@@ -10508,7 +10663,7 @@ SANS Top 25 - Insecure Interaction Between Components
 enums are generally thought of as constant, but an enum with a public field or public setter is not only non-constant, but also vulnerable to malicious code. Ideally fields in an enum are private and set in the constructor, but if that's not possible, their visibility should be reduced as much as possible.
 
 **Noncompliant Code Example**
-```cs
+```java
 public enum Continent {
 
   NORTH_AMERICA (23, 24709000),
@@ -10529,7 +10684,7 @@ public enum Continent {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public enum Continent {
 
   NORTH_AMERICA (23, 24709000),
@@ -10554,7 +10709,7 @@ Note that making a mutable field, such as an array, final will keep the variable
 This rule raises issues for public static array, Collection, Date, and awt.Point members.
 
 **Noncompliant Code Example**
-```cs
+```java
 public interface MyInterface {
   public static String [] strings; // Noncompliant
 }
@@ -10569,6 +10724,7 @@ public class A {
 
 ```
 *See*
+
 MITRE, CWE-582 - Array Declared Public, Final, and Static
 MITRE, CWE-607 - Public Static Final Field References Mutable Object
 CERT, OBJ01-J. - Limit accessibility of fields
@@ -10580,7 +10736,7 @@ Even though the signatures for methods in a servlet include throws IOException, 
 This rule checks all exceptions in methods named "do*" are explicitly handled in servlet classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doGet(HttpServletRequest request, HttpServletResponse response)
   throws IOException, ServletException {
   String ip = request.getRemoteAddr();
@@ -10591,7 +10747,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doGet(HttpServletRequest request, HttpServletResponse response)
   throws IOException, ServletException {
   try {
@@ -10607,6 +10763,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 
 ```
 *See*
+
 MITRE, CWE-600 - Uncaught Exception in Servlet
 CERT, ERR01-J. - Do not allow exceptions to expose sensitive information
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
@@ -10615,7 +10772,7 @@ CERT, ERR01-J. - Do not allow exceptions to expose sensitive information
 There is no good reason to declare a field "public" and "static" without also declaring it "final". Most of the time this is a kludge to share a state among several objects. But with this approach, any object can do whatever it wants with the shared state, such as setting it to null.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Greeter {
   public static Foo foo = new Foo();
   ...
@@ -10624,7 +10781,7 @@ public class Greeter {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Greeter {
   public static final Foo FOO = new Foo();
   ...
@@ -10633,6 +10790,7 @@ public class Greeter {
 
 ```
 *See*
+
 MITRE, CWE-500 - Public Static Field Not Marked Final
 CERT OBJ10-J. - Do not use public static nonfinal fields
 #### Rule 283: Throwable.printStackTrace(...) should not be called
@@ -10647,7 +10805,7 @@ Loggers should be used instead to print Throwables, as they have many advantages
 This rule raises an issue when printStackTrace is used without arguments, i.e. when the stack trace is printed to the default stream.
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   /* ... */
 } catch(Exception e) {
@@ -10657,7 +10815,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try {
   /* ... */
 } catch(Exception e) {
@@ -10667,6 +10825,7 @@ try {
 
 ```
 *See*
+
 MITRE, CWE-489 - Leftover Debug Code
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 #### Rule 284: Double Brace Initialization should not be used
@@ -10676,7 +10835,7 @@ Because Double Brace Initialization (DBI) creates an anonymous class with a refe
 For collections, use Arrays.asList instead, or explicitly add each item directly to the collection.
 
 **Noncompliant Code Example**
-```cs
+```java
 Map source = new HashMap(){{ // Noncompliant
     put("firstName", "John");
     put("lastName", "Smith");
@@ -10685,7 +10844,7 @@ Map source = new HashMap(){{ // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 Map source = new HashMap();
 // ...
 source.put("firstName", "John");
@@ -10699,27 +10858,28 @@ Marking an array volatile means that the array itself will always be read fresh 
 This can be salvaged with arrays by using the relevant AtomicArray class, such as AtomicIntegerArray, instead. For mutable objects, the volatile should be removed, and some other method should be used to ensure thread-safety, such as synchronization, or ThreadLocal storage.
 
 **Noncompliant Code Example**
-```cs
+```java
 private volatile int [] vInts;  // Noncompliant
 private volatile MyObj myObj;  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 private AtomicIntegerArray vInts;
 private MyObj myObj;
 
 
 ```
 *See*
+
 CERT, CON50-J. - Do not assume that declaring a reference volatile guarantees safe publication of the members of the referenced object
 #### Rule 286: "toArray" should be passed an array of the proper type
 ##### Quality Category: Bug
 Given no arguments, the Collections.toArray method returns an Object [], which will cause a ClassCastException at runtime if you try to cast it to an array of the proper class. Instead, pass an array of the correct type in to the call.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String [] getStringArray(List<String> strings) {
   return (String []) strings.toArray();  // Noncompliant; ClassCastException thrown
 }
@@ -10727,7 +10887,7 @@ public String [] getStringArray(List<String> strings) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public String [] getStringArray(List<String> strings) {
   return strings.toArray(new String[0]);
 }
@@ -10739,7 +10899,7 @@ It is possible for a call to hashCode to return Integer.MIN_VALUE. Take the abso
 Similarly, Integer.MIN_VALUE could be returned from Random.nextInt() or any object's compareTo method, and Long.MIN_VALUE could be returned from Random.nextLong(). Calling Math.abs on values returned from these methods is similarly ill-advised.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(String str) {
   if (Math.abs(str.hashCode()) > 0) { // Noncompliant
     // ...
@@ -10749,7 +10909,7 @@ public void doSomething(String str) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(String str) {
   if (str.hashCode() != 0) {
     // ...
@@ -10765,7 +10925,7 @@ Similarly, you cannot assume that InputStream.skip will actually skip the reques
 This rule raises an issue when an InputStream.read method that accepts a byte[] is called, but the return value is not checked, and when the return value of InputStream.skip is not checked. The rule also applies to InputStream child classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething(String fileName) {
   try {
     InputStream is = new InputStream(file);
@@ -10778,7 +10938,7 @@ public void doSomething(String fileName) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(String fileName) {
   try {
     InputStream is = new InputStream(file);
@@ -10793,16 +10953,17 @@ public void doSomething(String fileName) {
 
 ```
 *See*
+
 CERT, FIO10-J. - Ensure the array is filled when using read() to fill an array
 #### Rule 289: "@NonNull" values should not be set to null
 ##### Quality Category: Bug
 Fields, parameters and return values marked @NotNull, @NonNull, or @Nonnull are assumed to have non-null values and are not typically null-checked before use. Therefore setting one of these values to null, or failing to set such a class field in a constructor, could cause NullPointer
 ```
 **Exceptions**
-```cs at runtime.
+```java at runtime.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MainClass {
 
   @Nonnull
@@ -10828,6 +10989,7 @@ public class MainClass {
 
 ```
 *See*
+
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
 ```
@@ -10836,7 +10998,7 @@ CERT, EXP01-J. - Do not use a null in a case where an object is required
 By contract, any implementation of the java.util.Iterator.next() method should throw a NoSuchElementException exception when the iteration has no more elements. Any other behavior when the iteration is done could lead to unexpected behavior for users of this Iterator.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyIterator implements Iterator<String>{
   ...
   public String next(){
@@ -10850,7 +11012,7 @@ public class MyIterator implements Iterator<String>{
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyIterator implements Iterator<String>{
   ...
   public String next(){
@@ -10866,7 +11028,7 @@ public class MyIterator implements Iterator<String>{
 While most compareTo methods return -1, 0, or 1, some do not, and testing the result of a compareTo against a specific value other than 0 could result in false negatives.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (myClass.compareTo(arg) == -1) {  // Noncompliant
   // ...
 }
@@ -10874,7 +11036,7 @@ if (myClass.compareTo(arg) == -1) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (myClass.compareTo(arg) < 0) {
   // ...
 }
@@ -10888,7 +11050,7 @@ For instance, if the result of int division is assigned to a floating-point vari
 In either case, the result will not be what was expected. Instead, at least one operand should be cast or promoted to the final type before the operation takes place.
 
 **Noncompliant Code Example**
-```cs
+```java
 float twoThirds = 2/3; // Noncompliant; int division. Yields 0.0
 long millisInYear = 1_000*3_600*24*365; // Noncompliant; int multiplication. Yields 1471228928
 long bigNum = Integer.MAX_VALUE + 2; // Noncompliant. Yields -2147483647
@@ -10906,7 +11068,7 @@ public float compute2(long factor){
 
 ```
 **Compliant Solution**
-```cs
+```java
 float twoThirds = 2f/3; // 2 promoted to float. Yields 0.6666667
 long millisInYear = 1_000L*3_600*24*365; // 1000 promoted to long. Yields 31_536_000_000
 long bigNum = Integer.MAX_VALUE + 2L; // 2 promoted to long. Yields 2_147_483_649
@@ -10941,6 +11103,7 @@ public float compute2(float factor){
 
 ```
 *See*
+
  MISRA C++:2008, 5-0-8 - An explicit integral or floating-point conversion shall not increase the size of the underlying type of a cvalue expression.
 MITRE, CWE-190 - Integer Overflow or Wraparound
 CERT, NUM50-J. - Convert integers to floating point for floating-point operations
@@ -10953,7 +11116,7 @@ Since an int is a 32-bit variable, shifting by more than +/-31 is confusing at b
 Similarly, when shifting 64-bit integers, the runtime uses the lowest 6 bits of the shift count operand and shifting long by 64 is the same as shifting it by 0, and shifting it by 65 is the same as shifting it by 1.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int shift(int a) {
   int x = a >> 32; // Noncompliant
   return a << 48;  // Noncompliant
@@ -10962,7 +11125,7 @@ public int shift(int a) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int shift(int a) {
   int x = a >> 31;
   return a << 16;
@@ -10971,7 +11134,7 @@ public int shift(int a) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise an issue when the shift by zero is obviously for cosmetic reasons:
 
@@ -10986,7 +11149,7 @@ bytes[loc+1] = (byte)(value >> 0);
 It is the sign, rather than the magnitude of the value returned from compareTo that matters. Returning Integer.MIN_VALUE does not convey a higher degree of inequality, and doing so can cause errors because the return value of compareTo is sometimes inversed, with the expectation that negative values become positive. However, inversing Integer.MIN_VALUE yields Integer.MIN_VALUE rather than Integer.MAX_VALUE.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int compareTo(MyClass) {
   if (condition) {
     return Integer.MIN_VALUE;  // Noncompliant
@@ -10995,7 +11158,7 @@ public int compareTo(MyClass) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int compareTo(MyClass) {
   if (condition) {
     return -1;
@@ -11008,7 +11171,7 @@ Boxing is the process of putting a primitive value into an analogous object, suc
 Since the original value is unchanged during boxing and unboxing, there's no point in doing either when not needed. This also applies to autoboxing and auto-unboxing (when Java implicitly handles the primitive/object transition for you).
 
 **Noncompliant Code Example**
-```cs
+```java
 public void examineInt(int a) {
   //...
 }
@@ -11036,7 +11199,7 @@ public void func() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void examineInt(int a) {
   //...
 }
@@ -11063,7 +11226,7 @@ public void func() {
 Because the equals method takes a generic Object as a parameter, any type of object may be passed to it. The method should not assume it will only be used to test objects of its class type. It must instead check the parameter's type.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean equals(Object obj) {
   MyClass mc = (MyClass)obj;  // Noncompliant
   // ...
@@ -11072,7 +11235,7 @@ public boolean equals(Object obj) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean equals(Object obj) {
   if (obj == null)
     return false;
@@ -11093,13 +11256,14 @@ Making the inner class static (i.e. "nested") avoids this problem, therefore inn
  an inner class can only be instantiated within the context of an instance of the outer class.
  a nested (static) class can be instantiated independently of the outer class.
 **Noncompliant Code Example**
-```cs
+```java
 public class Pomegranate {
   // ...
 
   public class 
 ```
-*See*d implements Serializable {  // Noncompliant; serialization will fail
+*See*
+d implements Serializable {  // Noncompliant; serialization will fail
     // ...
   }
 }
@@ -11107,13 +11271,14 @@ public class Pomegranate {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Pomegranate {
   // ...
 
   public static class 
 ```
-*See*d implements Serializable {
+*See*
+d implements Serializable {
     // ...
   }
 }
@@ -11121,6 +11286,7 @@ public class Pomegranate {
 
 ```
 *See*
+
 CERT SER05-J. - Do not serialize instances of inner classes
 #### Rule 298: The non-serializable super class of a "Serializable" class should have a no-argument constructor
 ##### Quality Category: Bug
@@ -11129,7 +11295,7 @@ When a Serializable object has a non-serializable ancestor in its inheritance ch
 In order to create the non-serializable ancestor, its no-argument constructor is called. Therefore the non-serializable ancestor of a Serializable class must have a no-arg constructor. Otherwise the class is Serializable but not deserializable.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit {
   private Season ripe;
 
@@ -11152,7 +11318,7 @@ public class Raspberry extends Fruit
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit {
   private Season ripe;
 
@@ -11178,7 +11344,7 @@ public class Raspberry extends Fruit
 While it is technically correct to assign to parameters from within method bodies, doing so before the parameter value is read is likely a bug. Instead, initial values of parameters, caught exceptions, and foreach parameters should be, if not treated as final, then at least read before reassignment.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doTheThing(String str, int i, List<String> strings) {
   str = Integer.toString(i); // Noncompliant
 
@@ -11190,6 +11356,7 @@ public void doTheThing(String str, int i, List<String> strings) {
 
 ```
 *See*
+
  MISRA C:2012, 17.8 - A function parameter should not be modified
 #### Rule 300: "equals(Object obj)" and "hashCode()" should be overridden in pairs
 ##### Quality Category: Bug
@@ -11204,7 +11371,7 @@ However, the programmer should be aware that producing distinct integer results 
 In order to comply with this contract, those methods should be either both inherited, or both overridden.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass {    // Noncompliant - should also override "hashCode()"
 
   @Override
@@ -11217,7 +11384,7 @@ class MyClass {    // Noncompliant - should also override "hashCode()"
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {    // Compliant
 
   @Override
@@ -11235,6 +11402,7 @@ class MyClass {    // Compliant
 
 ```
 *See*
+
 MITRE, CWE-581 - Object Model Violation: Just One of Equals and Hashcode Defined
 CERT, MET09-J. - Classes that define an equals() method must also define a hashCode() method
 #### Rule 301: Enabling Cross-Origin Resource Sharing is security-sensitive
@@ -11285,6 +11453,7 @@ public class TestController {
 
 ```
 *See*
+
 OWASP Top 10 2017 - Category A6 - Security Misconfiguration
 OWASP HTML5 Security Cheat Sheet - Cross Origin Resource Sharing
 OWASP CORS OriginHeaderScrutiny
@@ -11423,6 +11592,7 @@ class Play {
 
 ```
 *See*
+
 MITRE, CWE-312 - Cleartext Storage of Sensitive Information
 MITRE, CWE-315 - Cleartext Storage of Sensitive Information in a Cookie
 MITRE CWE-565 - Reliance on Cookies without Validation and Integrity Checking
@@ -11437,14 +11607,14 @@ The "secure" attribute prevents cookies from being sent over plaintext connectio
 Recommended Secure Coding Practices
  call setSecure(true) on the Cookie object
 **Noncompliant Code Example**
-```cs
+```java
 Cookie c = new Cookie(SECRET, secret);  // Noncompliant; cookie is not secure
 response.addCookie(c);
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Cookie c = new Cookie(SECRET, secret);
 c.setSecure(true);
 response.addCookie(c);
@@ -11452,6 +11622,7 @@ response.addCookie(c);
 
 ```
 *See*
+
 MITRE, CWE-311 - Missing Encryption of Sensitive Data
 MITRE, CWE-315 - Cleartext Storage of Sensitive Information in a Cookie
 MITRE, CWE-614 - Sensitive Cookie in HTTPS Session Without 'Secure' Attribute
@@ -11475,14 +11646,14 @@ Last but not least it has an effect on application security. Attackers might be 
 Recommended Secure Coding Practices
  make the IP address configurable.
 **Noncompliant Code Example**
-```cs
+```java
 String ip = "192.168.12.42"; // Noncompliant
 Socket socket = new Socket(ip, 6667);
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 No issue is reported for the following cases because they are not considered sensitive:
 
@@ -11493,6 +11664,7 @@ No issue is reported for the following cases because they are not considered sen
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, MSC03-J. - Never hard code sensitive information
 ```
@@ -11503,7 +11675,7 @@ When directly subclassing java.io.InputStream or java.io.FilterInputStream, the 
 This rule raises an issue when a direct subclass of java.io.InputStream or java.io.FilterInputStream doesn't provide an override of read(byte[],int,int).
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyInputStream extends java.io.InputStream {
   private FileInputStream fin;
 
@@ -11520,7 +11692,7 @@ public class MyInputStream extends java.io.InputStream {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyInputStream extends java.io.InputStream {
   private FileInputStream fin;
 
@@ -11542,7 +11714,7 @@ public class MyInputStream extends java.io.InputStream {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise an issue when the class is declared abstract.
 ```
@@ -11553,7 +11725,7 @@ This rule raises an issue when an iteration over the items of a Collection is pe
 Relying on Object or any classes between Object and the real class handled by the Collection is not recommended. While it's accepted by the language, this practice reduces readability of the code and forces to down-cast the item of the Collection to be able to call a method on it while simply using the correct type in the iteration makes things more clear and simple.
 
 **Noncompliant Code Example**
-```cs
+```java
 public Collection<Person> getPersons() { ... }
 
 for (Object item : getPersons()) { // Noncompliant
@@ -11564,7 +11736,7 @@ for (Object item : getPersons()) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (Person person : getPersons()) { // Compliant
   person.getAddress() ;
 }
@@ -11587,7 +11759,7 @@ These constants should be preferred to:
 - the use of Guava’s Charsets class, which has been obsolete since JDK7
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   byte[] bytes = string.getBytes("UTF-8"); // Noncompliant; use a String instead of StandardCharsets.UTF_8
 } catch (UnsupportedEncodingException e) {
@@ -11599,7 +11771,7 @@ byte[] bytes = string.getBytes(Charsets.UTF_8); // Noncompliant; Guava way obsol
 
 ```
 **Compliant Solution**
-```cs
+```java
 byte[] bytes = string.getBytes(StandardCharsets.UTF_8)
 ```
 #### Rule 308: "@CheckForNull" or "@Nullable" should not be used on primitive types
@@ -11609,7 +11781,7 @@ By definition, primitive types are not Objects and so they can't be null. Adding
 This rule raises an issue when @CheckForNull or @Nullable is set on a method returning a primitive type: byte, short, int, long, float, double, boolean, char.
 
 **Noncompliant Code Example**
-```cs
+```java
 @CheckForNull
 boolean isFoo() {
  ...
@@ -11618,7 +11790,7 @@ boolean isFoo() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 boolean isFoo() {
  ...
 }
@@ -11628,7 +11800,7 @@ boolean isFoo() {
 Spring framework 4.3 introduced variants of the @RequestMapping annotation to better represent the semantics of the annotated methods. The use of @GetMapping, @PostMapping, @PutMapping, @PatchMapping and @DeleteMapping should be preferred to the use of the raw @RequestMapping(method = RequestMethod.XYZ).
 
 **Noncompliant Code Example**
-```cs
+```java
 @RequestMapping(path = "/greeting", method = RequestMethod.GET) // Noncompliant
 public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 ...
@@ -11637,7 +11809,7 @@ public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") S
 
 ```
 **Compliant Solution**
-```cs
+```java
 @GetMapping(path = "/greeting") // Compliant
 public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 ...
@@ -11650,7 +11822,7 @@ When directly subclassing java.io.OutputStream or java.io.FilterOutputStream, th
 This rule raises an issue when a direct subclass of java.io.OutputStream or java.io.FilterOutputStream doesn't provide an override of write(byte[],int,int).
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyStream extends OutputStream { // Noncompliant
     private FileOutputStream fout;
 
@@ -11674,7 +11846,7 @@ public class MyStream extends OutputStream { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyStream extends OutputStream {
     private FileOutputStream fout;
 
@@ -11703,7 +11875,7 @@ public class MyStream extends OutputStream {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise an issue when the class is declared abstract.
 ```
@@ -11748,7 +11920,7 @@ BinaryOperator<Double>	DoubleBinaryOperator
 Function<T, Boolean>	Predicate<T>
 BiFunction<T,U,Boolean>	BiPredicate<T,U>
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo implements Supplier<Integer> {  // Noncompliant
     @Override
     public Integer get() {
@@ -11759,7 +11931,7 @@ public class Foo implements Supplier<Integer> {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo implements IntSupplier {
 
   @Override
@@ -11773,7 +11945,7 @@ public class Foo implements IntSupplier {
 There's no need to null test in conjunction with an instanceof test. null is not an instanceof anything, so a null check is redundant.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (x != null && x instanceof MyClass) { ... }  // Noncompliant
 
 if (x == null || ! x instanceof MyClass) { ... } // Noncompliant
@@ -11781,7 +11953,7 @@ if (x == null || ! x instanceof MyClass) { ... } // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (x instanceof MyClass) { ... }
 
 if (! x instanceof MyClass) { ... }
@@ -11791,7 +11963,7 @@ if (! x instanceof MyClass) { ... }
 Java 7's try-with-resources structure automatically handles closing the resources that the try itself opens. Thus, adding an explicit close() call is redundant and potentially confusing.
 
 **Noncompliant Code Example**
-```cs
+```java
 try (PrintWriter writer = new PrintWriter(process.getOutputStream())) {
   String contents = file.contents();
   writer.write(new Gson().toJson(new MyObject(contents)));
@@ -11802,7 +11974,7 @@ try (PrintWriter writer = new PrintWriter(process.getOutputStream())) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try (PrintWriter writer = new PrintWriter(process.getOutputStream())) {
   String contents = file.contents();
   writer.write(new Gson().toJson(new MyObject(contents)));
@@ -11816,7 +11988,7 @@ Java 8 introduced ThreadLocal.withInitial which is a simpler alternative to crea
 This rule raises an issue when a ThreadLocal anonymous inner class can be replaced by a call to ThreadLocal.withInitial.
 
 **Noncompliant Code Example**
-```cs
+```java
 ThreadLocal<List<String>> myThreadLocal =
     new ThreadLocal<List<String>>() { // Noncompliant
         @Override
@@ -11828,7 +12000,7 @@ ThreadLocal<List<String>> myThreadLocal =
 
 ```
 **Compliant Solution**
-```cs
+```java
 ThreadLocal<List<String>> myThreadLocal = ThreadLocal.withInitial(ArrayList::new);
 ```
 #### Rule 315: "Stream" call chains should be simplified when possible
@@ -11844,24 +12016,24 @@ stream.filter(predicate).findAny().isPresent()	stream.anyMatch(predicate)
 !stream.anyMatch(x -> !(...))	stream.allMatch(...)
 stream.map(mapper).anyMatch(Boolean::booleanValue)	stream.anyMatch(predicate)
 **Noncompliant Code Example**
-```cs
+```java
 boolean hasRed = widgets.stream().filter(w -> w.getColor() == RED).findFirst().isPresent(); // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 boolean hasRed = widgets.stream().anyMatch(w -> w.getColor() == RED);
 ```
 #### Rule 316: Packages containing only "package-info.java" should be removed
 ##### Quality Category: Code Smell
-There is no reason to have a package that is empty except for "package-info.java". Such packages merely clutter a project, taking up space but adding no value.```
+There is no reason to have a package that is empty except for "package-info.java". Such packages merely clutter a project, taking up space but adding no value.
 #### Rule 317: Arrays should not be created for varargs parameters
 ##### Quality Category: Code Smell
 There's no point in creating an array solely for the purpose of passing it as a varargs (...) argument; varargs is an array. Simply pass the elements directly. They will be consolidated into an array automatically. Incidentally passing an array where Object ... is expected makes the intent ambiguous: Is the array supposed to be one object or a collection of objects?
 
 **Noncompliant Code Example**
-```cs
+```java
 public void callTheThing() {
   //...
   doTheThing(new String[] { "s1", "s2"});  // Noncompliant: unnecessary
@@ -11881,7 +12053,7 @@ public void doTheOtherThing(Object ... args) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void callTheThing() {
   //...
   doTheThing("s1", "s2");
@@ -11903,7 +12075,7 @@ public void doTheOtherThing(Object ... args) {
 Jump statements such as return and continue let you change the default flow of program execution, but jump statements that direct the control flow to the original direction are just a waste of keystrokes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void foo() {
   while (condition1) {
     if (condition2) {
@@ -11918,7 +12090,7 @@ public void foo() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void foo() {
   while (condition1) {
     if (!condition2) {
@@ -11934,14 +12106,14 @@ Deprecated features are those that have been retained temporarily for backward c
 This rule raises an issue when ${pom.*} properties are used in a pom.
 
 **Noncompliant Code Example**
-```cs
+```java
   <build>
     <finalName>${pom.artifactId}-${pom.version}</finalName>  <!-- Noncompliant -->
 
 
 ```
 **Compliant Solution**
-```cs
+```java
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
 
@@ -11958,7 +12130,7 @@ There's no point in forcing the overhead of a method call for a method that alwa
 This rule raises an issue if on methods that contain only one statement: the return of a constant value.
 
 **Noncompliant Code Example**
-```cs
+```java
 int getBestNumber() {
   return 12;  // Noncompliant
 }
@@ -11966,13 +12138,13 @@ int getBestNumber() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 static int bestNumber = 12;
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 Methods with annotations, such as @Override and Spring's @RequestMapping, are ignored.
 ```
@@ -11981,7 +12153,7 @@ Methods with annotations, such as @Override and Spring's @RequestMapping, are ig
 When a private method is only invoked by an inner class, there's no reason not to move it into that class. It will still have the same access to the outer class' members, but the outer class will be clearer and less cluttered.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Outie {
   private int i=0;
 
@@ -11999,7 +12171,7 @@ public class Outie {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Outie {
   private int i=0;
 
@@ -12019,7 +12191,7 @@ public class Outie {
 There's no point in redundantly defining an abstract method with the same signature as a method in an interface that the class implements. Any concrete child classes will have to implement the method either way.
 
 **Noncompliant Code Example**
-```cs
+```java
 public interface Reportable {
   String getReport();
 }
@@ -12035,7 +12207,7 @@ public abstract class AbstractRuleReport implements Reportable{
 Shared naming conventions allow teams to collaborate efficiently. This rule checks that static non-final field names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[a-z][a-zA-Z0-9]*$:
 
@@ -12046,7 +12218,7 @@ public final class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
    private static String fooBar;
 }
@@ -12060,7 +12232,7 @@ This rule raises an issue when Test class fields of the following types aren't u
 This rule also applies to the JUnit 5 equivalent classes: TempDir, and TestInfo.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class ProjectDefinitionTest {
 
   @Rule
@@ -12077,7 +12249,7 @@ public class ProjectDefinitionTest {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class ProjectDefinitionTest {
 
   @Test
@@ -12095,7 +12267,7 @@ One thing that makes good code good is the clarity with which it conveys the int
 If you need to see whether a substring is located beyond a certain point in a string, you can test the indexOf the substring versus the target point, or you can use the version of indexOf which takes a starting point argument. The latter is arguably clearer because the result is tested against -1, which is an easily recognizable "not found" indicator.
 
 **Noncompliant Code Example**
-```cs
+```java
 String name = "ismael";
 
 if (name.indexOf("ae") > 2) { // Noncompliant
@@ -12105,7 +12277,7 @@ if (name.indexOf("ae") > 2) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 String name = "ismael";
 
 if (name.indexOf("ae", 2) > -1) {
@@ -12121,7 +12293,7 @@ Nested enum types are implicitly static.
 So there's no need to declare them static explicitly.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Flower {
   static enum Color { // Noncompliant; static is redundant here
     RED, YELLOW, BLUE, ORANGE
@@ -12133,7 +12305,7 @@ public class Flower {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Flower {
   enum Color { // Compliant
     RED, YELLOW, BLUE, ORANGE
@@ -12149,7 +12321,7 @@ A catch clause that only rethrows the caught exception has the same effect as om
 Such clauses should either be eliminated or populated with the appropriate logic.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String readFile(File f) {
   StringBuilder sb = new StringBuilder();
   try {
@@ -12168,7 +12340,7 @@ public String readFile(File f) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public String readFile(File f) {
   StringBuilder sb = new StringBuilder();
   try {
@@ -12206,14 +12378,14 @@ Java 7 introduced the diamond operator (<>) to reduce the verbosity of generics 
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 List<String> strings = new ArrayList<String>();  // Noncompliant
 Map<String,List<Integer>> map = new HashMap<String,List<Integer>>();  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 List<String> strings = new ArrayList<>();
 Map<String,List<Integer>> map = new HashMap<>();
 ```
@@ -12222,7 +12394,7 @@ Map<String,List<Integer>> map = new HashMap<>();
 There is no point in setting class fields to null in a finalizer. If this this is a hint to the garbage collector, it is unnecessary - the object will be garbage collected anyway - and doing so may actually cause extra work for the garbage collector.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
   private String name;
 
@@ -12240,7 +12412,7 @@ This rule looks for classes that do all of the following:
  do not themselves override equals.
  add fields.
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit {
   private Season ripe;
 
@@ -12266,7 +12438,7 @@ public class Raspberry extends Fruit {  // Noncompliant; instances will use Frui
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit {
   private Season ripe;
 
@@ -12307,7 +12479,7 @@ Since Java 7 it has been possible to catch multiple exceptions at once. Therefor
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 catch (IOException e) {
   doCleanup();
   logger.log(e);
@@ -12324,7 +12496,7 @@ catch (TimeoutException e) {  // Compliant; block contents are different
 
 ```
 **Compliant Solution**
-```cs
+```java
 catch (IOException|SQLException e) {
   doCleanup();
   logger.log(e);
@@ -12341,7 +12513,7 @@ There is no need to multiply the output of Random's nextDouble method to get a r
 This rule raises an issue when the return value of any of Random's methods that return a floating point value is converted to an integer.
 
 **Noncompliant Code Example**
-```cs
+```java
 Random r = new Random();
 int rand = (int)r.nextDouble() * 50;  // Noncompliant way to get a pseudo-random value between 0 and 50
 int rand2 = (int)r.nextFloat(); // Noncompliant; will always be 0;
@@ -12349,7 +12521,7 @@ int rand2 = (int)r.nextFloat(); // Noncompliant; will always be 0;
 
 ```
 **Compliant Solution**
-```cs
+```java
 Random r = new Random();
 int rand = r.nextInt(50);  // returns pseudo-random value between 0 and 50
 ```
@@ -12358,7 +12530,7 @@ int rand = r.nextInt(50);  // returns pseudo-random value between 0 and 50
 Rather than creating a boxed primitive from a String to extract the primitive value, use the relevant parse method instead. It will be clearer and more efficient.
 
 **Noncompliant Code Example**
-```cs
+```java
 String myNum = "12.2";
 
 float f = (new Float(myNum)).floatValue();  // Noncompliant; creates & discards a Float
@@ -12366,7 +12538,7 @@ float f = (new Float(myNum)).floatValue();  // Noncompliant; creates & discards 
 
 ```
 **Compliant Solution**
-```cs
+```java
 String myNum = "12.2";
 
 float f = Float.parseFloat(myNum);
@@ -12376,21 +12548,21 @@ float f = Float.parseFloat(myNum);
 There is no good excuse for an empty class. If it's being used simply as a common extension point, it should be replaced with an interface. If it was stubbed in as a placeholder for future development it should be fleshed-out. In any other case, it should be eliminated.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Nothing {  // Noncompliant
 }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface Nothing {
 }
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 Empty classes can be used as marker types (for Spring for instance), therefore empty classes that are annotated will be ignored.
 
@@ -12406,7 +12578,7 @@ public final class ApplicationConfiguration {
 transient is used to mark fields in a Serializable class which will not be written out to file (or stream). In a class that does not implement Serializable, this modifier is simply wasted keystrokes, and should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Vegetable {  // does not implement Serializable
   private transient Season ripe;  // Noncompliant
   // ...
@@ -12415,7 +12587,7 @@ class Vegetable {  // does not implement Serializable
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Vegetable {
   private Season ripe;
   // ...
@@ -12426,14 +12598,14 @@ class Vegetable {
 It is needlessly complex to invert the result of a boolean comparison. The opposite comparison should be made instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 if ( !(a == 2)) { ...}  // Noncompliant
 boolean b = !(i < 10);  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (a != 2) { ...}
 boolean b = (i >= 10);
 ```
@@ -12442,7 +12614,7 @@ boolean b = (i >= 10);
 Unnecessary casting expressions make the code harder to read and understand.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void example() {
   for (Foo obj : (List<Foo>) getFoos()) {  // Noncompliant; cast unnecessary because List<Foo> is what's returned
     //...
@@ -12456,7 +12628,7 @@ public List<Foo> getFoos() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void example() {
   for (Foo obj : getFoos()) {
     //...
@@ -12470,7 +12642,7 @@ public List<Foo> getFoos() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Casting may be required to distinguish the method to call in the case of overloading:
 
@@ -12494,7 +12666,7 @@ class C {
 Once deprecated, classes, and interfaces, and their members should be avoided, rather than used, inherited or extended. Deprecation is a warning that the class or interface has been superseded, and will eventually be removed. The deprecation period allows you to make a smooth transition away from the aging, soon-to-be-retired technology.
 
 **Noncompliant Code Example**
-```cs
+```java
 /**
  * @deprecated  As of release 1.3, replaced by {@link #Fee}
  */
@@ -12526,6 +12698,7 @@ public class Bar extends Fum {  // Noncompliant; Fum is deprecated
 
 ```
 *See*
+
 MITRE, CWE-477 - Use of Obsolete Functions
 CERT, MET02-J. - Do not use deprecated or obsolete classes or methods
 #### Rule 339: "toString()" should never be called on a String object
@@ -12533,14 +12706,14 @@ CERT, MET02-J. - Do not use deprecated or obsolete classes or methods
 Invoking a method designed to return a string representation of an object which is already a string is a waste of keystrokes. This redundant construction may be optimized by the compiler, but will be confusing in the meantime.
 
 **Noncompliant Code Example**
-```cs
+```java
 String message = "hello world";
 System.out.println(message.toString()); // Noncompliant;
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 String message = "hello world";
 System.out.println(message);
 ```
@@ -12551,7 +12724,7 @@ Before Java 8 if you needed to use multiple instances of the same annotation, th
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 @SomeAnnotations({  // Noncompliant
   @SomeAnnotation(..a..),
   @SomeAnnotation(..b..),
@@ -12564,7 +12737,7 @@ public class SomeClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @SomeAnnotation(..a..)
 @SomeAnnotation(..b..)
 @SomeAnnotation(..c..)
@@ -12577,7 +12750,7 @@ public class SomeClass {
 Declaring multiple variables on one line is difficult to read.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass {
 
   private int a, b;
@@ -12590,7 +12763,7 @@ class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
 
   private int a;
@@ -12605,6 +12778,7 @@ class MyClass {
 
 ```
 *See*
+
  MISRA C++:2008, 8-0-1 - An init-declarator-list or a member-declarator-list shall consist of a single init-declarator or member-declarator respectively
 CERT, DCL52-J. - Do not declare more than one variable per declaration
 CERT, DCL04-C. - Do not declare more than one variable per declaration
@@ -12613,7 +12787,7 @@ CERT, DCL04-C. - Do not declare more than one variable per declaration
 Strings are immutable objects, so concatenation doesn't simply add the new String to the end of the existing string. Instead, in each loop iteration, the first String is converted to an intermediate object type, the second string is appended, and then the intermediate object is converted back to a String. Further, performance of these intermediate operations degrades as the String gets longer. Therefore, the use of StringBuilder is preferred.
 
 **Noncompliant Code Example**
-```cs
+```java
 String str = "";
 for (int i = 0; i < arrayOfStrings.length ; ++i) {
   str = str + arrayOfStrings[i];
@@ -12622,7 +12796,7 @@ for (int i = 0; i < arrayOfStrings.length ; ++i) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 StringBuilder bld = new StringBuilder();
   for (int i = 0; i < arrayOfStrings.length; ++i) {
     bld.append(arrayOfStrings[i]);
@@ -12634,7 +12808,7 @@ StringBuilder bld = new StringBuilder();
 When all the keys of a Map are values from the same enum, the Map can be replaced with an EnumMap, which can be much more efficient than other sets because the underlying data structure is a simple array.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   public enum COLOR {
@@ -12649,7 +12823,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
 
   public enum COLOR {
@@ -12668,7 +12842,7 @@ Method/constructor references are more compact and readable than using lambdas, 
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 class A {
   void process(List<A> list) {
     list.stream()
@@ -12684,7 +12858,7 @@ class A {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class A {
   void process(List<A> list) {
     list.stream()
@@ -12704,13 +12878,13 @@ There are two possible syntaxes for a lambda having only one input parameter wit
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 (x) -> x * 2
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 x -> x * 2
 ```
 #### Rule 346: Abstract classes without fields should be converted to interfaces
@@ -12720,7 +12894,7 @@ With Java 8's "default method" feature, any abstract class without direct or inh
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 public abstract class Car {
   public abstract void start(Environment c);
 
@@ -12732,7 +12906,7 @@ public abstract class Car {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface Car {
   public void start(Environment c);
 
@@ -12748,14 +12922,14 @@ There are two ways to write lambdas that contain single statement, but one is de
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 x -> {System.out.println(x+1);}
 (a, b) -> { return a+b; }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 x -> System.out.println(x+1)
 (a, b) -> a+b    //For return statement, the return keyword should also be dropped
 ```
@@ -12764,7 +12938,7 @@ x -> System.out.println(x+1)
 Since the introduction of generics in Java 5, the use of generic types such as List<String> is recommended over the use of raw ones such as List. Assigning a raw type to a generic one is not type safe, and will generate a warning. The old EMPTY_... fields of the Collections class return raw types, whereas the newer empty...() methods return generic ones.
 
 **Noncompliant Code Example**
-```cs
+```java
 List<String> collection1 = Collections.EMPTY_LIST;  // Noncompliant
 Map<String, String> collection2 = Collections.EMPTY_MAP;  // Noncompliant
 Set<String> collection3 = Collections.EMPTY_SET;  // Noncompliant
@@ -12772,7 +12946,7 @@ Set<String> collection3 = Collections.EMPTY_SET;  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 List<String> collection1 = Collections.emptyList();
 Map<String, String> collection2 = Collections.emptyMap();
 Set<String> collection3 = Collections.emptySet();
@@ -12784,7 +12958,7 @@ Declaring a variable only to immediately return or throw it is a bad practice.
 Some developers argue that the practice improves code readability, because it enables them to explicitly name what is being returned. However, this variable is an internal implementation detail that is not exposed to the callers of the method. The method name should be sufficient for callers to know exactly what will be returned.
 
 **Noncompliant Code Example**
-```cs
+```java
 public long computeDurationInMilliseconds() {
   long duration = (((hours * 60) + minutes) * 60 + seconds ) * 1000 ;
   return duration;
@@ -12798,7 +12972,7 @@ public void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public long computeDurationInMilliseconds() {
   return (((hours * 60) + minutes) * 60 + seconds ) * 1000 ;
 }
@@ -12812,7 +12986,7 @@ public void doSomething() {
 If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will not wonder what the variable is used for.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int numberOfMinutes(int hours) {
   int seconds = 0;   // seconds is never used
   return hours * 60;
@@ -12821,7 +12995,7 @@ public int numberOfMinutes(int hours) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int numberOfMinutes(int hours) {
   return hours * 60;
 }
@@ -12831,7 +13005,7 @@ public int numberOfMinutes(int hours) {
 When the value of a private field is always assigned to in a class' methods before being read, then it is not being used to store class information. Therefore, it should become a local variable in the relevant methods to prevent any misunderstanding.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
   private int a;
   private int b;
@@ -12854,7 +13028,7 @@ public class Foo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo {
 
   public void doSomething(int y) {
@@ -12874,7 +13048,7 @@ public class Foo {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise any issue on annotated field.
 ```
@@ -12885,7 +13059,7 @@ Restricting the number of break and continue statements in a loop is done in the
 One break and continue statement is acceptable in a loop, since it facilitates optimal coding. If there is more than one, the code should be refactored to increase readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 1; i <= 10; i++) {     // Noncompliant - 2 continue - one might be tempted to add some logic in between
   if (i % 2 == 0) {
     continue;
@@ -12910,7 +13084,7 @@ This rule raises an issue when an implementation class:
  is accepted as an argument to a public method.
  is exposed as a public member.
 **Noncompliant Code Example**
-```cs
+```java
 public class Employees {
   private HashSet<Employee> employees = new HashSet<Employee>();  // Noncompliant - "employees" should have type "Set" rather than "HashSet"
 
@@ -12922,7 +13096,7 @@ public class Employees {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Employees {
   private Set<Employee> employees = new HashSet<Employee>();      // Compliant
 
@@ -12938,7 +13112,7 @@ switch statements are useful when there are many different cases depending on th
 For just one or two cases however, the code will be more readable with if statements.
 
 **Noncompliant Code Example**
-```cs
+```java
 switch (variable) {
   case 0:
     doSomething();
@@ -12951,7 +13125,7 @@ switch (variable) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (variable == 0) {
   doSomething();
 } else {
@@ -12961,6 +13135,7 @@ if (variable == 0) {
 
 ```
 *See*
+
  MISRA C:2004, 15.5 - Every switch statement shall have at least one case clause.
  MISRA C++:2008, 6-4-8 - Every switch statement shall have at least one case-clause.
  MISRA C:2012, 16.6 - Every switch statement shall have at least two switch-clauses
@@ -12969,13 +13144,13 @@ if (variable == 0) {
 When only the condition expression is defined in a for loop, and the initialization and increment expressions are missing, a while loop should be used instead to increase readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (;condition;) { /*...*/ }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 while (condition) { /*...*/ }
 ```
 #### Rule 356: The default unnamed package should not be used
@@ -12987,13 +13162,13 @@ Unnamed packages are provided by the Java platform principally for convenience w
 To enforce this best practice, classes located in default package can no longer be accessed from named ones since Java 1.4.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass { /* ... */ }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 package org.example;
 
 public class MyClass{ /* ... */ }
@@ -13013,7 +13188,7 @@ If this rule is violated, weird and unpredictable failures can occur.
 For example, in Java 5 the PriorityQueue.remove() method relied on compareTo(), but since Java 6 it has relied on equals().
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo implements Comparable<Foo> {
   @Override
   public int compareTo(Foo foo) { /* ... */ }      // Noncompliant as the equals(Object obj) method is not overridden
@@ -13022,7 +13197,7 @@ public class Foo implements Comparable<Foo> {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo implements Comparable<Foo> {
   @Override
   public int compareTo(Foo foo) { /* ... */ }      // Compliant
@@ -13036,7 +13211,7 @@ public class Foo implements Comparable<Foo> {
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all package names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[a-z_]+(\.[a-z_][a-z0-9_]*)*$:
 
@@ -13045,7 +13220,7 @@ package org.exAmple; // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 package org.example;
 ```
 #### Rule 359: Nested code blocks should not be used
@@ -13053,7 +13228,7 @@ package org.example;
 Nested code blocks can be used to create a new scope and restrict the visibility of the variables defined inside it. Using this feature in a method typically indicates that the method has too many responsibilities, and should be refactored into smaller methods.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void evaluate(int operator) {
   switch (operator) {
     /* ... */
@@ -13071,7 +13246,7 @@ public void evaluate(int operator) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void evaluate(int operator) {
   switch (operator) {
     /* ... */
@@ -13094,14 +13269,14 @@ private void evaluateAdd() {
 Array designators should always be located on the type for better code readability. Otherwise, developers must look both at the type and the variable name to know whether or not a variable is an array.
 
 **Noncompliant Code Example**
-```cs
+```java
 int matrix[][];   // Noncompliant
 int[] matrix[];   // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 int[][] matrix;   // Compliant
 ```
 #### Rule 361: Array designators "[]" should be located after the type in method signatures
@@ -13115,7 +13290,7 @@ the declaration of a method that returns an array is allowed to place (some or a
 This obsolescent syntax should not be used in new code.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int getVector()[] { /* ... */ }    // Noncompliant
 
 public int[] getMatrix()[] { /* ... */ }  // Noncompliant
@@ -13123,7 +13298,7 @@ public int[] getMatrix()[] { /* ... */ }  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int[] getVector() { /* ... */ }
 
 public int[][] getMatrix() { /* ... */ }
@@ -13135,7 +13310,7 @@ Shared naming conventions make it possible for a team to collaborate efficiently
 This rule check that all type parameter names match a provided regular expression. The following code snippets use the default regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass<TYPE> { // Noncompliant
   <TYPE> void method(TYPE t) { // Noncompliant
   }
@@ -13144,7 +13319,7 @@ public class MyClass<TYPE> { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass<T> {
   <T> void method(T t) {
   }
@@ -13155,7 +13330,7 @@ public class MyClass<T> {
 Overriding a method just to call the same method from the super class without performing any other actions is useless and misleading. The only time this is justified is in final overriding methods, where the effect is to lock in the parent class behavior. This rule ignores such overrides of equals, hashCode and toString.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething() {
   super.doSomething();
 }
@@ -13168,7 +13343,7 @@ public boolean isLegal(Action action) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Override
 public boolean isLegal(Action action) {         // Compliant - not simply forwarding the call
   return super.isLegal(new Action(/* ... */));
@@ -13196,7 +13371,7 @@ super.clone() returns a new object instance
 super.clone() returns an object of the same type as the one clone() was called on
 Object.clone() performs a shallow copy of the object's state
 **Noncompliant Code Example**
-```cs
+```java
 class BaseClass {  // Noncompliant; should implement Cloneable
   @Override
   public Object clone() throws CloneNotSupportedException {    // Noncompliant; should return the super.clone() instance
@@ -13222,7 +13397,7 @@ class Application {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class BaseClass implements Cloneable {
   @Override
   public Object clone() throws CloneNotSupportedException {    // Compliant
@@ -13248,6 +13423,7 @@ class Application {
 
 ```
 *See*
+
 MITRE, CWE-580 - clone() Method Without super.clone()
 CERT, MET53-J. - Ensure that the clone() method calls super.clone()
 #### Rule 365: Public constants and fields initialized at declaration should be "static final" rather than merely "final"
@@ -13257,7 +13433,7 @@ Making a public constant just final as opposed to static final leads to duplicat
 Further, when a non-public, final field isn't also static, it implies that different instances can have different values. However, initializing a non-static final field in its declaration forces every instance to have the same value. So such fields should either be made static or initialized in the constructor.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Myclass {
   public final int THRESHOLD = 3;
 }
@@ -13265,7 +13441,7 @@ public class Myclass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Myclass {
   public static final int THRESHOLD = 3;    // Compliant
 }
@@ -13273,7 +13449,7 @@ public class Myclass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 No issues are reported on final fields of inner classes whose type is not a primitive or a String. Indeed according to the Java specification:
 
@@ -13284,7 +13460,7 @@ An inner class is a nested class that is not explicitly or implicitly declared s
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a local variable or function parameter name does not match the provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[a-z][a-zA-Z0-9]*$:
 
@@ -13296,7 +13472,7 @@ public void doSomething(int my_param) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething(int myParam) {
   int local;
   ...
@@ -13305,7 +13481,7 @@ public void doSomething(int myParam) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Loop counters are ignored by this rule.
 
@@ -13327,7 +13503,7 @@ try {
 
 ```
 **Exceptions**
-```cs are meant to represent the application's state at the point at which an error occurred.
+```java are meant to represent the application's state at the point at which an error occurred.
 
 Making all fields in an Exception class final ensures that this state:
 
@@ -13337,7 +13513,7 @@ Making all fields in an Exception class final ensures that this state:
 This will enable developers to quickly understand what went wrong.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyException extends Exception {
 
   private int status;                               // Noncompliant
@@ -13359,7 +13535,7 @@ public class MyException extends Exception {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyException extends Exception {
 
   private final int status;
@@ -13381,7 +13557,7 @@ public class MyException extends Exception {
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that field names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[a-z][a-zA-Z0-9]*$:
 
@@ -13392,7 +13568,7 @@ class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {
    private int myField;
 }
@@ -13404,13 +13580,13 @@ Creating temporary primitive wrapper objects only for String conversion or the u
 Instead, the static toString() or compare method of the primitive wrapper class should be used.
 
 **Noncompliant Code Example**
-```cs
+```java
 new Integer(myInteger).toString();  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 Integer.toString(myInteger);        // Compliant
 ```
 #### Rule 370: Case insensitive string comparisons should be made without intermediate upper or lower casing
@@ -13418,7 +13594,7 @@ Integer.toString(myInteger);        // Compliant
 Using toLowerCase() or toUpperCase() to make case insensitive comparisons is inefficient because it requires the creation of temporary, intermediate String objects.
 
 **Noncompliant Code Example**
-```cs
+```java
 boolean result1 = foo.toUpperCase().equals(bar);             // Noncompliant
 boolean result2 = foo.equals(bar.toUpperCase());             // Noncompliant
 boolean result3 = foo.toLowerCase().equals(bar.LowerCase()); // Noncompliant
@@ -13426,7 +13602,7 @@ boolean result3 = foo.toLowerCase().equals(bar.LowerCase()); // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 boolean result = foo.equalsIgnoreCase(bar);                  // Compliant
 ```
 #### Rule 371: Collection.isEmpty() should be used to test for emptiness
@@ -13434,7 +13610,7 @@ boolean result = foo.equalsIgnoreCase(bar);                  // Compliant
 Using Collection.size() to test for emptiness works, but using Collection.isEmpty() makes the code more readable and can be more performant. The time complexity of any isEmpty() method implementation should be O(1) whereas some implementations of size() can be O(n).
 
 **Noncompliant Code Example**
-```cs
+```java
 if (myCollection.size() == 0) {  // Noncompliant
   /* ... */
 }
@@ -13442,7 +13618,7 @@ if (myCollection.size() == 0) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (myCollection.isEmpty()) {
   /* ... */
 }
@@ -13454,7 +13630,7 @@ Appending String.valueOf() to a String decreases the code readability.
 The argument passed to String.valueOf() should be directly appended instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void display(int i){
   System.out.println("Output is " + String.valueOf(i));    // Noncompliant
 }
@@ -13462,7 +13638,7 @@ public void display(int i){
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void display(int i){
   System.out.println("Output is " + i);                    // Compliant
 }
@@ -13472,7 +13648,7 @@ public void display(int i){
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all interface names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[A-Z][a-zA-Z0-9]*$:
 
@@ -13481,7 +13657,7 @@ public interface myInterface {...} // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface MyInterface {...}
 ```
 #### Rule 374: Return of boolean expressions should not be wrapped into an "if-then-else" statement
@@ -13491,7 +13667,7 @@ Return of boolean literal statements wrapped into if-then-else ones should be si
 Similarly, method invocations wrapped into if-then-else differing only from boolean literals should be simplified into a single invocation.
 
 **Noncompliant Code Example**
-```cs
+```java
 boolean foo(Object param) {
   if (expression) { // Noncompliant
     bar(param, true, "qix");
@@ -13509,7 +13685,7 @@ boolean foo(Object param) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 boolean foo(Object param) {
   bar(param, expression, "qix");
 
@@ -13521,7 +13697,7 @@ boolean foo(Object param) {
 Redundant Boolean literals should be removed from expressions to improve readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (booleanMethod() == true) { /* ... */ }
 if (booleanMethod() == false) { /* ... */ }
 if (booleanMethod() || false) { /* ... */ }
@@ -13537,7 +13713,7 @@ booleanVariable = booleanMethod() ? exp : false;
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (booleanMethod()) { /* ... */ }
 if (!booleanMethod()) { /* ... */ }
 if (booleanMethod()) { /* ... */ }
@@ -13557,7 +13733,7 @@ Empty statements, i.e. ;, are usually introduced by mistake, for example because
  It was meant to be replaced by an actual statement, but this was forgotten.
  There was a typo which lead the semicolon to be doubled, i.e. ;;.
 **Noncompliant Code Example**
-```cs
+```java
 void doSomething() {
   ;                                                       // Noncompliant - was used as a kind of TODO marker
 }
@@ -13570,7 +13746,7 @@ void doSomethingElse() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 void doSomething() {}
 
 void doSomethingElse() {
@@ -13583,6 +13759,7 @@ void doSomethingElse() {
 
 ```
 *See*
+
  MISRA C:2004, 14.3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character.
  MISRA C++:2008, 6-2-3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment, provided that the first character following the null statement is a white-space character.
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
@@ -13597,7 +13774,7 @@ Further even if the elements of a URI are obtained dynamically, portability can 
 This rule raises an issue when URI's or path delimiters are hard coded.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo {
   public Collection<User> listUsers() {
     File userList = new File("/home/mylogin/Dev/users.txt"); // Non-Compliant
@@ -13609,7 +13786,7 @@ public class Foo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo {
   // Configuration is a class that returns customizable properties: it can be mocked to be injected during tests.
   private Configuration config;
@@ -13629,13 +13806,14 @@ public class Foo {
 
 ```
 *See*
+
 CERT, MSC03-J. - Never hard code sensitive information
 #### Rule 378: Class names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate effectively. This rule allows to check that all class names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With default provided regular expression ^[A-Z][a-zA-Z0-9]*$:
 
@@ -13644,7 +13822,7 @@ class my_class {...}
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass {...}
 ```
 #### Rule 379: Method names should comply with a naming convention
@@ -13652,7 +13830,7 @@ class MyClass {...}
 Shared naming conventions allow teams to collaborate efficiently. This rule checks that all method names match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With default provided regular expression ^[a-z][a-zA-Z0-9]*$:
 
@@ -13661,13 +13839,13 @@ public int DoSomething(){...}
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int doSomething(){...}
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 Overriding methods are excluded.
 
@@ -13684,7 +13862,7 @@ Sometimes the developer will not have the time or will simply forget to get back
 This rule is meant to track those tags and to ensure that they do not go unnoticed.
 
 **Noncompliant Code Example**
-```cs
+```java
 void doSomething() {
   // TODO
 }
@@ -13692,13 +13870,14 @@ void doSomething() {
 
 ```
 *See*
+
 MITRE, CWE-546 - Suspicious Comment
 #### Rule 381: Deprecated code should be removed
 ##### Quality Category: Code Smell
 This rule is meant to be used as a way to track code which is marked as being deprecated. Deprecated code should eventually be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Foo {
   /**
    * @deprecated
@@ -13723,6 +13902,7 @@ This rule raises an issue when a web.xml file has no <security-constraint> eleme
 
 ```
 *See*
+
 MITRE, CWE-284 - Improper Access Control
  OWASP Top 10 2017 Category A5 - Broken Access Control
 #### Rule 383: Custom resources should be closed
@@ -13731,14 +13911,15 @@ Leaking resources in an application is never a good idea, as it can lead to memo
 
 
 ```
-*See* also
+*See*
+ also
  {rule:squid:S2095} - Resources should be closed
 #### Rule 384: EJB interceptor exclusions should be declared as annotations
 ##### Quality Category: Code Smell
 Exclusions for default interceptors can be declared either in xml or as class annotations. Since annotations are more visible to maintainers, they are preferred.
 
 **Noncompliant Code Example**
-```cs
+```java
 <assembly-descriptor>
       <interceptor-binding>
          <ejb-name>MyExcludedClass</ejb-name>
@@ -13754,7 +13935,7 @@ Exclusions for default interceptors can be declared either in xml or as class an
 
 ```
 **Compliant Solution**
-```cs
+```java
 @ExcludeDefaultInterceptors
 public class MyExcludedClass implements MessageListener
 {
@@ -13772,7 +13953,7 @@ The problem with invoking Thread.start() in a constructor is that you'll have a 
 This rule raises an issue any time start is invoked in the constructor of a non-final class.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   Thread thread = null;
@@ -13786,6 +13967,7 @@ public class MyClass {
 
 ```
 *See*
+
 CERT, TSM02-J. - Do not use background threads during class initialization
 #### Rule 386: "main" should not "throw" anything
 ##### Quality Category: Code Smell
@@ -13794,14 +13976,14 @@ There's no reason for a main method to throw anything. After all, what's going t
 Instead, the method should itself gracefully handle any exceptions that may bubble up to it, attach as much contextual information as possible, and perform whatever logging or user communication is necessary, and exit with a non-zero (i.e. non-success) exit code if necessary.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static void main(String args[]) throws Exception { // Noncompliant
   doSomething();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static void main(String args[]) {
  try {
     doSomething();
@@ -13832,7 +14014,8 @@ Compliant Solution
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
 ```
-*See* the GNU
+*See*
+ the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
@@ -13845,18 +14028,19 @@ Compliant Solution
 Integer literals starting with a zero are octal rather than decimal values. While using octal values is fully supported, most developers do not have experience with them. They may not recognize octal values as such, mistaking them instead for decimal values.
 
 **Noncompliant Code Example**
-```cs
+```java
 int myNumber = 010;   // Noncompliant. myNumber will hold 8, not 10 - was this really expected?
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 int myNumber = 8;
 
 
 ```
 *See*
+
  MISRA C:2004, 7.1 - Octal constants (other than zero) and octal escape sequences shall not be used.
  MISRA C++:2008, 2-13-2 - Octal constants (other than zero) and octal escape sequences (other than "\0") shall not be used
  MISRA C:2012, 7.1 - Octal constants shall not be used
@@ -13869,7 +14053,7 @@ Calling System.exit(int status) or Rutime.getRuntime().exit(int status) calls th
 Each of these methods should be used with extreme care, and only when the intent is to stop the whole Java process. For instance, none of them should be called from applications running in a J2EE container.
 
 **Noncompliant Code Example**
-```cs
+```java
 System.exit(0);
 Runtime.getRuntime().exit(0);
 Runtime.getRuntime().halt(0);
@@ -13877,13 +14061,14 @@ Runtime.getRuntime().halt(0);
 
 ```
 **Exceptions**
-```cs
+```java
 
 These methods are ignored inside main.
 
 
 ```
 *See*
+
 MITRE, CWE-382 - Use of System.exit()
 CERT, ERR09-J. - Do not allow untrusted code to terminate the JVM
 ```
@@ -13900,7 +14085,7 @@ org.springframework.beans.factory.annotation.Value
 javax.annotation.Inject
 javax.annotation.Resource
 **Noncompliant Code Example**
-```cs
+```java
 @Controller
 public class HelloWorld {
 
@@ -13920,6 +14105,7 @@ public class HelloWorld {
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 #### Rule 391: Cypher Block Chaining IV's should be random and unique
 ##### Quality Category: Vulnerability
@@ -13939,7 +14125,7 @@ This rule raises an issue when the IV is:
  hard-coded
  created using java.util.Random rather than java.security.SecureRandom.
 **Noncompliant Code Example**
-```cs
+```java
 public class MyCbcClass {
 
   public String applyCBC(String strKey, String plainText) {
@@ -13961,7 +14147,7 @@ public class MyCbcClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyCbcClass {
 
   SecureRandom random = new SecureRandom();
@@ -13986,6 +14172,7 @@ public class MyCbcClass {
 
 ```
 *See*
+
 MITRE, CWE-330 - Use of Insufficiently Random Values
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
  Derived from FindSecBugs rule STATIC_IV
@@ -13996,13 +14183,14 @@ Dynamically loaded classes could contain malicious code executed by a static cla
 This rule raises an issue for each use of dynamic class loading.
 
 **Noncompliant Code Example**
-```cs
+```java
 String className = System.getProperty("messageClassName");
 Class clazz = Class.forName(className);  // Noncompliant
 
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A1 - Injection
 #### Rule 393: HTTP referers should not be relied on
 ##### Quality Category: Vulnerability
@@ -14011,7 +14199,7 @@ The fields in an HTTP request are putty in the hands of an attacker, and you can
 This rule flags uses of the referer header field.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -14026,6 +14214,7 @@ public class MyServlet extends HttpServlet {
 
 ```
 *See*
+
 MITRE, CWE-807 - Reliance on Untrusted Inputs in a Security Decision
 MITRE, CWE-293 - Using Referer Field for Authentication
  OWASP Top 10 2017 Category A2 - Broken Authentication
@@ -14073,18 +14262,19 @@ The following APIs are tracked for use of obsolete crypto algorithms:
 Consider using safer alternatives, such as SHA-256, SHA-3 or adaptive one way functions like bcrypt or PBKDF2.
 
 **Noncompliant Code Example**
-```cs
+```java
 MessageDigest md = MessageDigest.getInstance("SHA1");  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 MessageDigest md = MessageDigest.getInstance("SHA-256");
 
 
 ```
 *See*
+
 MITRE, CWE-328 - Reversible One-Way Hash
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
@@ -14097,7 +14287,7 @@ Overriding the Object.finalize() method must be done with caution to dispose som
 Calling the super.finalize() at the end of this method implementation is highly recommended in case parent implementations must also dispose some system resources.
 
 **Noncompliant Code Example**
-```cs
+```java
 protected void finalize() {   // Noncompliant; no call to super.finalize();
   releaseSomeResources();
 }
@@ -14110,7 +14300,7 @@ protected void finalize() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 protected void finalize() {
   releaseSomeResources();
   super.finalize();
@@ -14119,6 +14309,7 @@ protected void finalize() {
 
 ```
 *See*
+
 MITRE, CWE-568 - finalize() Method Without super.finalize()
 CERT, MET12-J. - Do not use finalizers
 #### Rule 396: Equality operators should not be used in "for" loop termination conditions
@@ -14126,7 +14317,7 @@ CERT, MET12-J. - Do not use finalizers
 Testing for loop termination using an equality operator (== and !=) is dangerous, because it could set up an infinite loop. Using a broader relational operator instead casts a wider net, and makes it harder (but not impossible) to accidentally write an infinite loop.
 
 **Noncompliant Code Example**
-```cs
+```java
 for (int i = 1; i != 10; i += 2)  // Noncompliant. Infinite; i goes from 9 straight to 11.
 {
   //...
@@ -14135,7 +14326,7 @@ for (int i = 1; i != 10; i += 2)  // Noncompliant. Infinite; i goes from 9 strai
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (int i = 1; i <= 10; i += 2)  // Compliant
 {
   //...
@@ -14144,7 +14335,7 @@ for (int i = 1; i <= 10; i += 2)  // Compliant
 
 ```
 **Exceptions**
-```cs
+```java
 
 Equality operators are ignored if the loop counter is not modified within the body of the loop and either:
 
@@ -14164,6 +14355,7 @@ for (int i = 0; (item = arr[i]) != null; i++) {
 
 ```
 *See*
+
  MISRA C++:2008, 6-5-2
 MITRE, CWE-835 - Loop with Unreachable Exit Condition ('Infinite Loop')
 CERT, MSC21-C. - Use robust loop termination conditions
@@ -14173,7 +14365,7 @@ CERT, MSC21-C. - Use robust loop termination conditions
 Spring beans belonging to packages that are not included in a @ComponentScan configuration will not be accessible in the Spring Application Context. Therefore, it's likely to be a configuration mistake that will be detected by this rule. Note: the @ComponentScan is implicit in the @SpringBootApplication annotation, case in which Spring Boot will auto scan for components in the package containing the Spring Boot main class and its sub-packages.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Configuration
 @ComponentScan("com.mycompany.app.beans")
 public class Application {
@@ -14190,7 +14382,7 @@ public class MyController { // Noncompliant; MyController belong to "com.mycompa
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Configuration
 @ComponentScan({"com.mycompany.app.beans","com.mycompany.app.web"})
 public class Application {
@@ -14211,7 +14403,7 @@ The use of punctuation characters to separate subgroups in a number can make the
 This rule raises an issue when underscores (_) are used to break a number into irregular subgroups.
 
 **Noncompliant Code Example**
-```cs
+```java
 int duos = 1_00_00;
 int million = 1_000_00_000;  // Noncompliant
 int thousand = 1000;
@@ -14222,7 +14414,7 @@ int tenThousand = 100_00;  // Noncompliant
 There's no reason to use literal boolean values in assertions. Doing so is at best confusing for maintainers, and at worst a bug.
 
 **Noncompliant Code Example**
-```cs
+```java
 Assert.assertTrue(true);  // Noncompliant
 assertThat(true).isTrue(); // Noncompliant
 ```
@@ -14235,7 +14427,7 @@ Similarly, updates of such fields should also be synchronized.
 This rule raises an issue whenever a lazy static initialization is done on a class with at least one synchronized method, indicating intended usage in multi-threaded applications.
 
 **Noncompliant Code Example**
-```cs
+```java
 private static Properties fPreferences = null;
 
 private static Properties getPreferences() {
@@ -14252,7 +14444,7 @@ private static Properties getPreferences() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private static Properties fPreferences = null;
 
 private static synchronized Properties getPreferences() {
@@ -14271,7 +14463,7 @@ private static synchronized Properties getPreferences() {
 Blindly importing all the classes in a package clutters the class namespace and could lead to conflicts between classes in different packages with the same name. On the other hand, specifically listing the necessary classes avoids that problem and makes clear which versions were wanted.
 
 **Noncompliant Code Example**
-```cs
+```java
 import java.sql.*; // Noncompliant
 import java.util.*; // Noncompliant
 
@@ -14280,7 +14472,7 @@ private Date date; // Date class exists in java.sql and java.util. Which one is 
 
 ```
 **Compliant Solution**
-```cs
+```java
 import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -14290,7 +14482,7 @@ private Date date;
 
 ```
 **Exceptions**
-```cs
+```java
 
 Static imports are ignored by this rule. E.G.
 
@@ -14302,7 +14494,7 @@ import static java.lang.Math.*;
 When the modulus of a negative number is calculated, the result will either be negative or zero. Thus, comparing the modulus of a variable for equality with a positive number (or a negative one) could result in unexpected results.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean isOdd(int x) {
   return x % 2 == 1;  // Noncompliant; if x is an odd negative, x % 2 == -1
 }
@@ -14310,7 +14502,7 @@ public boolean isOdd(int x) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean isOdd(int x) {
   return x % 2 != 0;
 }
@@ -14318,6 +14510,7 @@ public boolean isOdd(int x) {
 
 ```
 *See*
+
 CERT, NUM51-J. - Do not assume that the remainder operator always returns a nonnegative result for integral operands
 CERT, INT10-C - Do not assume a positive remainder when using the % operator
 #### Rule 403: Comparators should be "Serializable"
@@ -14325,7 +14518,7 @@ CERT, INT10-C - Do not assume a positive remainder when using the % operator
 A non-serializable Comparator can prevent an otherwise-Serializable ordered collection from being serializable. Since the overhead to make a Comparator serializable is usually low, doing so can be considered good defensive programming.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class FruitComparator implements Comparator<Fruit> {  // Noncompliant
   int compare(Fruit f1, Fruit f2) {...}
   boolean equals(Object obj) {...}
@@ -14334,7 +14527,7 @@ public class FruitComparator implements Comparator<Fruit> {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class FruitComparator implements Comparator<Fruit>, Serializable {
   private static final long serialVersionUID = 1;
 
@@ -14349,7 +14542,7 @@ A serialVersionUID field is strongly recommended in all Serializable classes. If
 serialVersionUID's should be declared with all of these modifiers: static final long.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Raspberry extends Fruit  // Noncompliant; no serialVersionUID.
         implements Serializable {
   private String variety;
@@ -14366,7 +14559,7 @@ public class Raspberry extends Fruit
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Raspberry extends Fruit
         implements Serializable {
   private static final long serialVersionUID = 1;
@@ -14380,16 +14573,17 @@ public class Raspberry extends Fruit
 
 ```
 **Exceptions**
-```cs
+```java
 
 Swing and AWT classes, abstract classes, Throwable and its subclasses (
 ```
 **Exceptions**
-```cs and Errors), and classes marked with @SuppressWarnings("serial") are ignored.
+```java and Errors), and classes marked with @SuppressWarnings("serial") are ignored.
 
 
 ```
 *See*
+
 CERT, SER00-J. - Enable serialization compatibility during class evolution
 ```
 #### Rule 405: "switch" statements should not be nested
@@ -14399,7 +14593,7 @@ Nested switch structures are difficult to understand because you can easily conf
 Specifically, you should structure your code to avoid the need for nested switch statements, but if you cannot, then consider moving the inner switch to another function.
 
 **Noncompliant Code Example**
-```cs
+```java
 void foo(int n, int m) {
   switch (n) {
     case 0:
@@ -14416,7 +14610,7 @@ void foo(int n, int m) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 void foo(int n, int m) {
   switch (n) {
     case 0:
@@ -14444,7 +14638,7 @@ For example:
  The parent class constructor calls the method, which has been overridden in the child class.
  If the behavior of the child class method depends on fields that are initialized in the child class constructor, unexpected behavior (like a NullPointerException) can result, because the fields aren't initialized yet.
 **Noncompliant Code Example**
-```cs
+```java
 public class Parent {
 
   public Parent () {
@@ -14474,6 +14668,7 @@ public class Child extends Parent {
 
 ```
 *See*
+
 CERT, MET05-J. - Ensure that constructors do not call overridable methods
 CERT, OOP50-CPP. - Do not invoke virtual functions from constructors or destructors
 #### Rule 407: @FunctionalInterface annotation should be used to flag Single Abstract Method interfaces
@@ -14485,7 +14680,7 @@ Using @FunctionalInterface forces a compile break when an additional, non-overri
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 8.
 
 **Noncompliant Code Example**
-```cs
+```java
 public interface Changeable<T> {
   public void change(T o);
 }
@@ -14493,7 +14688,7 @@ public interface Changeable<T> {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @FunctionalInterface
 public interface Changeable<T> {
   public void change(T o);
@@ -14511,7 +14706,7 @@ Complex code can perform poorly and will in any case be difficult to understand 
 
 ```
 **Exceptions**
-```cs
+```java
 
 While having a large number of fields in a class may indicate that it should be split, this rule nonetheless ignores high complexity in equals and hashCode methods.
 ```
@@ -14522,7 +14717,7 @@ Nested if, for, while, switch, and try statements are key ingredients for making
 Such code is hard to read, refactor and therefore maintain.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold of 3:
 
@@ -14550,7 +14745,7 @@ Even when the Cyclomatic Complexity of a class is very high, this complexity mig
 
 Deprecated
 
-This rule is deprecated, and will eventually be removed.```
+This rule is deprecated, and will eventually be removed.
 #### Rule 411: "if ... else if" constructs should end with "else" clauses
 ##### Quality Category: Code Smell
 This rule applies whenever an if statement is followed by one or more else if statements; the final else if should be followed by an else statement.
@@ -14560,7 +14755,7 @@ The requirement for a final else statement is defensive programming.
 The else statement should either take appropriate action or contain a suitable comment as to why no action is taken. This is consistent with the requirement to have a final default clause in a switch statement.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (x == 0) {
   doSomething();
 } else if (x == 1) {
@@ -14570,7 +14765,7 @@ if (x == 0) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (x == 0) {
   doSomething();
 } else if (x == 1) {
@@ -14582,6 +14777,7 @@ if (x == 0) {
 
 ```
 *See*
+
  MISRA C:2004, 14.10 - All if...else if constructs shall be terminated with an else clause.
  MISRA C++:2008, 6-4-2 - All if...else if constructs shall be terminated with an else clause.
  MISRA C:2012, 15.7 - All if...else if constructs shall be terminated with an else statement
@@ -14592,14 +14788,14 @@ CERT, MSC57-J. - Strive for logical completeness
 While not technically incorrect, the omission of curly braces can be misleading, and may lead to the introduction of errors during maintenance.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (condition)  // Noncompliant
   executeSomething();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (condition) {
   executeSomething();
 }
@@ -14607,6 +14803,7 @@ if (condition) {
 
 ```
 *See*
+
  MISRA C:2004, 14.8 - The statement forming the body of a switch, while, do ... while or for statement shall be a compound statement
  MISRA C:2004, 14.9 - An if (expression) construct shall be followed by a compound statement. The else keyword shall be followed by either a compound statement, or another if statement
  MISRA C++:2008, 6-3-1 - The statement forming the body of a switch, while, do ... while or for statement shall be a compound statement
@@ -14619,7 +14816,7 @@ CERT, EXP52-J. - Use braces for the body of an if, for, or while statement
 The Object.finalize() method is called on an object by the garbage collector when it determines that there are no more references to the object. But there is absolutely no warranty that this method will be called AS SOON AS the last references to the object are removed. It can be few microseconds to few minutes later. So when system resources need to be disposed by an object, it's better to not rely on this asynchronous mechanism to dispose them.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
   ...
   protected void finalize() {
@@ -14631,6 +14828,7 @@ public class MyClass {
 
 ```
 *See*
+
 CERT, MET12-J. - Do not use finalizers
 #### Rule 414: Expressions should not be too complex
 ##### Quality Category: Code Smell
@@ -14639,7 +14837,7 @@ The complexity of an expression is defined by the number of &&, || and condition
 A single expression's complexity should not become too high to keep the code readable.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold value of 3:
 
@@ -14648,7 +14846,7 @@ if (((condition1 && condition2) || (condition3 && condition4)) && condition5) { 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if ( (myFirstCondition() || mySecondCondition()) && myLastCondition()) { ... }
 ```
 #### Rule 415: Spring "@Controller" classes should not use "@Scope"
@@ -14658,7 +14856,7 @@ Spring @Controllers, @Services, and @Repositorys have singleton scope by default
 This rule raises an issue when the @Scope annotation is applied to a @Controller, @Service, or @Repository with any value but "singleton". @Scope("singleton") is redundant, but ignored.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Scope("prototype")  // Noncompliant
 @Controller
 public class HelloWorld {
@@ -14666,7 +14864,7 @@ public class HelloWorld {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Controller
 public class HelloWorld {
 ```
@@ -14679,7 +14877,7 @@ Instead @Inject should be moved to the constructor and the fields required as co
 This rule raises an issue when classes with non-private constructors (including the default constructor) use field injection.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyComponent {  // Anyone can call the default constructor
 
   @Inject MyCollaborator collaborator;  // Noncompliant
@@ -14692,7 +14890,7 @@ class MyComponent {  // Anyone can call the default constructor
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyComponent {
 
   private final MyCollaborator collaborator;
@@ -14713,7 +14911,7 @@ class MyComponent {
 Because Object implements hashCode, any Java class can be put into a hash structure. However, classes that define equals(Object) but not hashCode() aren't truly hash-able because instances that are equivalent according to the equals method can return different hashes.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Student {  // no hashCode() method; not hash-able
   // ...
 
@@ -14731,7 +14929,7 @@ public class School {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Student {  // has hashCode() method; hash-able
   // ...
 
@@ -14753,7 +14951,7 @@ public class School {
 instanceof operators that always return true or false are either useless or the result of a misunderstanding which could lead to unexpected behavior in production.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean isSuitable(Integer param) {
 ...
   String name = null;
@@ -14771,7 +14969,7 @@ public boolean isSuitable(Integer param) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean isSuitable(Integer param) {
 ...
   doSomething();
@@ -14786,7 +14984,7 @@ This rule is deprecated; use {rule:squid:S2589} instead.```
 When either the equality operator in a null test or the logical operator that follows it is reversed, the code has the appearance of safely null-testing the object before dereferencing it. Unfortunately the effect is just the opposite - the object is null-tested and then dereferenced only if it is null, leading to a guaranteed null pointer dereference.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (str == null && str.length() == 0) {
   System.out.println("String is empty");
 }
@@ -14798,7 +14996,7 @@ if (str != null || str.length() > 0) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (str == null || str.length() == 0) {
   System.out.println("String is empty");
 }
@@ -14827,7 +15025,7 @@ Therefore, the use of the equality (==) and inequality (!=) operators on float o
 This rule checks for the use of direct and indirect equality/inequailty tests on floats and doubles.
 
 **Noncompliant Code Example**
-```cs
+```java
 float myNumber = 3.146;
 if ( myNumber == 3.146f ) { //Noncompliant. Because of floating point imprecision, this will be false
   // ...
@@ -14847,7 +15045,7 @@ if (zeroFloat == 0) {  // Noncompliant. Computations may end up with a value clo
 
 ```
 **Exceptions**
-```cs
+```java
 
 Since NaN is not equal to itself, the specific case of testing a floating point value against itself is a valid test for NaN and is therefore ignored. Though using Double.isNaN method should be preferred instead, as intent is more explicit.
 
@@ -14862,6 +15060,7 @@ if(f != f) { // Compliant; test for NaN value
 
 ```
 *See*
+
  MISRA C:2004, 13.3 - Floating-point expressions shall not be tested for equality or inequality.
  MISRA C++:2008, 6-2-2 - Floating-point expressions shall not be directly or indirectly tested for equality or inequality
 ```
@@ -14878,7 +15077,7 @@ There are three possible causes for the presence of such code:
 In any of these cases, unconditional if statements should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (true) {
   doSomething();
 }
@@ -14903,13 +15102,14 @@ if (b || !b) { ... }  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 doSomething();
 ...
 
 
 ```
 *See*
+
 MITRE, CWE-489 - Leftover Debug Code
 MITRE, CWE-570 - Expression is Always False
 MITRE, CWE-571 - Expression is Always True
@@ -14923,7 +15123,7 @@ This rule is deprecated; use {rule:squid:S2583} instead.
 According to the official javadoc documentation, this Object.finalize() is called by the garbage collector on an object when garbage collection determines that there are no more references to the object. Calling this method explicitly breaks this contract and so is misleading.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void dispose() throws Throwable {
   this.finalize();                       // Noncompliant
 }
@@ -14931,6 +15131,7 @@ public void dispose() throws Throwable {
 
 ```
 *See*
+
 MITRE, CWE-586 - Explicit Call to Finalize()
 CERT, MET12-J. - Do not use finalizers
 #### Rule 423: Using setters in Struts 2 ActionSupport is security-sensitive
@@ -14956,7 +15157,7 @@ As said in Strut's documentation: "Do not define setters when not needed"
 Sanitize the user input. This can be for example done by implementing the validate() method of com.opensymphony.xwork2.ActionSupport.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class AccountBalanceAction extends ActionSupport {
   private static final long serialVersionUID = 1L;
   private Integer accountId;
@@ -14977,6 +15178,7 @@ public class AccountBalanceAction extends ActionSupport {
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A1 - Injection
 #### Rule 424: Using Struts 1 ActionForm is security-sensitive
 ##### Quality Category: Security Hotspot
@@ -15004,7 +15206,7 @@ Allow only non security-sensitive property names. All the ActionForm's property 
 Unused fields should be constrained so that they are either empty or undefined.
 
 **Noncompliant Code Example**
-```cs
+```java
 // Struts 1.1+
 public final class CashTransferAction extends Action {
 
@@ -15021,6 +15223,7 @@ public final class CashTransferAction extends Action {
 
 ```
 *See*
+
  OWASP Top 10 2017 Category A1 - Injection
 MITRE, CWE-105: Struts Form Field Without Validator
 #### Rule 425: Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression
@@ -15031,14 +15234,14 @@ The use of increment and decrement operators in method calls or in combination w
  It introduces additional side effects into a statement, with the potential for undefined behavior.
  It is safer to use these operators in isolation from any other arithmetic operators.
 **Noncompliant Code Example**
-```cs
+```java
 u8a = ++u8b + u8c--;
 foo = bar++ / 4;
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 
 The following sequence is clearer and therefore safer:
 
@@ -15051,6 +15254,7 @@ bar++;
 
 ```
 *See*
+
  MISRA C:2004, 12.1 - Limited dependence should be placed on the C operator precedence rules in expressions.
  MISRA C:2004, 12.13 - The increment (++) and decrement (--) operators should not be mixed with other operators in an expression.
  MISRA C++:2008, 5-2-10 - The increment (++) and decrement (--) operator should not be mixed with other operators in an expression.
@@ -15072,7 +15276,7 @@ This rule raises issues when && and || are used in combination, when assignment 
 ^	x	x	x		x
 |	x	x	x	x	
 **Noncompliant Code Example**
-```cs
+```java
 x = a + b - c;
 x = a + 1 << b;  // Noncompliant
 
@@ -15083,7 +15287,7 @@ if (a = f(b,c) == 1) { ... } // Noncompliant; == evaluated first
 
 ```
 **Compliant Solution**
-```cs
+```java
 x = a + b - c;
 x = (a + 1) << b;
 
@@ -15094,6 +15298,7 @@ if ( (a = f(b,c)) == 1) { ... }
 
 ```
 *See*
+
  MISRA C:2004, 12.1 - Limited dependence should be placed on C's operator precedence rules in expressions
  MISRA C:2004, 12.2 - The value of an expression shall be the same under any order of evaluation that the standard permits.
  MISRA C:2004, 12.5 - The operands of a logical && or || shall be primary-expressions.
@@ -15111,7 +15316,7 @@ MITRE, CWE-783 - Operator Precedence Logic Error
 This rule applies for @SpringBootApplication as well.
 
 **Noncompliant Code Example**
-```cs
+```java
 @SpringBootApplication
 public class MyApplication {
 ...
@@ -15126,7 +15331,7 @@ public class MyApplication {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @SpringBootApplication(exclude = {
   MultipartAutoConfiguration.class,
   JmxAutoConfiguration.class,
@@ -15170,7 +15375,7 @@ public class MyApplication {
 The interface @SpringBootApplication is also considered by this rule because it is annotated with @ComponentScan.
 
 **Noncompliant Code Example**
-```cs
+```java
 @ComponentScan
 public class MyApplication {
 ...
@@ -15184,7 +15389,7 @@ public class MyApplication {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Configuration
 @Import({
         DispatcherServletAutoConfiguration.class,
@@ -15203,6 +15408,7 @@ public class MyApplication {
 
 ```
 *See*
+
 Optimizing Spring Framework for App Engine Applications
 #### Rule 429: Enum values should be compared with "=="
 ##### Quality Category: Code Smell
@@ -15217,7 +15423,7 @@ Testing equality of an enum value with equals is perfectly valid because an enum
 For these reasons, use of "==" should be preferred to equals.
 
 **Noncompliant Code Example**
-```cs
+```java
 public enum Fruit {
    APPLE, BANANA, GRAPE
 }
@@ -15238,7 +15444,7 @@ public boolean isFruitGrape(Cake candidateFruit) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean isFruitGrape(Fruit candidateFruit) {
   return candidateFruit == Fruit.GRAPE; // Compliant; there is only one instance of Fruit.GRAPE - if candidateFruit is a GRAPE it will have the same reference as Fruit.GRAPE
 }
@@ -15250,6 +15456,7 @@ public boolean isFruitGrape(Cake candidateFruit) {
 
 ```
 *See*
+
 Use == (or !=) to Compare Java Enums
 #### Rule 430: Spring components should use constructor injection
 ##### Quality Category: Code Smell
@@ -15258,7 +15465,7 @@ Spring @Controller, @Service, and @Repository classes are singletons by default,
 This rule raise an issue when any non-static member of a Spring component has an injection annotation, or if the constructor of Spring component does not have injection annotation.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Controller
 public class HelloWorld {
 
@@ -15275,7 +15482,7 @@ public class HelloWorld {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Controller
 public class HelloWorld {
 
@@ -15303,7 +15510,7 @@ This rule raises an issue when:
  A Pattern is compiled from a String literal or constant and is not stored in a static final reference.
 String.matches, String.split, String.replaceAll or String.replaceFirst are invoked with a String literal or constant. In which case the code should be refactored to use a java.util.regex.Pattern while respecting the previous rule.
 **Noncompliant Code Example**
-```cs
+```java
 public void doingSomething(String stringToMatch) {
   Pattern regex = Pattern.compile("myRegex");  // Noncompliant
   Matcher matcher = regex.matcher("s");
@@ -15316,7 +15523,7 @@ public void doingSomething(String stringToMatch) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 private static final Pattern myRegex = Pattern.compile("myRegex");
 private static final Pattern myRegex2 = Pattern.compile("myRegex2");
 
@@ -15331,7 +15538,7 @@ public void doingSomething(String stringToMatch) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 String.split doesn't create a regex when the string passed as argument meets either of these 2 conditions:
 
@@ -15345,7 +15552,7 @@ In which case no issue will be raised.
 There are valid cases for passing a variable multiple times into the same method call, but usually doing so is a mistake, and something else was intended for one of the arguments.
 
 **Noncompliant Code Example**
-```cs
+```java
 if (compare(myPoint.x, myPoint.x) != 0) { // Noncompliant
   //...
 }
@@ -15357,7 +15564,7 @@ if (compare(getNextValue(), getNextValue()) != 0) { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (compare(myPoint.x, myPoint.y) != 0) {
   //...
 }
@@ -15376,7 +15583,7 @@ This rule is deprecated, and will eventually be removed.```
 This rule allows banning usage of certain constructors.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 Given parameters:
 
@@ -15393,7 +15600,7 @@ The Java language authors have been quite frank that Optional was intended for u
 And for that, it's valuable but using Optional on the input side increases the work you have to do in the method without really increasing the value. With an Optional parameter, you go from having 2 possible inputs: null and not-null, to three: null, non-null-without-value, and non-null-with-value. Add to that the fact that overloading has long been available to convey that some parameters are optional, and there's really no reason to have Optional parameters.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String sayHello(Optional<String> name) {  // Noncompliant
   if (name == null || !name.isPresent()) {
     return "Hello World";
@@ -15405,7 +15612,7 @@ public String sayHello(Optional<String> name) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public String sayHello(String name) {
   if (name == null) {
     return "Hello World";
@@ -15421,7 +15628,7 @@ Whether they are disallowed locally for security, license, or dependability reas
 This rule raises an issue when the group or artifact id of a direct dependency matches the configured forbidden dependency pattern.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With a parameter of: *:.*log4j.*
 
@@ -15440,7 +15647,7 @@ The classic example is a class with a static list of its instances. If the const
 This rule raises an issue when this is assigned to any globally-visible object in a constructor, and when it is passed to the method of another object in a constructor
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Monument {
 
   public static final List<Monument> ALL_MONUMENTS = new ArrayList()<>;
@@ -15457,13 +15664,14 @@ public class Monument {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule ignores instances of assigning this directly to a static field of the same class because that case is covered by S3010.
 
 
 ```
 *See*
+
 CERT, TSM01-J. - Do not let the this reference escape during object construction
 CERT, TSM03-J. - Do not publish partially initialized objects
 ```
@@ -15472,7 +15680,7 @@ CERT, TSM03-J. - Do not publish partially initialized objects
 Importing a class statically allows you to use its public static members without qualifying them with the class name. That can be handy, but if you import too many classes statically, your code can become confusing and difficult to maintain.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold value: 4
 
@@ -15489,18 +15697,18 @@ The use of Unicode escape sequences should be reserved for characters that would
 This rule ignores sequences composed entirely of Unicode characters, but otherwise raises an issue for each Unicode character that represents a printable character.
 
 **Noncompliant Code Example**
-```cs
+```java
 String prefix = "n\u00E9e"; // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 String prefix = "née";
 ```
 #### Rule 439: Inner classes should not have too many lines of code
 ##### Quality Category: Code Smell
-Inner classes should be short and sweet, to manage complexity in the overall file. An inner class that has grown longer than a certain threshold should probably be externalized to its own file.```
+Inner classes should be short and sweet, to manage complexity in the overall file. An inner class that has grown longer than a certain threshold should probably be externalized to its own file.
 #### Rule 440: Inner classes which do not reference their owning classes should be "static"
 ##### Quality Category: Code Smell
 A non-static inner class has a reference to its outer class, and access to the outer class' fields and methods. That class reference makes the inner class larger and could cause the outer class instance to live in memory longer than necessary.
@@ -15512,17 +15720,19 @@ However, while a nested/static class would be more efficient, it's worth noting 
  an inner class can only be instantiated within the context of an instance of the outer class.
  a nested (static) class can be instantiated independently of the outer class.
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit {
   // ...
 
   public class 
 ```
-*See*d {  // Noncompliant; there's no use of the outer class reference so make it static
+*See*
+d {  // Noncompliant; there's no use of the outer class reference so make it static
     int germinationDays = 0;
     public 
 ```
-*See*d(int germinationDays) {
+*See*
+d(int germinationDays) {
       this.germinationDays = germinationDays;
     }
     public int getGerminationDays() {
@@ -15534,17 +15744,19 @@ public class Fruit {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit {
   // ...
 
   public static class 
 ```
-*See*d {
+*See*
+d {
     int germinationDays = 0;
     public 
 ```
-*See*d(int germinationDays) {
+*See*
+d(int germinationDays) {
       this.germinationDays = germinationDays;
     }
     public int getGerminationDays() {
@@ -15560,7 +15772,7 @@ Use of File.deleteOnExit() is not recommended for the following reasons:
  The deletion occurs only in the case of a normal JVM shutdown but not when the JVM crashes or is killed.
  For each file handler, the memory associated with the handler is released only at the end of the process.
 **Noncompliant Code Example**
-```cs
+```java
 File file = new File("file.txt");
 file.deleteOnExit();  // Noncompliant
 ```
@@ -15575,7 +15787,7 @@ Instead, separate methods should be written.
 This rule finds methods with a boolean that's used to determine which path to take through the method.
 
 **Noncompliant Code Example**
-```cs
+```java
 public String tempt(String name, boolean ofAge) {
   if (ofAge) {
     offerLiquor(name);
@@ -15592,7 +15804,7 @@ public void corrupt() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void temptAdult(String name) {
   offerLiquor(name);
 }
@@ -15608,13 +15820,13 @@ public void corrupt() {
 ```
 #### Rule 443: Java parser failure
 ##### Quality Category: Code Smell
-When the Java parser fails, it is possible to record the failure as a violation on the file. This way, not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.```
+When the Java parser fails, it is possible to record the failure as a violation on the file. This way, not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.
 #### Rule 444: Track uses of disallowed methods
 ##### Quality Category: Code Smell
 This rule allows banning certain methods.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 Given parameters:
 
@@ -15629,7 +15841,7 @@ name.replace("A","a");  // Noncompliant
 Shared coding conventions allow teams to collaborate effectively. While types for lambda arguments are optional, specifying them anyway makes the code clearer and easier to read.
 
 **Noncompliant Code Example**
-```cs
+```java
 Arrays.sort(rosterAsArray,
     (a, b) -> {  // Noncompliant
         return a.getBirthday().compareTo(b.getBirthday());
@@ -15639,7 +15851,7 @@ Arrays.sort(rosterAsArray,
 
 ```
 **Compliant Solution**
-```cs
+```java
 Arrays.sort(rosterAsArray,
     (Person a, Person b) -> {
         return a.getBirthday().compareTo(b.getBirthday());
@@ -15649,7 +15861,7 @@ Arrays.sort(rosterAsArray,
 
 ```
 **Exceptions**
-```cs
+```java
 
 When the lambda has one or two parameters and does not have a block this rule will not fire up an issue as things are considered more readable in those cases.
 
@@ -15675,7 +15887,7 @@ DateTimeFields	stores a map of field-value pairs which may be invalid
 Calendrical	access to the low-level API
 Period	a descriptive amount of time, such as "2 months and 3 days"
 **Noncompliant Code Example**
-```cs
+```java
 Date now = new Date();  // Noncompliant
 DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 Calendar christmas  = Calendar.getInstance();  // Noncompliant
@@ -15684,7 +15896,7 @@ christmas.setTime(df.parse("25.12.2020"));
 
 ```
 **Compliant Solution**
-```cs
+```java
 LocalDate now = LocalDate.now();  // gets calendar date. no time component
 LocalTime now2 = LocalTime.now(); // gets current time. no date component
 LocalDate christmas = LocalDate.of(2020,12,25);
@@ -15694,7 +15906,7 @@ LocalDate christmas = LocalDate.of(2020,12,25);
 Well-named functions can allow the users of your code to understand at a glance what to expect from the function - even before reading the documentation. Toward that end, methods returning a boolean should have names that start with "is" or "has" rather than with "get".
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean getFoo() { // Noncompliant
   // ...
 }
@@ -15710,7 +15922,7 @@ public boolean testForBar(Bar c) { // Compliant - The method does not start by '
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean isFoo() {
   // ...
 }
@@ -15726,7 +15938,7 @@ public boolean testForBar(Bar c) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Overriding methods are excluded.
 
@@ -15738,24 +15950,24 @@ public boolean getFoo(){
 ```
 #### Rule 448: Files should contain only one top-level class or interface each
 ##### Quality Category: Code Smell
-A file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. This is doubly true for a file with multiple top-level classes and interfaces. It is strongly advised to divide the file into one top-level class or interface per file.```
+A file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. This is doubly true for a file with multiple top-level classes and interfaces. It is strongly advised to divide the file into one top-level class or interface per file.
 #### Rule 449: Classes should not have too many fields
 ##### Quality Category: Code Smell
 A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain, and having a lot of fields is an indication that a class has grown too large.
 
-Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.```
+Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.
 #### Rule 450: The ternary operator should not be used
 ##### Quality Category: Code Smell
 While the ternary operator is pleasingly compact, its use can make code more difficult to read. It should therefore be avoided in favor of the more verbose if/else structure.
 
 **Noncompliant Code Example**
-```cs
+```java
 System.out.println(i>10?"yes":"no");
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if (i > 10) {
   System.out.println(("yes");
 } else {
@@ -15769,7 +15981,7 @@ Just as there is little justification for writing your own String class, there i
 Doing so may seem tempting, since it would allow you to specify a little extra context with the name. But in the long run, it will be a source of confusion, because maintenance programmers will wonder what is different between the custom functional interface and the standard one.
 
 **Noncompliant Code Example**
-```cs
+```java
 @FunctionalInterface
 public interface MyInterface { // Noncompliant
 	double toDouble(int a);
@@ -15793,7 +16005,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @FunctionalInterface
 public interface ExtendedBooleanSupplier extends BooleanSupplier { // Compliant, extends java.util.function.BooleanSupplier
   default boolean isFalse() {
@@ -15813,7 +16025,7 @@ public class MyClass {
 NullPointerException should be avoided, not caught. Any situation in which NullPointerException is explicitly caught can easily be converted to a null test, and any behavior being carried out in the catch block can easily be moved to the "is null" branch of the conditional.
 
 **Noncompliant Code Example**
-```cs
+```java
 public int lengthPlus(String str) {
   int len = 2;
   try {
@@ -15828,7 +16040,7 @@ public int lengthPlus(String str) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public int lengthPlus(String str) {
   int len = 2;
 
@@ -15844,6 +16056,7 @@ public int lengthPlus(String str) {
 
 ```
 *See*
+
 MITRE, CWE-395 - Use of NullPointerException Catch to Detect NULL Pointer Dereference
 CERT, ERR08-J. - Do not catch NullPointerException or any of its ancestors
 #### Rule 453: "NullPointerException" should not be explicitly thrown
@@ -15855,7 +16068,7 @@ Explicitly throwing NullPointerException forces a method's callers to explicitly
 If an NPE is being thrown to indicate that a parameter to the method should not have been null, use the @NotNull annotation instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomething (String aString) throws NullPointerException {
      throw new NullPointerException();
 }
@@ -15863,29 +16076,29 @@ public void doSomething (String aString) throws NullPointerException {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething (@NotNull String aString) {
 }
 ```
 #### Rule 454: Classes should not have too many methods
 ##### Quality Category: Code Smell
-A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.```
+A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.
 #### Rule 455: Methods should not have too many lines
 ##### Quality Category: Code Smell
 A method that grows too large tends to aggregate too many responsibilities. Such method inevitably become harder to understand and therefore harder to maintain.
 
-Above a specific threshold, it is strongly advised to refactor into smaller methods which focus on well-defined tasks. Those smaller methods will not only be easier to understand, but also probably easier to test.```
+Above a specific threshold, it is strongly advised to refactor into smaller methods which focus on well-defined tasks. Those smaller methods will not only be easier to understand, but also probably easier to test.
 #### Rule 456: Track uses of "NOSONAR" comments
 ##### Quality Category: Code Smell
 Any issue to quality rule can be deactivated with the NOSONAR marker. This marker is pretty useful to exclude false-positive results but it can also be used abusively to hide real quality flaws.
 
-This rule raises an issue when NOSONAR is used.```
+This rule raises an issue when NOSONAR is used.
 #### Rule 457: Classes and enums with private members should have a constructor
 ##### Quality Category: Code Smell
 Non-abstract classes and enums with non-static, private members should explicitly initialize those members, either in a constructor or with a default value.
 
 **Noncompliant Code Example**
-```cs
+```java
 class A { // Noncompliant
   private int field;
 }
@@ -15893,7 +16106,7 @@ class A { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 class A {
   private int field;
 
@@ -15908,19 +16121,19 @@ This rule template can be used to create rules which will be triggered when the 
 
 For example, one can create a rule with the regular expression .*REVIEW.* to match all comment containing "REVIEW".
 
-Note that, in order to match REVIEW regardless of the case, the (?i) modifier should be prepended to the expression, as in (?i).*REVIEW.*.```
+Note that, in order to match REVIEW regardless of the case, the (?i) modifier should be prepended to the expression, as in (?i).*REVIEW.*.
 #### Rule 459: Statements should be on separate lines
 ##### Quality Category: Code Smell
 For better readability, do not put more than one statement on a single line.
 
 **Noncompliant Code Example**
-```cs
+```java
 if(someCondition) doSomething();
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if(someCondition) {
   doSomething();
 }
@@ -15940,7 +16153,7 @@ Classes which rely on many other classes tend to aggregate too many responsibili
 Nested classes dependencies are not counted as dependencies of the outer class.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With a threshold of 5:
 
@@ -15965,18 +16178,18 @@ class Foo {                        // Noncompliant - Foo depends on too many cla
 java.lang.Error and its subclasses represent abnormal conditions, such as OutOfMemoryError, which should only be encountered by the Java Virtual Machine.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyException extends Error { /* ... */ }       // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyException extends Exception { /* ... */ }   // Compliant
 ```
 #### Rule 462: Lambdas and anonymous classes should not have too many lines of code
 ##### Quality Category: Code Smell
-Anonymous classes and lambdas (with Java 8) are a very convenient and compact way to inject a behavior without having to create a dedicated class. But those anonymous inner classes and lambdas should be used only if the behavior to be injected can be defined in a few lines of code, otherwise the source code can quickly become unreadable.```
+Anonymous classes and lambdas (with Java 8) are a very convenient and compact way to inject a behavior without having to create a dedicated class. But those anonymous inner classes and lambdas should be used only if the behavior to be injected can be defined in a few lines of code, otherwise the source code can quickly become unreadable.
 #### Rule 463: Public types, methods and fields (API) should be documented with Javadoc
 ##### Quality Category: Code Smell
 Try to imagine using the standard Java API (Collections, JDBC, IO, ...) without Javadoc. It would be a nightmare, because Javadoc is the only way to understand of the contract of the API. Documenting an API with Javadoc increases the productivity of the developers consuming it.
@@ -16003,7 +16216,7 @@ The following public methods and constructors are not taken into account by this
  Empty constructors.
  Static constants.
 **Noncompliant Code Example**
-```cs
+```java
 /**
   * This is a Javadoc comment
   */
@@ -16040,7 +16253,7 @@ public class MyClass<T> implements Runnable {    // Noncompliant - missing '@par
 
 ```
 **Compliant Solution**
-```cs
+```java
 /**
   * This is a Javadoc comment
   * @param <T> the parameter of the class
@@ -16092,7 +16305,7 @@ public class MyClass<T> implements Runnable {
 When handling a caught exception, the original exception's message and stack trace should be logged or passed forward.
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   /* ... */
 } catch (Exception e) {   // Noncompliant - exception is lost
@@ -16114,7 +16327,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try {
   /* ... */
 } catch (Exception e) {
@@ -16139,7 +16352,7 @@ try {
 
 ```
 **Exceptions**
-```cs
+```java
 
 InterruptedException, NumberFormatException, DateTimeParseException, ParseException and MalformedURLException exceptions are arguably used to indicate nonexceptional outcomes. Similarly, handling NoSuchMethodException is often required when dealing with the Java reflection API.
 
@@ -16166,6 +16379,7 @@ try {
 
 ```
 *See*
+
 CERT, ERR00-J. - Do not suppress or ignore checked exceptions
 MITRE, CWE-778 - Insufficient Logging
  OWASP Top 10 2017 Category A10 - Insufficient Logging & Monitoring
@@ -16177,7 +16391,7 @@ The purpose of checked exceptions is to ensure that errors will be dealt with, e
 This rule verifies that no method throws a new checked exception.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void myMethod1() throws CheckedException {
   ...
   throw new CheckedException(message);   // Noncompliant
@@ -16196,7 +16410,7 @@ Using checked exceptions forces method callers to deal with errors, either by pr
 But to keep the complexity for callers reasonable, methods should not throw more than one kind of checked exception.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void delete() throws IOException, SQLException {      // Noncompliant
   /* ... */
 }
@@ -16204,7 +16418,7 @@ public void delete() throws IOException, SQLException {      // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void delete() throws SomeApplicationLevelException {
   /* ... */
 }
@@ -16212,7 +16426,7 @@ public void delete() throws SomeApplicationLevelException {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Overriding methods are not checked by this rule and are allowed to throw several checked exceptions.
 ```
@@ -16221,7 +16435,7 @@ Overriding methods are not checked by this rule and are allowed to throw several
 The switch statement should be used only to clearly define some new branches in the control flow. As soon as a case clause contains too many statements this highly decreases the readability of the overall control flow statement. In such case, the content of the case clause should be extracted into a dedicated method.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold of 5:
 
@@ -16239,7 +16453,7 @@ switch (myVariable) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch (myVariable) {
   case 0:
     doSomething()
@@ -16260,7 +16474,7 @@ private void doSomething(){
 Having too many return statements in a method increases the method's essential complexity because the flow of execution is broken each time a return statement is encountered. This makes it harder to read and understand the logic of the method.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold of 3:
 
@@ -16282,7 +16496,7 @@ public boolean myMethod() { // Noncompliant; there are 4 return statements
 Labels are not commonly used in Java, and many developers do not understand how they work. Moreover, their usage makes the control flow harder to follow, which reduces the code's readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 int matrix[][] = {
   {1, 2, 3},
   {4, 5, 6},
@@ -16301,7 +16515,7 @@ outer: for (int row = 0; row < matrix.length; row++) {   // Non-Compliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 for (int row = 1; row < matrix.length; row++) {          // Compliant
   for (int col = 0; col < row; col++) {
     System.out.println(matrix[row][col]);                // Also prints 4, 7 and 8
@@ -16319,7 +16533,7 @@ That is why magic numbers must be demystified by first being assigned to clearly
 -1, 0 and 1 are not considered magic numbers.
 
 **Noncompliant Code Example**
-```cs
+```java
 public static void doSomething() {
 	for(int i = 0; i < 4; i++){                 // Noncompliant, 4 is a magic number
 		...
@@ -16329,7 +16543,7 @@ public static void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static final int NUMBER_OF_CYCLES = 4;
 public static void doSomething() {
   for(int i = 0; i < NUMBER_OF_CYCLES ; i++){
@@ -16340,16 +16554,16 @@ public static void doSomething() {
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule ignores hashCode methods.
 ```
 #### Rule 471: Files should not have too many lines of code
 ##### Quality Category: Code Smell
-A source file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor it into smaller pieces of code which focus on well defined tasks. Those smaller files will not only be easier to understand but also probably easier to test.```
+A source file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor it into smaller pieces of code which focus on well defined tasks. Those smaller files will not only be easier to understand but also probably easier to test.
 #### Rule 472: Lines should not be too long
 ##### Quality Category: Code Smell
-Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.```
+Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.
 #### Rule 473: Mutable members should not be stored or returned directly
 ##### Quality Category: Vulnerability
 Mutable objects are those whose state can be changed. For instance, an array is mutable, but a String is not. Mutable class members should never be returned to a caller or accepted and stored directly. Doing so leaves you vulnerable to unexpected changes in your class state.
@@ -16359,7 +16573,7 @@ Instead use an unmodifiable Collection (via Collections.unmodifiableCollection, 
 This rule checks that arrays, collections and Dates are not stored or returned directly.
 
 **Noncompliant Code Example**
-```cs
+```java
 class A {
   private String [] strings;
 
@@ -16388,7 +16602,7 @@ public class B {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class A {
   private String [] strings;
 
@@ -16418,6 +16632,7 @@ public class B {
 
 ```
 *See*
+
 MITRE, CWE-374 - Passing Mutable Objects to an Untrusted Method
 MITRE, CWE-375 - Returning a Mutable Object to an Untrusted Caller
 CERT, OBJ05-J. - Do not return references to private mutable class members
@@ -16428,7 +16643,7 @@ CERT, OBJ13-J. - Ensure that references to mutable objects are not exposed
 Failing to explicitly declare the visibility of a member variable could result it in having a visibility you don't expect, and potentially leave it open to unexpected modification by other classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Ball {
     String color="red";  // Noncompliant
 }
@@ -16440,7 +16655,7 @@ enum A {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Ball {
     private String color="red";  // Compliant
 }
@@ -16452,7 +16667,7 @@ enum A {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Members annotated with Guava's @VisibleForTesting annotation are ignored, as it indicates that visibility has been purposely relaxed to make the code testable.
 
@@ -16473,7 +16688,7 @@ Public class variable fields do not respect the encapsulation principle and has 
 By using private attributes and accessor methods (set and get), unauthorized modifications are prevented.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   public static final int SOME_CONSTANT = 0;     // Compliant - constants are not checked
@@ -16485,7 +16700,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
 
   public static final int SOME_CONSTANT = 0;     // Compliant - constants are not checked
@@ -16505,13 +16720,14 @@ public class MyClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Because they are not modifiable, this rule ignores public final fields.
 
 
 ```
 *See*
+
 MITRE, CWE-493 - Critical Public Variable Without Final Modifier
 ```
 #### Rule 476: JEE applications should not "getClassLoader"
@@ -16519,13 +16735,13 @@ MITRE, CWE-493 - Critical Public Variable Without Final Modifier
 Using the standard getClassLoader() may not return the right class loader in a JEE context. Instead, go through the currentThread.
 
 **Noncompliant Code Example**
-```cs
+```java
 ClassLoader cl = this.getClass().getClassLoader();  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 ClassLoader cl = Thread.currentThread().getContextClassLoader();
 ```
 #### Rule 477: Math should not be performed on floats
@@ -16533,7 +16749,7 @@ ClassLoader cl = Thread.currentThread().getContextClassLoader();
 For small numbers, float math has enough precision to yield the expected value, but for larger numbers, it does not. BigDecimal is the best alternative, but if a primitive is required, use a double.
 
 **Noncompliant Code Example**
-```cs
+```java
 float a = 16777216.0f;
 float b = 1.0f;
 float c = a + b; // Noncompliant; yields 1.6777216E7 not 1.6777217E7
@@ -16543,7 +16759,7 @@ double d = a + b; // Noncompliant; addition is still between 2 floats
 
 ```
 **Compliant Solution**
-```cs
+```java
 float a = 16777216.0f;
 float b = 1.0f;
 BigDecimal c = BigDecimal.valueOf(a).add(BigDecimal.valueOf(b));
@@ -16553,7 +16769,7 @@ double d = (double)a + (double)b;
 
 ```
 **Exceptions**
-```cs
+```java
 
 This rule doesn't raise an issue when the mathematical expression is only used to build a string.
 
@@ -16563,6 +16779,7 @@ System.out.println("["+getName()+"] " +
 
 ```
 *See*
+
 CERT, FLP02-C. - Avoid using floating-point numbers when precise computation is needed
 ```
 #### Rule 478: "equals" methods should be symmetric and work for subclasses
@@ -16589,7 +16806,7 @@ Additionally, non final classes shouldn't use a hardcoded class name in the equa
 Further, comparing to an unrelated class type breaks the contract for that unrelated type, because while thisClass.equals(unrelatedClass) can return true, unrelatedClass.equals(thisClass) will not.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Fruit extends Food {
   private Season ripe;
 
@@ -16614,7 +16831,7 @@ public class Fruit extends Food {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Fruit extends Food {
   private Season ripe;
 
@@ -16634,13 +16851,14 @@ public class Fruit extends Food {
 
 ```
 *See*
+
 CERT, MET08-J. - Preserve the equality contract when overriding the equals() method
 #### Rule 479: Literal suffixes should be upper case
 ##### Quality Category: Code Smell
 Using upper case literal suffixes removes the potential ambiguity between "1" (digit 1) and "l" (letter el) for declaring literals.
 
 **Noncompliant Code Example**
-```cs
+```java
 long long1 = 1l; // Noncompliant
 float float1 = 1.0f; // Noncompliant
 double double1 = 1.0d; // Noncompliant
@@ -16648,7 +16866,7 @@ double double1 = 1.0d; // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 long long1 = 1L;
 float float1 = 1.0F;
 double double1 = 1.0D;
@@ -16656,6 +16874,7 @@ double double1 = 1.0D;
 
 ```
 *See*
+
  MISRA C++:2008, 2-13-4 - Literal suffixes shall be upper case
  MISRA C:2012, 7.3 - The lowercase character "l" shall not be used in a literal suffix
 CERT DCL16-C. - Use "L," not "l," to indicate a long value
@@ -16671,7 +16890,7 @@ When the serialVersionUID is generated by an IDE or blindly hard-coded, there is
 Therefore, defining serialVersionUID should be done with care. This rule raises an issue on each serialVersionUID field declared on classes implementing Serializable to be sure the presence and the value of the serialVersionUID field is challenged and validated by the team.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo implements Serializable {
   private static final long serialVersionUID = 1;
 }
@@ -16683,6 +16902,7 @@ public class BarException extends RuntimeException {
 
 ```
 *See*
+
  Vojtech Ruzicka's Programming Blog: Should I explicitly declare serialVersionUID?
 #### Rule 481: "Stream.collect()" calls should not be redundant
 ##### Quality Category: Code Smell
@@ -16700,13 +16920,13 @@ stream.collect(summingInt(mapper))	stream.mapToInt(mapper).sum()
 stream.collect(summingLong(mapper))	stream.mapToLong(mapper).sum()
 stream.collect(summingDouble(mapper))	stream.mapToDouble(mapper).sum()
 **Noncompliant Code Example**
-```cs
+```java
 int count = stream.collect(counting());  // Noncompliant
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 int count = stream.count();
 ```
 #### Rule 482: Local constants should follow naming conventions for constants
@@ -16714,7 +16934,7 @@ int count = stream.count();
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all local, final, initialized, primitive variables, have names that match a provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$:
 
@@ -16726,7 +16946,7 @@ public void doSomething() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomething() {
   final int LOCAL = 42;
   ...
@@ -16739,7 +16959,7 @@ When the code under test in a unit test throws an exception, the test itself fai
 This rule raises an issue when there is a fail assertion inside a catch block.
 
 **Noncompliant Code Example**
-```cs
+```java
 @Test
 public void testMethod() {
   try {
@@ -16752,7 +16972,7 @@ public void testMethod() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Test
 public void testMethod() throws MyException {
     // Some code
@@ -16763,7 +16983,7 @@ public void testMethod() throws MyException {
 Shared naming conventions allow teams to collaborate efficiently. This rule raises an issue when a test method name does not match the provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default value: ^test[A-Z][a-zA-Z0-9]*$
 
@@ -16775,7 +16995,7 @@ public void foo() {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 @Test
 public void testFoo() {
   // ...
@@ -16786,7 +17006,7 @@ public void testFoo() {
 Shared naming conventions allow teams to collaborate efficiently. This rule raises an issue when a test class name does not match the provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default value: ^((Test|IT)[a-zA-Z0-9]+|[A-Z][a-zA-Z0-9]*(Test|IT|TestCase|ITCase))$
 
@@ -16796,7 +17016,7 @@ class Foo {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 class FooTest {
 }
 ```
@@ -16827,7 +17047,7 @@ While these promises are coincidentally fulfilled in current implementations of 
 This rule raises an issue when a Serializable class defines a non-transient, non-static field field whose type is a known serializable value-based class. Known serializable value-based classes are: all the classes in the java.time package except Clock; the date classes for alternate calendars: HijrahDate, JapaneseDate, MinguoDate, ThaiBuddhistDate.
 
 **Noncompliant Code Example**
-```cs
+```java
 class MyClass implements Serializable {
   private HijrahDate date;  // Noncompliant; mark this transient
   // ...
@@ -16836,7 +17056,7 @@ class MyClass implements Serializable {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class MyClass implements Serializable {
   private transient HijrahDate date;
   // ...
@@ -16845,6 +17065,7 @@ class MyClass implements Serializable {
 
 ```
 *See*
+
 Value-based classes
 #### Rule 487: pom elements should be in the recommended order
 ##### Quality Category: Code Smell
@@ -16885,13 +17106,14 @@ Not following this convention has no technical impact, but will reduce the pom's
 
 ```
 *See*
+
 POM Code Convention
 #### Rule 488: Artifact ids should follow a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a pom's artifactId does not match the provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression: [a-z][a-z-0-9]+
 
@@ -16904,7 +17126,7 @@ With the default regular expression: [a-z][a-z-0-9]+
 
 ```
 **Compliant Solution**
-```cs
+```java
 <project ...>
   <artifactId>my-project</artifactId>
 
@@ -16916,7 +17138,7 @@ With the default regular expression: [a-z][a-z-0-9]+
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when the a pom's groupId does not match the provided regular expression.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression: (com|org)(\.[a-z][a-z-0-9]*)+
 
@@ -16929,7 +17151,7 @@ With the default regular expression: (com|org)(\.[a-z][a-z-0-9]*)+
 
 ```
 **Compliant Solution**
-```cs
+```java
 <project ...>
   <groupId>com.myco</groupId>
 
@@ -16943,7 +17165,7 @@ It makes sense to handle all related actions in the same place. Thus, the same <
 So to ease maintenance, this rule raises an issue when an <action> has more than the allowed number of <forward/> tags.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default threshold of 4:
 
@@ -16958,7 +17180,7 @@ With the default threshold of 4:
 
 ```
 **Compliant Solution**
-```cs
+```java
 <action path='/book' type='myapp.BookDispatchAction' name='bookForm' parameter='method'>
   <forward name='create' path='/WEB-INF/jsp/BookCreate.jspx' redirect='false'/>
   <forward name='read' path='/WEB-INF/jsp/BookDetails' redirect='false'/>
@@ -16975,7 +17197,7 @@ With the default threshold of 4:
 For optimal code readability, annotation arguments should be specified in the same order that they were declared in the annotation definition.
 
 **Noncompliant Code Example**
-```cs
+```java
 @interface Pet {
     String name();
     String surname();
@@ -16986,7 +17208,7 @@ For optimal code readability, annotation arguments should be specified in the sa
 
 ```
 **Compliant Solution**
-```cs
+```java
 @interface Pet {
     String name();
     String surname();
@@ -16999,7 +17221,7 @@ For optimal code readability, annotation arguments should be specified in the sa
 Specifying the default value for an annotation parameter is redundant. Such values should be omitted in the interests of readability.
 
 **Noncompliant Code Example**
-```cs
+```java
 @MyAnnotation(arg = "def")  // Noncompliant
 public class MyClass {
   // ...
@@ -17011,7 +17233,7 @@ public @interface MyAnnotation {
 
 ```
 **Compliant Solution**
-```cs
+```java
 @MyAnnotation
 public class MyClass {
   // ...
@@ -17025,7 +17247,7 @@ public @interface MyAnnotation {
 For maximum reusability, methods should accept parameters with as little specialization as possible. So unless specific features from a child class are required by a method, a type higher up the class hierarchy should be used instead.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void printSize(ArrayList<Object> list) {  // Collection can be used instead
     System.out.println(list.size());
 }
@@ -17039,7 +17261,7 @@ public static void loop(List<Object> list) { // java.lang.Iterable can be used i
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void printSize(Collection<?> list) {  // Collection can be used instead
     System.out.println(list.size());
 }
@@ -17053,7 +17275,7 @@ public static void loop(Iterable<?> list) { // java.lang.Iterable can be used in
 
 ```
 **Exceptions**
-```cs
+```java
 
 Parameters in non-public methods are not checked, because such methods are not intended to be generally reusable. java.lang.String parameters are excluded, because String is immutable and can not be always substituted for more generic type. Parameters used in any other context than method invocation or enhanced for loop are also excluded.
 ```
@@ -17062,7 +17284,7 @@ Parameters in non-public methods are not checked, because such methods are not i
 The compiler automatically initializes class fields to their default values before setting them with any initialization values, so there is no need to explicitly set a field to its default value. Further, under the logic that cleaner code is better code, it's considered poor style to do so.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   int count = 0;  // Noncompliant
@@ -17073,7 +17295,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
 
   int count;
@@ -17084,7 +17306,7 @@ public class MyClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 final fields are ignored.
 ```
@@ -17093,7 +17315,7 @@ final fields are ignored.
 When a method loops multiple over the same set of data, whether it's a list or a set of numbers, it is highly likely that the method could be made more efficient by combining the loops into a single set of iterations.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void doSomethingToAList(List<String> strings) {
   for (String str : strings) {
     doStep1(str);
@@ -17106,7 +17328,7 @@ public void doSomethingToAList(List<String> strings) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void doSomethingToAList(List<String> strings) {
   for (String str : strings) {
     doStep1(str);
@@ -17119,7 +17341,7 @@ public void doSomethingToAList(List<String> strings) {
 Classes with only private constructors should be marked final to prevent any mistaken extension attempts.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class PrivateConstructorClass {  // Noncompliant
   private PrivateConstructorClass() {
     // ...
@@ -17133,7 +17355,7 @@ public class PrivateConstructorClass {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public final class PrivateConstructorClass {  // Compliant
   private PrivateConstructorClass() {
     // ...
@@ -17149,7 +17371,7 @@ public final class PrivateConstructorClass {  // Compliant
 Under the reasoning that cleaner code is better code, the semicolon at the end of a try-with-resources construct should be omitted because it can be omitted.
 
 **Noncompliant Code Example**
-```cs
+```java
 try (ByteArrayInputStream b = new ByteArrayInputStream(new byte[10]);  // ignored; this one's required
       Reader r = new InputStreamReader(b);)   // Noncompliant
 {
@@ -17159,7 +17381,7 @@ try (ByteArrayInputStream b = new ByteArrayInputStream(new byte[10]);  // ignore
 
 ```
 **Compliant Solution**
-```cs
+```java
 try (ByteArrayInputStream b = new ByteArrayInputStream(new byte[10]);
       Reader r = new InputStreamReader(b))
 {
@@ -17171,7 +17393,7 @@ try (ByteArrayInputStream b = new ByteArrayInputStream(new byte[10]);
 Adding messages to JUnit assertions is an investment in your future productivity. Spend a few seconds writing them now, and you'll save a lot of time on the other end when either the tests fail and you need to quickly diagnose the problem, or when you need to maintain the tests and the assertion messages work as a sort of documentation.
 
 **Noncompliant Code Example**
-```cs
+```java
 assertEquals(4, list.size());  // Noncompliant
 
 try {
@@ -17183,7 +17405,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 assertEquals("There should have been 4 Fruits in the list", 4, list.size());
 
 try {
@@ -17201,7 +17423,7 @@ Since annotations are implicitly interfaces, the same holds true for them as wel
 Similarly, the final modifier is redundant on any method of a final class, and private is redundant on the constructor of an Enum.
 
 **Noncompliant Code Example**
-```cs
+```java
 public interface Vehicle {
 
   public void go(int speed, Direction direction);  // Noncompliant
@@ -17209,7 +17431,7 @@ public interface Vehicle {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface Vehicle {
 
   void go(int speed, Direction direction);
@@ -17219,7 +17441,7 @@ public interface Vehicle {
 private methods that don't access instance data can be static to prevent any misunderstanding about the contract of the method.
 
 **Noncompliant Code Example**
-```cs
+```java
 class Utilities {
   private static String magicWord = "magic";
 
@@ -17236,7 +17458,7 @@ class Utilities {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Utilities {
   private static String magicWord = "magic";
 
@@ -17253,7 +17475,7 @@ class Utilities {
 
 ```
 **Exceptions**
-```cs
+```java
 
 When java.io.Serializable is implemented the following three methods are excluded by the rule:
 
@@ -17266,7 +17488,7 @@ private void readObjectNoData() throws ObjectStreamException;
 Files with no lines of code clutter a project and should be removed.
 
 **Noncompliant Code Example**
-```cs
+```java
 //package org.foo;
 //
 //public class Bar {}
@@ -17298,7 +17520,7 @@ add
 contains
 remove
 **Noncompliant Code Example**
-```cs
+```java
 ConcurrentLinkedQueue queue = new ConcurrentLinkedQueue();
 //...
 log.info("Queue contains " + queue.size() + " elements");  // Noncompliant
@@ -17310,7 +17532,7 @@ Catching Exception seems like an efficient way to handle multiple possible excep
 This rule raises an issue if Exception is caught when it is not explicitly thrown by a method in the try block.
 
 **Noncompliant Code Example**
-```cs
+```java
 try {
   // do something that might throw an UnsupportedDataTypeException or UnsupportedEncodingException
 } catch (Exception e) { // Noncompliant
@@ -17320,7 +17542,7 @@ try {
 
 ```
 **Compliant Solution**
-```cs
+```java
 try {
   // do something
 } catch (UnsupportedEncodingException|UnsupportedDataTypeException|RuntimeException e) {
@@ -17339,13 +17561,14 @@ try {
 
 ```
 *See*
+
 MITRE, CWE-396 - Declaration of Catch for Generic Exception
 #### Rule 504: "collect" should be used with "Streams" instead of "list::add"
 ##### Quality Category: Code Smell
 While you can use either forEach(list::add) or collect with a Stream, collect is by far the better choice because it's automatically thread-safe and parallellizable.
 
 **Noncompliant Code Example**
-```cs
+```java
 List<String> bookNames = new ArrayList<>();
 books.stream().filter(book -> book.getIsbn().startsWith("0"))
                 .map(Book::getTitle)
@@ -17354,7 +17577,7 @@ books.stream().filter(book -> book.getIsbn().startsWith("0"))
 
 ```
 **Compliant Solution**
-```cs
+```java
 List<String> bookNames = books.stream().filter(book -> book.getIsbn().startsWith("0"))
                 .map(Book::getTitle)
                 .collect(Collectors.toList());
@@ -17366,7 +17589,7 @@ Since Java 7, Strings can be used as switch arguments. So when a single String i
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 if ("red".equals(choice)) {  // Noncompliant
   dispenseRed();
 } else if ("blue".equals(choice)) {
@@ -17380,7 +17603,7 @@ if ("red".equals(choice)) {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 switch(choice) {
   case "Red":
     dispenseRed();
@@ -17403,7 +17626,7 @@ The difference between private and protected visibility is that child classes ca
 Note that the protected members of a class can also be seen and used by other classes that are placed within the same package, this could lead to accidental, unintended access to otherwise private members.
 
 **Noncompliant Code Example**
-```cs
+```java
 public final class MyFinalClass {
 
   protected String name = "Fred";  // Noncompliant
@@ -17414,7 +17637,7 @@ public final class MyFinalClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public final class MyFinalClass {
 
   private String name = "Fred";
@@ -17425,7 +17648,7 @@ public final class MyFinalClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Members annotated with Guava's @VisibleForTesting annotation are ignored, as it indicates that visibility has been purposely relaxed to make the code testable.
 
@@ -17457,7 +17680,7 @@ It is only the presence of underscores, not their spacing that is scrutinized by
 Note that this rule is automatically disabled when the project's sonar.java.source is lower than 7.
 
 **Noncompliant Code Example**
-```cs
+```java
 int i = 10000000;  // Noncompliant; is this 10 million or 100 million?
 int  j = 0b01101001010011011110010101011110;  // Noncompliant
 long l = 0x7fffffffffffffffL;  // Noncompliant
@@ -17465,7 +17688,7 @@ long l = 0x7fffffffffffffffL;  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 int i = 10_000_000;
 int  j = 0b01101001_01001101_11100101_01011110;
 long l = 0x7fff_ffff_ffff_ffffL;
@@ -17479,7 +17702,7 @@ Making the inner class static (i.e. "nested") avoids this problem, therefore inn
  an inner class can only be instantiated within the context of an instance of the outer class.
  a nested (static) class can be instantiated independently of the outer class.
 **Noncompliant Code Example**
-```cs
+```java
 public class Raspberry implements Serializable {
   // ...
 
@@ -17491,7 +17714,7 @@ public class Raspberry implements Serializable {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Raspberry implements Serializable {
   // ...
 
@@ -17503,6 +17726,7 @@ public class Raspberry implements Serializable {
 
 ```
 *See*
+
 CERT, SER05-J. - Do not serialize instances of inner classes
 #### Rule 509: Classes and methods that rely on the default system encoding should not be used
 ##### Quality Category: Code Smell
@@ -17560,6 +17784,7 @@ FileUtils.writeStringToFile(File, String)
 
 ```
 *See*
+
 CERT, STR04-J. - Use compatible character encodings when communicating string data between JVMs
 CERT, STR50-J. - Use the appropriate method for counting characters in a string
 #### Rule 510: Simple class names should be used
@@ -17567,7 +17792,7 @@ CERT, STR50-J. - Use the appropriate method for counting characters in a string
 Java's import mechanism allows the use of simple class names. Therefore, using a class' fully qualified name in a file that imports the class is redundant and confusing.
 
 **Noncompliant Code Example**
-```cs
+```java
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -17579,7 +17804,7 @@ java.sql.Timestamp tStamp; // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -17593,7 +17818,7 @@ Timestamp tStamp;
 For the sake of clarity, variables should be declared as close to where they're used as possible. This is particularly true when considering methods that contain early returns and the potential to throw exceptions. In these cases, it is not only pointless, but also confusing to declare a variable that may never be used because conditions for an early return are met first.
 
 **Noncompliant Code Example**
-```cs
+```java
 public boolean isConditionMet(int a, int b) {
   int difference = a - b;
   MyClass foo = new MyClass(a);  // Noncompliant; not used before early return
@@ -17613,7 +17838,7 @@ public boolean isConditionMet(int a, int b) {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public boolean isConditionMet(int a, int b) {
   int difference = a - b;
 
@@ -17637,7 +17862,7 @@ All classes extend Object implicitly. Doing so explicitly is redundant.
 Further, declaring the implementation of an interface and one if its parents is also redundant. If you implement the interface, you also implicitly implement its parents and there's no need to do so explicitly.
 
 **Noncompliant Code Example**
-```cs
+```java
 public interface MyFace {
   // ...
 }
@@ -17655,7 +17880,7 @@ public class Foo
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface MyFace {
   // ...
 }
@@ -17675,7 +17900,7 @@ It is equivalent to use the equality == operator and the equals method to compar
 But as soon as equals is overridden, two objects not having the same reference but having the same value can be equal. This rule spots suspicious uses of == and != operators on objects whose equals methods are overridden.
 
 **Noncompliant Code Example**
-```cs
+```java
 String firstName = getFirstName(); // String overrides equals
 String lastName = getLastName();
 
@@ -17684,7 +17909,7 @@ if (firstName == lastName) { ... }; // Non-compliant; false even if the strings 
 
 ```
 **Compliant Solution**
-```cs
+```java
 String firstName = getFirstName();
 String lastName = getLastName();
 
@@ -17693,7 +17918,7 @@ if (firstName != null && firstName.equals(lastName)) { ... };
 
 ```
 **Exceptions**
-```cs
+```java
 
 Comparing two instances of the Class object will not raise an issue:
 
@@ -17737,6 +17962,7 @@ Comparing with java.lang.String and boxed types java.lang.Integer, ... will not 
 
 ```
 *See*
+
  {rule:squid:S4973} - Strings and Boxed types should be compared using "equals()"
 MITRE, CWE-595 - Comparison of Object References Instead of Object Contents
 MITRE, CWE-597 - Use of Wrong Operator in String Comparison
@@ -17752,7 +17978,7 @@ A class with no abstract methods that was made abstract purely to prevent instan
 A class with only abstract methods and no inheritable behavior should be converted to an interface.
 
 **Noncompliant Code Example**
-```cs
+```java
 public abstract class Animal {  // Noncompliant; should be an interface
   abstract void move();
   abstract void feed();
@@ -17771,7 +17997,7 @@ public abstract class Color {  // Noncompliant; should be concrete with a privat
 
 ```
 **Compliant Solution**
-```cs
+```java
 public interface Animal {
   void move();
   void feed();
@@ -17808,7 +18034,7 @@ public abstract class Lamp {
 When all the elements in a Set are values from the same enum, the Set can be replaced with an EnumSet, which can be much more efficient than other sets because the underlying data structure is a simple bitmap.
 
 **Noncompliant Code Example**
-```cs
+```java
 public class MyClass {
 
   public enum COLOR {
@@ -17825,7 +18051,7 @@ public class MyClass {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class MyClass {
 
   public enum COLOR {
@@ -17844,31 +18070,32 @@ Failure to specify a locale when calling the methods toLowerCase(), toUpperCase(
 Case conversion without a locale may work fine in its "home" environment, but break in ways that are extremely difficult to diagnose for customers who use different encodings. Such bugs can be nearly, if not completely, impossible to reproduce when it's time to fix them. For locale-sensitive strings, the correct locale should always be used, but Locale.ENGLISH can be used for case-insensitive ones.
 
 **Noncompliant Code Example**
-```cs
+```java
 myString.toLowerCase()
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 myString.toLowerCase(Locale.TR)
 
 
 ```
 *See*
+
 CERT, STR02-J. - Specify an appropriate locale when comparing locale-dependent data
 #### Rule 517: Comments should not be located at the end of lines of code
 ##### Quality Category: Code Smell
 This rule verifies that single-line comments are not located at the ends of lines of code. The main idea behind this rule is that in order to be really readable, trailing comments would have to be properly written and formatted (correct alignment, no interference with the visual structure of the code, not too long to be visible) but most often, automatic code formatters would not handle this correctly: the code would end up less readable. Comments are far better placed on the previous empty line of code, where they will always be visible and properly formatted.
 
 **Noncompliant Code Example**
-```cs
+```java
 int a1 = b + c; // This is a trailing comment that can be very very long
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 // This very long comment is better placed before the line of code
 int a2 = b + c;
 ```
@@ -17877,7 +18104,7 @@ int a2 = b + c;
 This rule allows you to track the use of the Checkstyle suppression comment mechanism.
 
 **Noncompliant Code Example**
-```cs
+```java
 // CHECKSTYLE:OFF
 ```
 #### Rule 519: Loggers should be "private static final" and should share a naming convention
@@ -17888,7 +18115,7 @@ private: never be accessible outside of its parent class. If another class needs
 static: not be dependent on an instance of a class (an object). When logging something, contextual information can of course be provided in the messages but the logger should be created at class level to prevent creating a logger along with each object.
 final: be created once and only once per class.
 **Noncompliant Code Example**
-```cs
+```java
 
 With a default regular expression of LOG(?:GER)?:
 
@@ -17897,13 +18124,13 @@ public Logger logger = LoggerFactory.getLogger(Foo.class);  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 private static final Logger LOGGER = LoggerFactory.getLogger(Foo.class);
 
 
 ```
 **Exceptions**
-```cs
+```java
 
 Variables of type org.apache.maven.plugin.logging.Log are ignored.
 ```
@@ -17912,7 +18139,7 @@ Variables of type org.apache.maven.plugin.logging.Log are ignored.
 This rule allows you to track the use of the PMD suppression comment mechanism.
 
 **Noncompliant Code Example**
-```cs
+```java
 // NOPMD
 ```
 #### Rule 521: Packages should have a javadoc file 'package-info.java'
@@ -17925,7 +18152,7 @@ Compliant Solution
 **/
 @ParametersAreNonnullByDefault
 package org.foo.bar;
-```
+
 #### Rule 522: The members of an interface or class declaration should appear in a pre-defined order
 ##### Quality Category: Code Smell
 According to the Java Code Conventions as defined by Oracle, the members of a class or interface declaration should appear in the following order in the source files:
@@ -17934,7 +18161,7 @@ According to the Java Code Conventions as defined by Oracle, the members of a cl
  Constructors
  Methods
 **Noncompliant Code Example**
-```cs
+```java
 public class Foo{
    private int field = 0;
    public boolean isTrue() {...}
@@ -17945,7 +18172,7 @@ public class Foo{
 
 ```
 **Compliant Solution**
-```cs
+```java
 public class Foo{
    public static final int OPEN = 4;
    private int field = 0;
@@ -17958,7 +18185,7 @@ public class Foo{
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all abstract class names match a provided regular expression. If a non-abstract class match the regular expression, an issue is raised to suggest to either make it abstract or to rename it.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With the default regular expression: ^Abstract[A-Z][a-zA-Z0-9]*$:
 
@@ -17971,7 +18198,7 @@ class AbstractLikeClass { // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 abstract class MyAbstractClass {
 }
 
@@ -17985,7 +18212,7 @@ It is preferable to place string literals on the left-hand side of an equals() o
 This prevents null pointer exceptions from being raised, as a string literal can never be null by definition.
 
 **Noncompliant Code Example**
-```cs
+```java
 String myString = null;
 
 System.out.println("Equal? " + myString.equals("foo"));                        // Noncompliant; will raise a NPE
@@ -17994,7 +18221,7 @@ System.out.println("Equal? " + (myString != null && myString.equals("foo")));  /
 
 ```
 **Compliant Solution**
-```cs
+```java
 System.out.println("Equal?" + "foo".equals(myString));                         // properly deals with the null case
 ```
 #### Rule 525: "throws" declarations should not be superfluous
@@ -18006,7 +18233,7 @@ An exception in a throws declaration in Java is superfluous if it is:
  a RuntimeException, or one of its descendants
  completely unnecessary because the declared exception type cannot actually be thrown
 **Noncompliant Code Example**
-```cs
+```java
 void foo() throws MyException, MyException {}  // Noncompliant; should be listed once
 void bar() throws Throwable, Exception {}  // Noncompliant; Exception is a subclass of Throwable
 void baz() throws RuntimeException {}  // Noncompliant; RuntimeException can always be thrown
@@ -18014,7 +18241,7 @@ void baz() throws RuntimeException {}  // Noncompliant; RuntimeException can alw
 
 ```
 **Compliant Solution**
-```cs
+```java
 void foo() throws MyException {}
 void bar() throws Throwable {}
 void baz() {}
@@ -18022,7 +18249,7 @@ void baz() {}
 
 ```
 **Exceptions**
-```cs
+```java
 
 The rule will not raise any issue for exceptions that cannot be thrown from the method body:
 
@@ -18066,7 +18293,7 @@ For example, a Git diff looks like this if the empty line is missing at the end 
 +class Test {
 +}
 \ No newline at end of file
-```
+
 #### Rule 527: Unnecessary imports should be removed
 ##### Quality Category: Code Smell
 The imports part of a file should be handled by the Integrated Development Environment (IDE), not manually by the developer.
@@ -18076,7 +18303,7 @@ Unused and useless imports should not occur if that is the case.
 Leaving them in reduces the code's readability, since their presence can be confusing.
 
 **Noncompliant Code Example**
-```cs
+```java
 package my.company;
 
 import java.lang.String;        // Noncompliant; java.lang classes are always implicitly imported
@@ -18096,7 +18323,7 @@ class ExampleClass {
 
 ```
 **Exceptions**
-```cs
+```java
 
 Imports for types mentioned in comments, such as Javadocs, are ignored.
 ```
@@ -18131,14 +18358,14 @@ The Java Language Specification recommends listing modifiers in the following or
 Not following this convention has no technical impact, but will reduce the code's readability because most developers are used to the standard order.
 
 **Noncompliant Code Example**
-```cs
+```java
 static public void main(String[] args) {   // Noncompliant
 }
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 public static void main(String[] args) {   // Compliant
 }
 ```
@@ -18149,7 +18376,7 @@ Proper indentation is a simple and effective way to improve the code's readabili
 This rule raises an issue when indentation does not match the configured value. Only the first line of a badly indented section is reported.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With an indent size of 2:
 
@@ -18169,7 +18396,7 @@ class Foo {
 
 ```
 **Compliant Solution**
-```cs
+```java
 class Foo {
   public int a;
   public int b;
@@ -18188,14 +18415,14 @@ class Foo {
 Shared coding conventions make it possible for a team to efficiently collaborate. This rule makes it mandatory to place a close curly brace at the beginning of a line.
 
 **Noncompliant Code Example**
-```cs
+```java
 if(condition) {
   doSomething();}
 
 
 ```
 **Compliant Solution**
-```cs
+```java
 if(condition) {
   doSomething();
 }
@@ -18203,7 +18430,7 @@ if(condition) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 When blocks are inlined (open and close curly braces on the same line), no issue is triggered.
 
@@ -18217,7 +18444,7 @@ Shared coding conventions make it possible for a team to collaborate efficiently
 This rule makes it mandatory to place a closing curly brace and the next else, catch or finally keyword on two different lines.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void myMethod() {
   if(something) {
     executeTask();
@@ -18241,7 +18468,7 @@ public void myMethod() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void myMethod() {
   if(something) {
     executeTask();
@@ -18271,7 +18498,7 @@ Shared coding conventions make it possible for a team to collaborate efficiently
 This rule makes it mandatory to place closing curly braces on the same line as the next else, catch or finally keywords.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void myMethod() {
   if(something) {
     executeTask();
@@ -18295,7 +18522,7 @@ public void myMethod() {
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void myMethod() {
   if(something) {
     executeTask();
@@ -18319,7 +18546,7 @@ public void myMethod() {
 Shared coding conventions make it possible to collaborate efficiently. This rule makes it mandatory to place the open curly brace at the beginning of a line.
 
 **Noncompliant Code Example**
-```cs
+```java
 public void myMethod {  // Noncompliant
   if(something) {  // Noncompliant
     executeTask();
@@ -18331,7 +18558,7 @@ public void myMethod {  // Noncompliant
 
 ```
 **Compliant Solution**
-```cs
+```java
 public void myMethod
 {
   if(something)
@@ -18348,7 +18575,7 @@ public void myMethod
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when an open curly brace is not placed at the end of a line of code.
 
 **Noncompliant Code Example**
-```cs
+```java
 if(condition)
 {
   doSomething();
@@ -18357,7 +18584,7 @@ if(condition)
 
 ```
 **Compliant Solution**
-```cs
+```java
 if(condition) {
   doSomething();
 }
@@ -18365,7 +18592,7 @@ if(condition) {
 
 ```
 **Exceptions**
-```cs
+```java
 
 When blocks are inlined (left and right curly braces on the same line), no issue is triggered.
 
@@ -18376,7 +18603,7 @@ if(condition) {doSomething();}
 ##### Quality Category: Code Smell
 Developers should not need to configure the tab width of their text editors in order to be able to read source code.
 
-So the use of the tabulation character must be banned.```
+So the use of the tabulation character must be banned.
 #### Rule 536: Functions should not be defined with a variable number of arguments
 ##### Quality Category: Code Smell
 As stated per effective java :
@@ -18384,7 +18611,7 @@ As stated per effective java :
 Varargs methods are a convenient way to define methods that require a variable number of arguments, but they should not be overused. They can produce confusing results if used inappropriately.
 
 **Noncompliant Code Example**
-```cs
+```java
 void fun ( String... strings )	// Noncompliant
 {
   // ...
@@ -18393,6 +18620,7 @@ void fun ( String... strings )	// Noncompliant
 
 ```
 *See*
+
  MISRA C:2004, 16.1 - Functions shall not be defined with a variable number of arguments.
  MISRA C++:2008, 8-4-1 - Functions shall not be defined using the ellipsis notation.
 CERT, DCL50-CPP. - Do not define a C-style variadic function
@@ -18401,7 +18629,7 @@ CERT, DCL50-CPP. - Do not define a C-style variadic function
 This rule allows banning certain classes.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 Given parameters:
 
@@ -18413,7 +18641,7 @@ String name;  // Noncompliant
 This rule allows you to track the usage of the @SuppressWarnings mechanism.
 
 **Noncompliant Code Example**
-```cs
+```java
 
 With a parameter value of "unused" :
 
