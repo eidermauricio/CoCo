@@ -28,7 +28,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 
-*Seee*
+*See*
 
 OWASP Top 10 2017 - Category A5 - Broken Access Control
 MITRE, CWE-601 - URL Redirection to Untrusted Site ('Open Redirect')
@@ -1242,7 +1242,7 @@ MITRE, CWE-459 - Incomplete Cleanup
 CERT, FIO04-J. - Release resources when they are no longer needed
 CERT, FIO42-C. - Close files when they are no longer needed
 Try With Resources
-
+```
 #### Rule 33: Methods returns should not be invariant
 ##### Quality Category: Code Smell
 When a method is designed to return an invariant value, it may be poor design, but it shouldn't adversely affect the outcome of your program. However, when it happens on all paths through the logic, it is surely a bug.
@@ -1689,7 +1689,7 @@ switch (myVariable) {
 MITRE, CWE-484 - Omitted Break Statement in Switch
 CERT, MSC17-C. - Finish every set of statements associated with a case label with a break statement
 CERT, MSC52-J. - Finish every set of statements associated with a case label with a break statement
-
+```
 #### Rule 46: "switch" statements should not contain non-case labels
 ##### Quality Category: Code Smell
 Even if it is legal, mixing case and non-case labels in the body of a switch statement is very confusing and can even be the result of a typing error.
@@ -2594,7 +2594,7 @@ A class which uses a Random in its constructor or in a static main function and 
 *See*
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-
+```
 #### Rule 71: The signature of "finalize()" should match that of "Object.finalize()"
 ##### Quality Category: Bug
 Object.finalize() is called by the Garbage Collector at some point after the object becomes unreferenced.
@@ -2747,7 +2747,7 @@ MITRE, CWE-409 - Improper Handling of Highly Compressed Data (Data Amplification
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS04-J. - Safely extract files from ZipInputStream
  Snyk Research Team: Zip Slip Vulnerability
-
+```
 #### Rule 74: Controlling permissions is security-sensitive
 ##### Quality Category: Security Hotspot
 Controlling permissions is security-sensitive. It has led in the past to the following vulnerabilities:
@@ -2880,7 +2880,7 @@ Command line parsing libraries such as JCommander often read standard input when
 *See*
 :
 MITRE, CWE-20 - Improper Input Validation
-
+```
 #### Rule 76: Sending HTTP requests is security-sensitive
 ##### Quality Category: Security Hotspot
 Sending HTTP requests is security-sensitive. It has led in the past to the following vulnerabilities:
@@ -3149,7 +3149,7 @@ MITRE, CWE-88 - Argument Injection or Modification
 MITRE, CWE-214 - Information Exposure Through Process Environment
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-
+```
 #### Rule 78: Using Sockets is security-sensitive
 ##### Quality Category: Security Hotspot
 Using sockets is security-sensitive. It has led in the past to the following vulnerabilities:
@@ -3540,7 +3540,7 @@ CERT, FIO22-C. Close files before spawning processes
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Risky Resource Management
 SANS Top 25 - Porous Defenses
-
+```
 #### Rule 81: Configuring loggers is security-sensitive
 ##### Quality Category: Security Hotspot
 Configuring loggers is security-sensitive. It has led in the past to the following vulnerabilities:
@@ -3678,7 +3678,7 @@ class M {
 ```java
 
 Log4J 1.x is not covered as it has reached end of life.
-
+```
 #### Rule 82: Hashing data is security-sensitive
 ##### Quality Category: Security Hotspot
 Hashing data is security-sensitive. It has led in the past to the following vulnerabilities:
@@ -3991,7 +3991,7 @@ MITRA, CWE-185 - Incorrect Regular Expression
  OWASP Regular expression Denial of Service - ReDoS
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Porous Defenses
-
+```
 #### Rule 85: Executing OS commands is security-sensitive
 ##### Quality Category: Security Hotspot
 OS commands are security-sensitive. For example, their use has led in the past to the following vulnerabilities:
@@ -4058,7 +4058,7 @@ pb.command();
 MITRE, CWE-78 - Improper Neutralization of Special Elements used in an OS Command
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-
+```
 #### Rule 86: Using unsafe Jackson deserialization configuration is security-sensitive
 ##### Quality Category: Security Hotspot
 When Jackson is configured to allow Polymorphic Type Handling (aka PTH), formerly known as Polymorphic Deserialization, "deserialization gadgets" may allow an attacker to perform remote code execution.
@@ -4695,7 +4695,7 @@ MITRE CWE-95 - Improper Neutralization of Directives in Dynamically Evaluated Co
 MITRE CWE-470 - Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection')
  OWASP Top 10 2017 Category A1 - Injection
  OWASP Top 10 2017 Category A7 - Cross-Site Scripting (XSS)
-
+```
 #### Rule 99: String offset-based methods should be preferred for finding substrings from offsets
 ##### Quality Category: Code Smell
 Looking for a given substring starting from a specified offset can be achieved by such code: str.substring(beginIndex).indexOf(char1). This works well, but it creates a new String for each call to the substring method. When this is done in a loop, a lot of Strings are created for nothing, which can lead to performance problems if str is large.
@@ -5347,7 +5347,7 @@ The alternative to making all members serializable or transient is to implement 
 MITRE, CWE-594 - Saving Unserializable Objects to Disk
 Oracle Java 6, Serializable
 Oracle Java 7, Serializable
-
+```
 #### Rule 120: Package declaration should match source file directory
 ##### Quality Category: Code Smell
 By convention, a Java class' physical location (source directories) and its logical representation (packages) should be kept in sync. Thus a Java file located at "src/org/bar/Foo.java" should have a package of "org.bar".
@@ -5455,7 +5455,7 @@ switch(day) {
  MISRA C:2012, 16.5 - A default label shall appear as either the first or the last switch label of a switch statement
 MITRE, CWE-478 - Missing Default Case in Switch Statement
 CERT, MSC01-C. - Strive for logical completeness
-
+```
 #### Rule 123: Execution of the Garbage Collector should be triggered only by the JVM
 ##### Quality Category: Code Smell
 Calling System.gc() or Runtime.getRuntime().gc() is a bad idea for a simple reason: there is no way to know exactly what will be done under the hood by the JVM because the behavior will depend on its vendor, version and options:
@@ -6713,7 +6713,7 @@ In these cases it is obvious the code is as intended.
 MITRE, CWE-570 - Expression is Always False
 MITRE, CWE-571 - Expression is Always True
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-
+```
 #### Rule 162: "notifyAll" should be used
 ##### Quality Category: Bug
 notify and notifyAll both wake up sleeping threads, but notify only rouses one, while notifyAll rouses all of them. Since notify might not wake up the right thread, notifyAll should be used instead.
@@ -7106,7 +7106,7 @@ private boolean textIsInteger(String textToCheck) {
  MISRA C:2012, 17.7 - The value returned by a function having non-void return type shall be used
 CERT, EXP12-C. - Do not ignore values returned by functions
 CERT, EXP00-J. - Do not ignore values returned by methods
-
+```
 #### Rule 174: Child class methods named for parent class methods should be overrides
 ##### Quality Category: Bug
 When a method in a child class has the same signature as a method in a parent class, it is assumed to be an override. However, that's not the case when:
@@ -7315,7 +7315,7 @@ public void run () {
 
 MITRE, CWE-391 - Unchecked Error Condition
 Dealing with InterruptedException
-
+```
 #### Rule 179: Classes extending java.lang.Thread should override the "run" method
 ##### Quality Category: Bug
 According to the Java API documentation:
@@ -7821,7 +7821,7 @@ int j = a << a; // Noncompliant
 
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
  {rule:squid:S1656} - Implements a check on =.
-
+```
 #### Rule 195: Loops with at most one iteration should be refactored
 ##### Quality Category: Bug
 A loop with at most one iteration is equivalent to the use of an if statement to conditionally execute one piece of code. No developer expects to find such a use of a loop statement. If the initial intention of the author was really to conditionally execute one piece of code, an if statement should be used instead.
@@ -9297,7 +9297,7 @@ BigInteger bigInteger3 = new BigInteger("111222333444555666777888999");
 BigDecimal constructor with double argument is ignored as using valueOf instead might change resulting value. 
 *See*
  {rule:squid:S2111}.
-
+```
 #### Rule 241: "URL.hashCode" and "URL.equals" should be avoided
 ##### Quality Category: Code Smell
 The equals and hashCode methods of java.net.URL both may trigger a name service (usually DNS) lookup to resolve the host name or IP address. Depending on the configuration, and network status, that can take a long time. URI on the other hand makes no such calls and should be used instead unless the specific URL functionality is required.
@@ -9422,7 +9422,7 @@ This rule ignores initializations to -1, 0, 1, null, true, false and "".
 MITRE, CWE-563 - Assignment to Variable without Use ('Unused Variable')
 CERT, MSC13-C. - Detect and remove unused values
 CERT, MSC56-J. - Detect and remove superfluous code and values
-
+```
 #### Rule 244: "Object.wait(...)" should never be called on objects that implement "java.util.concurrent.locks.Condition"
 ##### Quality Category: Code Smell
 From the Java API documentation:
@@ -9755,7 +9755,7 @@ protected void foobar(int a, String s) { // no issue, method is overridable and 
  MISRA C++:2008, 0-1-11 - There shall be no unused parameters (named or unnamed) in nonvirtual functions.
  MISRA C:2012, 2.7 - There should be no unused parameters in functions
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-
+```
 #### Rule 256: Only static class initializers should be used
 ##### Quality Category: Code Smell
 Non-static initializers are rarely used, and can be confusing for most developers because they only run when new class instances are created. When possible, non-static initializers should be refactored into standard constructors or field initializers.
@@ -10123,7 +10123,7 @@ result = (bresult = new byte[len]);
 MITRE, CWE-481 - Assigning instead of Comparing
 CERT, EXP45-C. - Do not perform assignments in selection statements
 CERT, EXP51-J. - Do not perform assignments in conditional expressions
-
+```
 #### Rule 266: Generic exceptions should never be thrown
 ##### Quality Category: Code Smell
 Using such generic exceptions as Error, RuntimeException, Throwable, and Exception prevents calling methods from handling true, system-generated exceptions differently than application-generated errors.
@@ -10164,7 +10164,7 @@ public void myOtherMethod throws Exception {
 
 MITRE, CWE-397 - Declaration of Throws for Generic Exception
 CERT, ERR07-J. - Do not throw RuntimeException, Exception, or Throwable
-
+```
 #### Rule 267: Utility classes should not have public constructors
 ##### Quality Category: Code Smell
 Utility classes, which are collections of static members, are not meant to be instantiated. Even abstract utility classes, which can be extended, should not have public constructors.
@@ -10830,7 +10830,7 @@ public class MainClass {
 
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
-
+```
 #### Rule 290: "Iterator.next()" methods should throw "NoSuchElementException"
 ##### Quality Category: Bug
 By contract, any implementation of the java.util.Iterator.next() method should throw a NoSuchElementException exception when the iteration has no more elements. Any other behavior when the iteration is done could lead to unexpected behavior for users of this Iterator.
@@ -11495,7 +11495,7 @@ No issue is reported for the following cases because they are not considered sen
 
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, MSC03-J. - Never hard code sensitive information
-
+```
 #### Rule 305: "read(byte[],int,int)" should be overridden
 ##### Quality Category: Code Smell
 When directly subclassing java.io.InputStream or java.io.FilterInputStream, the only requirement is that you implement the method read(). However most uses for such streams don't read a single byte at a time and the default implementation for read(byte[],int,int) will call read(int) for every single byte in the array which can create a lot of overhead and is utterly inefficient. It is therefore strongly recommended that subclasses provide an efficient implementation of read(byte[],int,int).
@@ -13886,7 +13886,7 @@ These methods are ignored inside main.
 
 MITRE, CWE-382 - Use of System.exit()
 CERT, ERR09-J. - Do not allow untrusted code to terminate the JVM
-
+```
 #### Rule 390: Members of Spring components should be injected
 ##### Quality Category: Vulnerability
 Spring @Controller, @Service, and @Repository classes are singletons by default, meaning only one instance of the class is ever instantiated in the application. Typically such a class might have a few static members, such as a logger, but all non-static members should be managed by Spring. That is, they should have one of these annotations: @Resource, @Inject, @Autowired or @Value.
@@ -14167,7 +14167,7 @@ for (int i = 0; (item = arr[i]) != null; i++) {
  MISRA C++:2008, 6-5-2
 MITRE, CWE-835 - Loop with Unreachable Exit Condition ('Infinite Loop')
 CERT, MSC21-C. - Use robust loop termination conditions
-
+```
 #### Rule 397: Spring beans should be considered by "@ComponentScan"
 ##### Quality Category: Code Smell
 Spring beans belonging to packages that are not included in a @ComponentScan configuration will not be accessible in the Spring Application Context. Therefore, it's likely to be a configuration mistake that will be detected by this rule. Note: the @ComponentScan is implicit in the @SpringBootApplication annotation, case in which Spring Boot will auto scan for components in the package containing the Spring Boot main class and its sub-packages.
@@ -14391,7 +14391,7 @@ Swing and AWT classes, abstract classes, Throwable and its subclasses (
 *See*
 
 CERT, SER00-J. - Enable serialization compatibility during class evolution
-
+```
 #### Rule 405: "switch" statements should not be nested
 ##### Quality Category: Code Smell
 Nested switch structures are difficult to understand because you can easily confuse the cases of an inner switch as belonging to an outer statement. Therefore nested switch statements should be avoided.
@@ -14864,7 +14864,7 @@ if(f != f) { // Compliant; test for NaN value
 
  MISRA C:2004, 13.3 - Floating-point expressions shall not be tested for equality or inequality.
  MISRA C++:2008, 6-2-2 - Floating-point expressions shall not be directly or indirectly tested for equality or inequality
-
+```
 #### Rule 421: Useless "if(true) {...}" and "if(false){...}" blocks should be removed
 ##### Quality Category: Bug
 if statements with conditions that are always false have the effect of making blocks of code non-functional. if statements with conditions that are always true are completely redundant, and make the code less readable.
@@ -15466,7 +15466,7 @@ This rule ignores instances of assigning this directly to a static field of the 
 
 CERT, TSM01-J. - Do not let the this reference escape during object construction
 CERT, TSM03-J. - Do not publish partially initialized objects
-
+```
 #### Rule 437: Classes should not have too many "static" imports
 ##### Quality Category: Code Smell
 Importing a class statically allows you to use its public static members without qualifying them with the class name. That can be handy, but if you import too many classes statically, your code can become confusing and difficult to maintain.
@@ -15552,7 +15552,7 @@ d(int germinationDays) {
     }
   }
 }
-
+```
 #### Rule 441: "deleteOnExit" should not be used
 ##### Quality Category: Code Smell
 Use of File.deleteOnExit() is not recommended for the following reasons:
@@ -16169,7 +16169,7 @@ try {
 CERT, ERR00-J. - Do not suppress or ignore checked exceptions
 MITRE, CWE-778 - Insufficient Logging
  OWASP Top 10 2017 Category A10 - Insufficient Logging & Monitoring
-
+```
 #### Rule 465: Checked exceptions should not be thrown
 ##### Quality Category: Code Smell
 The purpose of checked exceptions is to ensure that errors will be dealt with, either by propagating them or by handling them, but some believe that checked exceptions negatively impact the readability of source code, by spreading this error handling/propagation logic everywhere.
@@ -16513,7 +16513,7 @@ Because they are not modifiable, this rule ignores public final fields.
 *See*
 
 MITRE, CWE-493 - Critical Public Variable Without Final Modifier
-
+```
 #### Rule 476: JEE applications should not "getClassLoader"
 ##### Quality Category: Bug
 Using the standard getClassLoader() may not return the right class loader in a JEE context. Instead, go through the currentThread.
@@ -16564,7 +16564,7 @@ System.out.println("["+getName()+"] " +
 *See*
 
 CERT, FLP02-C. - Avoid using floating-point numbers when precise computation is needed
-
+```
 #### Rule 478: "equals" methods should be symmetric and work for subclasses
 ##### Quality Category: Bug
 A key facet of the equals contract is that if a.equals(b) then b.equals(a), i.e. that the relationship is symmetric.
@@ -17742,7 +17742,7 @@ MITRE, CWE-595 - Comparison of Object References Instead of Object Contents
 MITRE, CWE-597 - Use of Wrong Operator in String Comparison
 CERT, EXP03-J. - Do not use the equality operators when comparing values of boxed primitives
 CERT, EXP50-J. - Do not confuse abstract object equality with reference equality
-
+```
 #### Rule 514: An abstract class should have both abstract and concrete methods
 ##### Quality Category: Code Smell
 The purpose of an abstract class is to provide some heritable behaviors while also defining methods which must be implemented by sub-classes.
