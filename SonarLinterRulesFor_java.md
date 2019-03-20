@@ -1,4 +1,4 @@
-#### Rule 1: HTTP request redirections should not be open to forging attacks
+### Rule 1: HTTP request redirections should not be open to forging attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads, or cookies, should always be considered untrusted and tainted. Applications performing HTTP redirects based on tainted data could enable an attacker to redirect users to a malicious site to, for example, steal login credentials.
 
@@ -28,12 +28,12 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 ```
-*See*
+**See**
 
 OWASP Top 10 2017 - Category A5 - Broken Access Control
 MITRE, CWE-601 - URL Redirection to Untrusted Site ('Open Redirect')
 SANS Top 25 - Risky Resource Management
-#### Rule 2: Endpoints should not be vulnerable to reflected cross-site scripting (XSS) attacks
+### Rule 2: Endpoints should not be vulnerable to reflected cross-site scripting (XSS) attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads, or cookies, should always be considered untrusted and tainted. Endpoints reflecting back tainted data could allow attackers to inject code that would eventually be executed in the user's browser. This could enable a wide range of serious attacks like accessing/modifying sensitive information or impersonating other users.
 
@@ -65,7 +65,7 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 ```
-*See*
+**See**
 
 OWASP Cheat Sheet - XSS Prevention Cheat Sheet
 OWASP Top 10 2017 - Category A7 - Cross-Site Scripting (XSS)
@@ -79,7 +79,7 @@ MITRE, CWE-85 - Doubled Character XSS Manipulations
 MITRE, CWE-86 - Improper Neutralization of Invalid Characters in Identifiers in Web Pages
 MITRE, CWE-87 - Improper Neutralization of Alternate XSS Syntax
 SANS Top 25 - Insecure Interaction Between Components
-#### Rule 3: LDAP deserialization should be disabled
+### Rule 3: LDAP deserialization should be disabled
 ##### Quality Category: Vulnerability
 JNDI supports the deserialization of objects from LDAP directories, which is fundamentally insecure and can lead to remote code execution.
 
@@ -106,13 +106,13 @@ ctx.search(query, filter,
             deref));
 
 ```
-*See*
+**See**
 
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 BlackHat presentation
  Derived from FindSecBugs rule LDAP_ENTRY_POISONING
-#### Rule 4: Cryptographic keys should not be too short
+### Rule 4: Cryptographic keys should not be too short
 ##### Quality Category: Vulnerability
 When generating cryptographic keys (or key pairs), it is important to use a key length that provides enough entropy against brute-force attacks. For the Blowfish algorithm the key should be at least 128 bits long, while for the RSA algorithm it should be at least 2048 bits long.
 
@@ -137,13 +137,13 @@ KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
 keyPairGen.initialize(2048);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-326 - Inadequate Encryption Strength
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
  Derived from FindSecBugs rule BLOWFISH_KEY_SIZE
  Derived from FindSecBugs rule RSA_KEY_SIZE
-#### Rule 5: "@RequestMapping" methods should specify HTTP method
+### Rule 5: "@RequestMapping" methods should specify HTTP method
 ##### Quality Category: Vulnerability
 A @RequestMapping method handles all matching requests by default. That means that a method you intended only to be POST-ed to could also be called by a GET, thereby allowing hackers to call the method inappropriately. For example a "transferFunds" method might be invoked like so: <img src="http://bank.com/actions/transferFunds?reciepientRouting=000000&receipientAccount=11111111&amount=200.00" width="1" height="1"/>
 
@@ -162,14 +162,14 @@ public String greet(String greetee) {
   public String greet(String greetee) {
 
 ```
-*See*
+**See**
 
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 OWASP: Cross-Site Request Forgery
 SANS Top 25 - Insecure Interaction Between Components
 Spring Security Official Documentation: Use proper HTTP verbs (CSRF protection)
-#### Rule 6: "@RequestMapping" methods should be "public"
+### Rule 6: "@RequestMapping" methods should be "public"
 ##### Quality Category:
 A method with a @RequestMapping annotation part of a class annotated with @Controller (directly or indirectly through a meta annotation - @RestController from Spring Boot is a good example) will be called to handle matching web requests. That will happen even if the method is private, because Spring invokes such methods via reflection, without checking visibility.
 
@@ -190,10 +190,10 @@ private String greet(String greetee) {  // Noncompliant
 public String greet(String greetee) {
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-#### Rule 7: SQL queries should not be vulnerable to injection attacks
+### Rule 7: SQL queries should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, should always be considered untrusted and tainted. Constructing SQL queries directly from tainted data enables attackers to inject specially crafted values that change the initial meaning of the query itself. Successful SQL injection attacks can read, modify, or delete sensitive information from the database and sometimes even shut it down or execute arbitrary operating system commands.
 
@@ -240,7 +240,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, java.
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-89 - Improper Neutralization of Special Elements used in an SQL Command
 MITRE, CWE-564 - SQL Injection: Hibernate
@@ -249,7 +249,7 @@ MITRE, CWE-943 - Improper Neutralization of Special Elements in Data Query Logic
 CERT, IDS00-J. - Prevent SQL injection
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-#### Rule 8: "HostnameVerifier.verify" should not always return true
+### Rule 8: "HostnameVerifier.verify" should not always return true
 ##### Quality Category: Vulnerability
 To prevent URL spoofing, HostnameVerifier.verify() methods should do more than simply return true. Doing so may get you quickly past an exception, but that comes at the cost of opening a security hole in your application.
 
@@ -293,12 +293,12 @@ Client client = ClientBuilder.newBuilder().sslContext(sslcontext).hostnameVerifi
 }).build();
 
 ```
-*See*
+**See**
 
 MITRE, CWE-295 - Improper Certificate Validation
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
  Derived from FindSecBugs rule WEAK_HOSTNAME_VERIFIER
-#### Rule 9: Struts validation forms should have unique names
+### Rule 9: Struts validation forms should have unique names
 ##### Quality Category: Vulnerability
 According to the Common Weakness Enumeration,
 
@@ -326,11 +326,11 @@ In such a case, it is likely that the two forms should be combined. At the very 
 </form-validation>
 
 ```
-*See*
+**See**
 
 MITRE, CWE-102 - Struts: Duplicate Validation Forms
 OWASP, Improper Data Validation - Struts: Duplicate Validation Forms
-#### Rule 10: Default EJB interceptors should be declared in "ejb-jar.xml"
+### Rule 10: Default EJB interceptors should be declared in "ejb-jar.xml"
 ##### Quality Category: Vulnerability
 Default interceptors, such as application security interceptors, must be listed in the ejb-jar.xml file, or they will not be treated as default.
 
@@ -359,10 +359,10 @@ This rule applies to projects that contain JEE Beans (any one of javax.ejb.Singl
 </assembly-descriptor>
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-#### Rule 11: Untrusted XML should be parsed with a local, static DTD
+### Rule 11: Untrusted XML should be parsed with a local, static DTD
 ##### Quality Category: Vulnerability
 Allowing external entities in untrusted documents to be processed could lay your systems bare to attackers. Imagine if these entities were parsed:
 
@@ -409,7 +409,7 @@ try (FileInputStream fis = new FileInputStream(malicousSample)) {
     XMLStreamReader xmlStreamReader = factory.createXMLStreamReader(fis);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-611 - Information Exposure Through XML External Entity Reference
 MITRE, CWE-827 - Improper Control of Document Type Definition
@@ -420,7 +420,7 @@ OWASP XXE Prevention Cheat Sheet
  Derived from FindSecBugs rule XXE_SAXPARSER
  Derived from FindSecBugs rule XXE_XMLREADER
  Derived from FindSecBugs rule XXE_DOCUMENT
-#### Rule 12: Regular expressions should not be vulnerable to Denial of Service attacks
+### Rule 12: Regular expressions should not be vulnerable to Denial of Service attacks
 ##### Quality Category: Vulnerability
 Evaluating regular expressions against input strings can be an extremely CPU-intensive task. For example, a specially crafted regular expression such as (a+)++ will take several seconds to evaluate the input string, aaaaaaaaaaaaaaaaaaaaaaaaaaaaa!. The problem is that every additional "a" added to the input doubles the time required to evaluate the regex. However, the equivalent regular expression, a (without grouping), is efficiently evaluated in milliseconds and scales linearly with the input size.
 
@@ -449,11 +449,11 @@ public boolean validate(javax.servlet.http.HttpServletRequest request) {
 }
 
 ```
-*See*
+**See**
 
 OWASP Regular expression Denial of Service - ReDoS
  OWASP Top 10 2017 Category A1 - Injection
-#### Rule 13: Neither DES (Data Encryption Standard) nor DESede (3DES) should be used
+### Rule 13: Neither DES (Data Encryption Standard) nor DESede (3DES) should be used
 ##### Quality Category: Vulnerability
 According to the US National Institute of Standards and Technology (NIST), the Data Encryption Standard (DES) is no longer considered secure:
 
@@ -474,7 +474,7 @@ Cipher c = Cipher.getInstance("DESede/ECB/PKCS5Padding");
 Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 
 ```
-*See*
+**See**
 
 MITRE, CWE-326 - Inadequate Encryption Strength
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
@@ -482,7 +482,7 @@ MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
 SANS Top 25 - Porous Defenses
  Derived from FindSecBugs rule DES / DESede Unsafe
-#### Rule 14: "javax.crypto.NullCipher" should not be used for anything other than testing
+### Rule 14: "javax.crypto.NullCipher" should not be used for anything other than testing
 ##### Quality Category: Vulnerability
 By contract, the NullCipher class provides an "identity cipher" one that does not transform or encrypt the plaintext in any way. As a consequence, the ciphertext is identical to the plaintext. So this class should be used for testing, and never in production code.
 
@@ -491,12 +491,12 @@ By contract, the NullCipher class provides an "identity cipher" one that does no
 NullCipher nc = new NullCipher();
 
 ```
-*See*
+**See**
 
 CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
-#### Rule 15: Databases should be password-protected
+### Rule 15: Databases should be password-protected
 ##### Quality Category: Vulnerability
 Failure to password-protect a database is so careless or naive as to be almost negligent. Databases should always be password protected, but the use of a database connection with an empty password is a clear indication of a database that is not protected.
 
@@ -524,10 +524,10 @@ props.setProperty("password", "secret");
 DriverManager.getConnection(url, props);
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 16: XPath expressions should not be vulnerable to injection attacks
+### Rule 16: XPath expressions should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, should always be considered untrusted and tainted. Constructing XPath expressions directly from tainted data enables attackers to inject specially crafted values that changes the initial meaning of the expression itself. Successful XPath injection attacks can read sensitive information from XML documents.
 
@@ -570,12 +570,12 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, javax
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-643 - Improper Neutralization of Data within XPath Expressions
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS53-J. - Prevent XPath Injection
-#### Rule 17: I/O function calls should not be vulnerable to path injection attacks
+### Rule 17: I/O function calls should not be vulnerable to path injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads, or cookies, should always be considered untrusted and tainted. Constructing file system paths directly from tainted data could enable an attacker to inject specially crafted values, such as '../', that change the initial path and, when accessed, resolve to a path on the filesystem where the user should normally not have access.
 
@@ -612,7 +612,7 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-22 - Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
 MITRE, CWE-23 - Relative Path Traversal
@@ -621,7 +621,7 @@ MITRE, CWE-99 - Improper Control of Resource Identifiers ('Resource Injection')
 MITRE, CWE-641 - Improper Restriction of Names for Files and Other Resources
  OWASP Top 10 2017 Category A5 - Broken Access Control
 SANS Top 25 - Risky Resource Management
-#### Rule 18: LDAP queries should not be vulnerable to injection attacks
+### Rule 18: LDAP queries should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data such as URL parameters should always be considered as untrusted and tainted. Constructing LDAP names or search filters directly from tainted data enables attackers to inject specially crafted values that changes the initial meaning of the name or filter itself. Successful LDAP injections attacks can read, modify or delete sensitive information from the directory service.
 
@@ -661,14 +661,14 @@ public boolean authenticate(javax.servlet.http.HttpServletRequest request, DirCo
 }
 
 ```
-*See*
+**See**
 
 RFC 4514 - LDAP: String Representation of Distinguished Names
 RFC 4515 - LDAP: String Representation of Search Filters
 MITRE CWE-90 - Improper Neutralization of Special Elements used in an LDAP Query ('LDAP Injection')
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS54-J. - Prevent LDAP injection
-#### Rule 19: OS commands should not be vulnerable to injection attacks
+### Rule 19: OS commands should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 Applications that execute operating system commands or execute commands that interact with the underlying system should neutralize any externally-provided values used in those commands. Failure to do so could allow an attacker to include input that executes unintended commands or exposes sensitive data.
 
@@ -701,13 +701,13 @@ public void run(javax.servlet.http.HttpServletRequest request) throws IOExceptio
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-78 - Improper Neutralization of Special Elements used in an OS Command
 MITRE, CWE-88 - Argument Injection or Modification
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-#### Rule 20: Credentials should not be hard-coded
+### Rule 20: Credentials should not be hard-coded
 ##### Quality Category: Vulnerability
 Because it is easy to extract strings from a compiled application, credentials should never be hard-coded. Do so, and they're almost guaranteed to end up in the hands of an attacker. This is particularly true for applications that are distributed.
 
@@ -740,7 +740,7 @@ try {
         "user=" + uname + "&password=" + password);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-798 - Use of Hard-coded Credentials
 MITRE, CWE-259 - Use of Hard-coded Password
@@ -748,7 +748,7 @@ CERT, MSC03-J. - Never hard code sensitive information
  OWASP Top 10 2017 Category A2 - Broken Authentication
 SANS Top 25 - Porous Defenses
  Derived from FindSecBugs rule Hard Coded Password
-#### Rule 21: "@SpringBootApplication" and "@ComponentScan" should not be used in the default package
+### Rule 21: "@SpringBootApplication" and "@ComponentScan" should not be used in the default package
 ##### Quality Category: Bug
 @ComponentScan is used to determine which Spring Beans are available in the application context. The packages to scan can be configured thanks to the basePackageClasses or basePackages (or its alias value) parameters. If neither parameter is configured, @ComponentScan will consider only the package of the class annotated with it. When @ComponentScan is used on a class belonging to the default package, the entire classpath will be scanned.
 
@@ -787,7 +787,7 @@ public class RootBootApp {
 ...
 }
 ```
-#### Rule 22: "@Controller" classes that use "@SessionAttributes" must call "setComplete" on their "SessionStatus" objects
+### Rule 22: "@Controller" classes that use "@SessionAttributes" must call "setComplete" on their "SessionStatus" objects
 ##### Quality Category: Bug
 A Spring @Controller that uses @SessionAttributes is designed to handle a stateful / multi-post form. Such @Controllers use the specified @SessionAttributes to store data on the server between requests. That data should be cleaned up when the session is over, but unless setComplete() is called on the SessionStatus object from a @RequestMapping method, neither Spring nor the JVM will know it's time to do that. Note that the SessionStatus object must be passed to that method as a parameter.
 
@@ -826,7 +826,7 @@ public class HelloWorld {
 
 }
 ```
-#### Rule 23: "wait" should not be called when multiple locks are held
+### Rule 23: "wait" should not be called when multiple locks are held
 ##### Quality Category: Bug
 When two locks are held simultaneously, a wait call only releases one of them. The other will be held until some other thread requests a lock on the awaited object. If no unrelated code tries to lock on that object, then all other threads will be locked out, resulting in a deadlock.
 
@@ -838,7 +838,7 @@ synchronized (this.mon1) {  // threadB can't enter this block to request this.mo
 	}
 }
 ```
-#### Rule 24: "PreparedStatement" and "ResultSet" methods should be called with valid indices
+### Rule 24: "PreparedStatement" and "ResultSet" methods should be called with valid indices
 ##### Quality Category: Bug
 The parameters in a PreparedStatement are numbered from 1, not 0, so using any "set" method of a PreparedStatement with a number less than 1 is a bug, as is using an index higher than the number of parameters. Similarly, ResultSet indices also start at 1, rather than 0
 
@@ -868,7 +868,7 @@ while (rs.next()) {
   // ...
 }
 ```
-#### Rule 25: Files opened in append mode should not be used with ObjectOutputStream
+### Rule 25: Files opened in append mode should not be used with ObjectOutputStream
 ##### Quality Category: Bug
 ObjectOutputStreams are used with serialization, and the first thing an ObjectOutputStream writes is the serialization stream header. This header should appear once per file, at the beginning. Pass a file opened in append mode into an ObjectOutputStream constructor and the serialization stream header will be added to the end of the file before your object is then also appended.
 
@@ -886,7 +886,7 @@ ObjectOutputStream out = new ObjectOutputStream(fos);  // Noncompliant
 FileOutputStream fos = new FileOutputStream (fileName);
 ObjectOutputStream out = new ObjectOutputStream(fos);
 ```
-#### Rule 26: "wait(...)" should be used instead of "Thread.sleep(...)" when a lock is held
+### Rule 26: "wait(...)" should be used instead of "Thread.sleep(...)" when a lock is held
 ##### Quality Category: Bug
 If Thread.sleep(...) is called when the current thread holds a lock, it could lead to performance and scalability issues, or even worse to deadlocks because the execution of the thread holding the lock is frozen. It's better to call wait(...) on the monitor object to temporarily release the lock and allow other threads to run.
 
@@ -917,10 +917,10 @@ public void doSomething(){
 }
 
 ```
-*See*
+**See**
 
 CERT, LCK09-J. - Do not perform operations that can block while holding a lock
-#### Rule 27: Printf-style format strings should not lead to unexpected behavior at runtime
+### Rule 27: Printf-style format strings should not lead to unexpected behavior at runtime
 ##### Quality Category: Bug
 Because printf-style format strings are interpreted at runtime, rather than validated by the Java compiler, they can contain errors that lead to unexpected behavior or runtime errors. This rule statically validates the good behavior of printf-style formats when calling the format(...) methods of java.util.Formatter, java.lang.String, java.io.PrintStream, MessageFormat, and java.io.PrintWriter classes and the printf(...) methods of java.io.PrintStream or java.io.PrintWriter classes.
 
@@ -967,10 +967,10 @@ org.slf4j.Marker marker;
 slf4jLog.debug(marker, "message {}", 1);
 
 ```
-*See*
+**See**
 
 CERT, FIO47-C. - Use valid format strings
-#### Rule 28: Methods "wait(...)", "notify()" and "notifyAll()" should not be called on Thread instances
+### Rule 28: Methods "wait(...)", "notify()" and "notifyAll()" should not be called on Thread instances
 ##### Quality Category: Bug
 The methods wait(...), notify() and notifyAll() are available on a Thread instance, but only because all classes in Java extend Object and therefore automatically inherit those methods. But there are two very good reasons for not calling them on a Thread:
 
@@ -982,7 +982,7 @@ Thread myThread = new Thread(new RunnableJob());
 ...
 myThread.wait(2000);
 ```
-#### Rule 29: Methods should not call same-class methods with incompatible "@Transactional" values
+### Rule 29: Methods should not call same-class methods with incompatible "@Transactional" values
 ##### Quality Category: Bug
 When using Spring proxies, calling a method in the same class (e.g. this.aMethod()) with an incompatible @Transactional requirement will result in runtime exceptions because Spring only "sees" the caller and makes no provisions for properly invoking the callee.
 
@@ -1012,7 +1012,7 @@ public void actuallyDoTheThing() {
   // ...
 }
 ```
-#### Rule 30: Loops should not be infinite
+### Rule 30: Loops should not be infinite
 ##### Quality Category: Bug
 An infinite loop is one that will never end while the program is running, i.e., you have to kill the program to get out of the loop. Whether it is by meeting the loop's end condition or via a break, every loop should have an end condition.
 
@@ -1053,10 +1053,10 @@ while (b) {
 }
 
 ```
-*See*
+**See**
 
 CERT, MSC01-J. - Do not use an empty infinite loop
-#### Rule 31: Double-checked locking should not be used
+### Rule 31: Double-checked locking should not be used
 ##### Quality Category: Bug
 Double-checked locking is the practice of checking a lazy-initialized object's state both before and after a synchronized block is entered to determine whether or not to initialize the object.
 
@@ -1144,14 +1144,14 @@ class ResourceFactory {
 }
 
 ```
-*See*
+**See**
 
 The "Double-Checked Locking is Broken" Declaration
 CERT, LCK10-J. - Use a correct form of the double-checked locking idiom
 MITRE, CWE-609 - Double-checked locking
 JLS 12.4 - Initialization of Classes and Interfaces
  Wikipedia: Double-checked locking
-#### Rule 32: Resources should be closed
+### Rule 32: Resources should be closed
 ##### Quality Category: Bug
 Connections, streams, files, and other classes that implement the Closeable interface or its super-interface, AutoCloseable, needs to be closed after use. Further, that close call must be made in a finally block otherwise an exception could keep the call from being made. Preferably, when class implements AutoCloseable, resource should be created using "try-with-resources" pattern and will be closed automatically.
 
@@ -1236,14 +1236,14 @@ catch ( ... ) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-459 - Incomplete Cleanup
 CERT, FIO04-J. - Release resources when they are no longer needed
 CERT, FIO42-C. - Close files when they are no longer needed
 Try With Resources
-
-#### Rule 33: Methods returns should not be invariant
+```
+### Rule 33: Methods returns should not be invariant
 ##### Quality Category: Code Smell
 When a method is designed to return an invariant value, it may be poor design, but it shouldn't adversely affect the outcome of your program. However, when it happens on all paths through the logic, it is surely a bug.
 
@@ -1259,7 +1259,7 @@ int foo(int a) {
   return b;  // Noncompliant
 }
 ```
-#### Rule 34: "ThreadGroup" should not be used
+### Rule 34: "ThreadGroup" should not be used
 ##### Quality Category: Code Smell
 There is little valid reason to use the methods of the ThreadGroup class. Some are deprecated (allowThreadSuspension(), resume(), stop(), and suspend()), some are obsolete, others aren't thread-safe, and still others are insecure (activeCount(), enumerate()) . For these reasons, any use of ThreadGroup is suspicious and should be avoided.
 
@@ -1276,7 +1276,7 @@ executorPool.shutdown();
 
 See
 CERT, THI01-J. - Do not invoke ThreadGroup methods
-#### Rule 35: "clone" should not be overridden
+### Rule 35: "clone" should not be overridden
 ##### Quality Category: Code Smell
 Many consider clone and Cloneable broken in Java, largely because the rules for overriding clone are tricky and difficult to get right, according to Joshua Bloch:
 
@@ -1309,15 +1309,15 @@ public class MyClass {
 }
 
 ```
-*See*
+**See**
 
 Copy Constructor versus Cloning
 ```
-*See*
+**See**
  Also
  {rule:squid:S2157} - "Cloneables" should implement "clone"
  {rule:squid:S1182} - Classes that override "clone" should be "Cloneable" and call "super.clone()"
-#### Rule 36: Assertions should be complete
+### Rule 36: Assertions should be complete
 ##### Quality Category: Code Smell
 It is very easy to write incomplete assertions when using some test frameworks. This rule enforces complete assertions in the following cases:
 
@@ -1378,8 +1378,8 @@ public void test() {
   check("bar.txt", "key2").isTrue();
 }
 
-```
-#### Rule 37: Tests should include assertions
+``````
+### Rule 37: Tests should include assertions
 ##### Quality Category: Code Smell
 A test case without assertions ensures only that no exceptions are thrown. Beyond basic runnability, it ensures nothing about the behavior of the code under test.
 
@@ -1438,12 +1438,12 @@ public void testDoSomethingElse() {
   CompareToTester.compareStatic(myClass);  // Compliant
 }
 ```
-#### Rule 38: Silly bit operations should not be performed
+### Rule 38: Silly bit operations should not be performed
 ##### Quality Category: Code Smell
 Certain bit operations are just silly and should not be performed because their results are predictable.
 
 Specifically, using & -1 with any value will always result in the original value, as will anyValue ^ 0 and anyValue | 0.
-#### Rule 39: JUnit framework methods should be declared properly
+### Rule 39: JUnit framework methods should be declared properly
 ##### Quality Category: Code Smell
 If the suite method in a JUnit 3 TestCase is not declared correctly, it will not be used. Such a method must be named "suite", have no arguments, be public static, and must return either a junit.framework.Test or a junit.framework.TestSuite.
 
@@ -1467,7 +1467,7 @@ public static Test suite() { ... }
 public void setUp() { ... }
 public void tearDown() { ... }
 ```
-#### Rule 40: Child class fields should not shadow parent class fields
+### Rule 40: Child class fields should not shadow parent class fields
 ##### Quality Category: Code Smell
 Having a variable with the same name in two unrelated classes is fine, but do the same thing within a class hierarchy and you'll get confusion at best, chaos at worst.
 
@@ -1519,8 +1519,8 @@ public class Raspberry extends Fruit {
   // ...
 }
 
-```
-#### Rule 41: JUnit test cases should call super methods
+``````
+### Rule 41: JUnit test cases should call super methods
 ##### Quality Category: Code Smell
 Overriding a parent class method prevents that method from being called unless an explicit super call is made in the overriding method. In some cases not calling the super method is acceptable, but not with setUp and tearDown in a JUnit 3 TestCase.
 
@@ -1547,12 +1547,12 @@ public class MyClassTest extends MyAbstractTestCase {
       myClass = new MyClass();
     }
 ```
-#### Rule 42: TestCases should contain tests
+### Rule 42: TestCases should contain tests
 ##### Quality Category: Code Smell
 There's no point in having a JUnit TestCase without any test methods. Similarly, you shouldn't have a file in the tests directory with "Test" in the name, but no tests in the file. Doing either of these things may lead someone to think that uncovered classes have been tested.
 
 This rule raises an issue when files in the test directory have "Test" in the name or implement TestCase but don't contain any tests.
-#### Rule 43: Short-circuit logic should be used in boolean contexts
+### Rule 43: Short-circuit logic should be used in boolean contexts
 ##### Quality Category: Code Smell
 The use of non-short-circuit logic in a boolean context is likely a mistake - one that could cause serious program errors as conditions are evaluated under the wrong circumstances.
 
@@ -1567,10 +1567,10 @@ if(getTrue() | getFalse()) { ... } // Noncompliant; both sides evaluated
 if(getTrue() || getFalse()) { ... } // true short-circuit logic
 
 ```
-*See*
+**See**
 
 CERT, EXP46-C. - Do not use a bitwise operator with a Boolean-like operand
-#### Rule 44: Methods and field names should not be the same or differ only by capitalization
+### Rule 44: Methods and field names should not be the same or differ only by capitalization
 ##### Quality Category: Code Smell
 Looking at the set of methods in a class, including superclass methods, and finding two methods or fields that differ only by capitalization is confusing to users of the class. It is similarly confusing to have a method and a field which differ only in capitalization or a method and a field with exactly the same name and visibility.
 
@@ -1620,7 +1620,7 @@ public class MyCar extends Car{
 
 }
 ```
-#### Rule 45: Switch cases should end with an unconditional "break" statement
+### Rule 45: Switch cases should end with an unconditional "break" statement
 ##### Quality Category: Code Smell
 When the execution is not explicitly terminated at the end of a switch case, it continues to execute the statements of the following case. While this is sometimes intentional, it often is a mistake which leads to unexpected behavior.
 
@@ -1676,7 +1676,7 @@ switch (myVariable) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C:2004, 15.2 - An unconditional break statement shall terminate every non-empty switch clause
@@ -1687,8 +1687,8 @@ switch (myVariable) {
 MITRE, CWE-484 - Omitted Break Statement in Switch
 CERT, MSC17-C. - Finish every set of statements associated with a case label with a break statement
 CERT, MSC52-J. - Finish every set of statements associated with a case label with a break statement
-
-#### Rule 46: "switch" statements should not contain non-case labels
+```
+### Rule 46: "switch" statements should not contain non-case labels
 ##### Quality Category: Code Smell
 Even if it is legal, mixing case and non-case labels in the body of a switch statement is very confusing and can even be the result of a typing error.
 
@@ -1740,12 +1740,12 @@ switch (day) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C++:2008, 6-4-3 - A switch statement shall be a well-formed switch statement.
  MISRA C:2012, 16.1 - All switch statements shall be well-formed
-#### Rule 47: Future keywords should not be used as names
+### Rule 47: Future keywords should not be used as names
 ##### Quality Category: Code Smell
 Through Java's evolution keywords have been added. While code that uses those words as identifiers may be compilable under older versions of Java, it will not be under modern versions.
 
@@ -1772,7 +1772,7 @@ public void doSomething() {
   int magic = 42;
 }
 ```
-#### Rule 48: HTTP response headers should not be vulnerable to injection attacks
+### Rule 48: HTTP response headers should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads, or cookies, should always be considered untrusted and tainted. Applications constructing HTTP response headers based on tainted data could allow attackers to inject characters that would be interpreted as a new line in some browsers. This could, for example, enable Cross-Site Scripting (XSS) attacks.
 
@@ -1802,14 +1802,14 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 ```
-*See*
+**See**
 
 OWASP Attack Category - HTTP Response Splitting
 OWASP Top 10 2017 - Category A7 - Cross-Site Scripting (XSS)
 MITRE, CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
 MITRE, CWE-113 - Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting')
 SANS Top 25 - Insecure Interaction Between Components
-#### Rule 49: Persistent entities should not be used as arguments of "@RequestMapping" methods
+### Rule 49: Persistent entities should not be used as arguments of "@RequestMapping" methods
 ##### Quality Category: Vulnerability
 On one side, Spring MVC automatically bind request parameters to beans declared as arguments of methods annotated with @RequestMapping. Because of this automatic binding feature, it's possible to feed some unexpected fields on the arguments of the @RequestMapping annotated methods.
 
@@ -1890,12 +1890,12 @@ public class PurchaseOrderController {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-915 - Improperly Controlled Modification of Dynamically-Determined Object Attributes
  OWASP Top 10 2017 Category A5 - Broken Access Control
 Two Security Vulnerabilities in the Spring Framework’s MVC by Ryan Berg and Dinis Cruz
-#### Rule 50: "HttpSecurity" URL patterns should be correctly ordered
+### Rule 50: "HttpSecurity" URL patterns should be correctly ordered
 ##### Quality Category: Vulnerability
 URL patterns configured on a HttpSecurity.authorizeRequests() method are considered in the order they were declared. It's easy to do a mistake and to declare a less restrictive configuration before a more restrictive one. Therefore, it's required to review the order of the "antMatchers" declarations. The /** one should be the last one if it is declared.
 
@@ -1932,10 +1932,10 @@ This rule raises an issue when:
   }
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-#### Rule 51: SMTP SSL connection should check server identity
+### Rule 51: SMTP SSL connection should check server identity
 ##### Quality Category: Vulnerability
 This rule raises an issue when:
 
@@ -1988,11 +1988,11 @@ Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator
 });
 
 ```
-*See*
+**See**
 
 CWE-297 - Improper Validation of Certificate with Host Mismatch
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 52: XML transformers should be secured
+### Rule 52: XML transformers should be secured
 ##### Quality Category: Vulnerability
 An XML External Entity or XSLT External Entity (XXE) vulnerability can occur when a javax.xml.transform.Transformer is created without enabling "Secure Processing" or when one is created without disabling external DTDs. If that external entity is hijacked by an attacker it may lead to the disclosure of confidential data, denial of service, server side request forgery, port scanning from the perspective of the machine where the parser is located, and other system impacts.
 
@@ -2028,14 +2028,14 @@ transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 transformer.transform(input, result);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-611 Improper Restriction of XML External Entity Reference ('XXE')
  OWASP Top 10 2017 Category A4 - XML External Entities
  [OWASP XXE cheat sheet| https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#TransformerFactory]
  Derived from FindSecBugs rule XXE_DTD_TRANSFORM_FACTORY
  Derived from FindSecBugs rule XXE_XSLT_TRANSFORM_FACTORY
-#### Rule 53: LDAP connections should be authenticated
+### Rule 53: LDAP connections should be authenticated
 ##### Quality Category: Vulnerability
 An un-authenticated LDAP connection can lead to transactions without access control. Authentication, and with it, access control, are the last line of defense against LDAP injections and should not be disabled.
 
@@ -2072,13 +2072,13 @@ env.put(Context.SECURITY_CREDENTIALS, getLDAPPassword());
 DirContext ctx = new InitialDirContext(env);
 
 ```
-*See*
+**See**
 
 CWE-521 - Weak Password Requirements
  OWASP Top 10 2017 Category A2 - Broken Authentication
 Modes of Authenticating to LDAP
  Derived from FindSecBugs rule LDAP_ANONYMOUS
-#### Rule 54: AES encryption algorithm should be used with secured mode
+### Rule 54: AES encryption algorithm should be used with secured mode
 ##### Quality Category: Vulnerability
 The Advanced Encryption Standard (AES) encryption algorithm can be used with various modes. Some combinations are not secured:
 
@@ -2101,7 +2101,7 @@ Cipher c2 = Cipher.getInstance("AES/CBC/PKCS5Padding"); // Noncompliant
 Cipher c = Cipher.getInstance("AES/GCM/NoPadding");
 
 ```
-*See*
+**See**
 
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
@@ -2110,12 +2110,12 @@ SANS Top 25 - Porous Defenses
 Recommendation for Block Cipher Modes of Operation
  Derived from FindSecBugs rule ECB_MODE
  Derived from FindSecBugs rule PADDING_ORACLE
-#### Rule 55: "SecureRandom" seeds should not be predictable
+### Rule 55: "SecureRandom" seeds should not be predictable
 ##### Quality Category: Vulnerability
 The java.security.SecureRandom class provides a strong random number generator (RNG) appropriate for cryptography. However, seeding it with a constant or another predictable value will weaken it significantly. In general, it is much safer to rely on the seed provided by the SecureRandom implementation.
 
 This rule raises an issue when SecureRandom.set```
-*See*
+**See**
 d() or SecureRandom(byte[]) are called with a seed that is either of:
 
  a constant
@@ -2124,7 +2124,7 @@ System.currentTimeMillis()
 ```java
 SecureRandom sr = new SecureRandom();
 sr.set```
-*See*
+**See**
 d(123456L); // Noncompliant
 int v = sr.next(32);
 
@@ -2139,19 +2139,19 @@ SecureRandom sr = new SecureRandom();
 int v = sr.next(32);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-330 - Use of Insufficiently Random Values
 MITRE, CWE-332 - Insufficient Entropy in PRNG
 MITRE, CWE-336 - Same ```
-*See*
+**See**
 d in Pseudo-Random Number Generator (PRNG)
 MITRE, CWE-337 - Predictable ```
-*See*
+**See**
 d in Pseudo-Random Number Generator (PRNG)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 CERT, MSC63J. - Ensure that SecureRandom is properly seeded
-#### Rule 56: Defined filters should be used
+### Rule 56: Defined filters should be used
 ##### Quality Category: Vulnerability
 Every filter defined in web.xml file should be used in a <filter-mapping> element. Otherwise such filters are not invoked.
 
@@ -2177,10 +2177,10 @@ Every filter defined in web.xml file should be used in a <filter-mapping> elemen
   </filter-mapping>
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-#### Rule 57: "HttpOnly" should be set on cookies
+### Rule 57: "HttpOnly" should be set on cookies
 ##### Quality Category: Vulnerability
 The HttpOnly cookie attribute tells the browser to prevent client-side scripts from reading cookies with the attribute, and its use can go a long way to defending against Cross-Site Scripting (XSS) attacks. Thus, as a precaution, the attribute should be set by default on all cookies set server-side, such as session id cookies.
 
@@ -2200,7 +2200,7 @@ Cookie cookie = new Cookie("myCookieName", value);
 cookie.setHttpOnly(true); // Compliant
 
 ```
-*See*
+**See**
 
 CWE-79 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
 CWE-1004 - Sensitive Cookie Without 'HttpOnly' Flag
@@ -2208,7 +2208,7 @@ CWE-1004 - Sensitive Cookie Without 'HttpOnly' Flag
 OWASP HttpOnly
 SANS Top 25 - Insecure Interaction Between Components
  Derived from FindSecBugs rule HTTPONLY_COOKIE
-#### Rule 58: "File.createTempFile" should not be used to create a directory
+### Rule 58: "File.createTempFile" should not be used to create a directory
 ##### Quality Category: Vulnerability
 Using File.createTempFile as the first step in creating a temporary directory causes a race condition and is inherently unreliable and insecure. Instead, Files.createTempDirectory (Java 7+) or a library function such as Guava's similarly-named Files.createTempDir should be used.
 
@@ -2235,10 +2235,10 @@ Path tempPath = Files.createTempDirectory("");
 File tempDir = tempPath.toFile();
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A9 - Using Components with Known Vulnerabilities
-#### Rule 59: Web applications should not have a "main" method
+### Rule 59: Web applications should not have a "main" method
 ##### Quality Category: Vulnerability
 There is no reason to have a main method in a web application. It may have been useful for debugging during application development, but such a method should never make it into production. Having a main method in a web application opens a door to the application logic that an attacker may never be able to reach (but watch out if one does!), but it is a sloppy practice and indicates that other problems may be present.
 
@@ -2259,12 +2259,12 @@ public class MyServlet extends HttpServlet {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-489 - Leftover Debug Code
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, ENV06-J. - Production code must not contain debugging entry points
-#### Rule 60: Basic authentication should not be used
+### Rule 60: Basic authentication should not be used
 ##### Quality Category: Vulnerability
 Basic authentication's only means of obfuscation is Base64 encoding. Since Base64 encoding is easily recognized and reversed, it offers only the thinnest veil of protection to your users, and should not be used.
 
@@ -2285,14 +2285,14 @@ conn.setDoOutput(true);
 conn.setRequestProperty("Authorization", "Basic " + encoding); // Noncompliant
 
 ```
-*See*
+**See**
 
 MITRE, CWE-522 - Insufficiently Protected Credentials
 MITRE, CWE-311 - Missing Encryption of Sensitive Data
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
 OWASP Basic Authentication
-#### Rule 61: Cryptographic RSA algorithms should always incorporate OAEP (Optimal Asymmetric Encryption Padding)
+### Rule 61: Cryptographic RSA algorithms should always incorporate OAEP (Optimal Asymmetric Encryption Padding)
 ##### Quality Category: Vulnerability
 Without OAEP in RSA encryption, it takes less work for an attacker to decrypt the data or infer patterns from the ciphertext. This rule logs an issue as soon as a literal value starts with RSA/NONE.
 
@@ -2307,7 +2307,7 @@ Cipher rsa = javax.crypto.Cipher.getInstance("RSA/NONE/NoPadding");
 Cipher rsa = javax.crypto.Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
 
 ```
-*See*
+**See**
 
 MITRE CWE-780 - Use of RSA Algorithm without OAEP
 MITRE CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
@@ -2315,7 +2315,7 @@ MITRE CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
  Derived from FindSecBugs rule RSA NoPadding Unsafe
-#### Rule 62: "HttpServletRequest.getRequestedSessionId()" should not be used
+### Rule 62: "HttpServletRequest.getRequestedSessionId()" should not be used
 ##### Quality Category: Vulnerability
 According to the Oracle Java API, the HttpServletRequest.getRequestedSessionId() method:
 
@@ -2340,12 +2340,12 @@ if(isActiveSession(request.getRequestedSessionId()) ){
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-807 - Reliance on Untrusted Inputs in a Security Decision
 SANS Top 25 - Porous Defenses
  OWASP Top 10 2017 Category A2 - Broken Authentication
-#### Rule 63: Getters and setters should access the expected fields
+### Rule 63: Getters and setters should access the expected fields
 ##### Quality Category: Bug
 Getters and setters provide a way to enforce encapsulation by providing public methods that give controlled access to private fields. However in classes with multiple fields it is not unusual that cut and paste is used to quickly create the needed getters and setters, which can result in the wrong field being accessed by a getter or setter.
 
@@ -2385,7 +2385,7 @@ class A {
   }
 }
 ```
-#### Rule 64: Hibernate should not update database schemas
+### Rule 64: Hibernate should not update database schemas
 ##### Quality Category: Bug
 The use of any value but "validate" for hibernate.hbm2ddl.auto may cause the database schema used by your application to be changed, dropped, or cleaned of all data. In short, the use of this property is risky, and should only be used in production with the "validate" option, if it is used at all.
 
@@ -2410,7 +2410,7 @@ or
   <!-- Property deleted -->
 </session-factory>
 ```
-#### Rule 65: Zero should not be a possible denominator
+### Rule 65: Zero should not be a possible denominator
 ##### Quality Category: Bug
 If the denominator to a division or modulo operation is zero it would result in a fatal error.
 
@@ -2444,12 +2444,12 @@ void test_divide() {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-369 - Divide by zero
 CERT, NUM02-J. - Ensure that division and remainder operations do not result in divide-by-zero errors
 CERT, INT33-C. - Ensure that division and remainder operations do not result in divide-by-zero errors
-#### Rule 66: Dependencies should not have "system" scope
+### Rule 66: Dependencies should not have "system" scope
 ##### Quality Category: Bug
 system dependencies are sought at a specific, specified path. This drastically reduces portability because if you deploy your artifact in an environment that's not configured just like yours is, your code won't work.
 
@@ -2463,7 +2463,7 @@ system dependencies are sought at a specific, specified path. This drastically r
   <systemPath>/usr/bin/lib/rt.jar</systemPath>  <!-- remove this -->
 </dependency>
 ```
-#### Rule 67: Locks should be released
+### Rule 67: Locks should be released
 ##### Quality Category: Bug
 If a lock is acquired and released within a method, then it must be released along all execution paths of that method.
 
@@ -2500,10 +2500,10 @@ public class MyClass {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-459 - Incomplete Cleanup
-#### Rule 68: "runFinalizersOnExit" should not be called
+### Rule 68: "runFinalizersOnExit" should not be called
 ##### Quality Category: Bug
 Running finalizers on JVM exit is disabled by default. It can be enabled with System.runFinalizersOnExit and Runtime.runFinalizersOnExit, but both methods are deprecated because they are are inherently unsafe.
 
@@ -2538,10 +2538,10 @@ public static void main(String [] args) {
   //...
 
 ```
-*See*
+**See**
 
 CERT, MET12-J. - Do not use finalizers
-#### Rule 69: "ScheduledThreadPoolExecutor" should not have 0 core threads
+### Rule 69: "ScheduledThreadPoolExecutor" should not have 0 core threads
 ##### Quality Category: Bug
 java.util.concurrent.ScheduledThreadPoolExecutor's pool is sized with corePoolSize, so setting corePoolSize to zero means the executor will have no threads and run nothing.
 
@@ -2556,7 +2556,7 @@ public void do(){
   ScheduledThreadPoolExecutor stpe2 = new ScheduledThreadPoolExecutor(POOL_SIZE);
   stpe2.setCorePoolSize(0);  // Noncompliant
 ```
-#### Rule 70: "Random" objects should be reused
+### Rule 70: "Random" objects should be reused
 ##### Quality Category: Bug
 Creating a new Random object each time a random value is needed is inefficient and may produce numbers which are not random depending on the JDK. For better efficiency and randomness, create a single Random, then store, and reuse it.
 
@@ -2589,11 +2589,11 @@ public void doSomethingCommon() {
 A class which uses a Random in its constructor or in a static main function and nowhere else will be ignored by this rule.
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
-
-#### Rule 71: The signature of "finalize()" should match that of "Object.finalize()"
+```
+### Rule 71: The signature of "finalize()" should match that of "Object.finalize()"
 ##### Quality Category: Bug
 Object.finalize() is called by the Garbage Collector at some point after the object becomes unreferenced.
 
@@ -2618,7 +2618,7 @@ public int someBetterName(int someParameter) {  // Compliant
   /* ... */
 }
 ```
-#### Rule 72: Jump statements should not occur in "finally" blocks
+### Rule 72: Jump statements should not occur in "finally" blocks
 ##### Quality Category: Bug
 Using return, break, throw, and so on from a finally block suppresses the propagation of any unhandled Throwable which was thrown in the try or catch block.
 
@@ -2680,11 +2680,11 @@ public static void doSomethingWhichThrowsException() {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-584 - Return Inside Finally Block
 CERT, ERR04-J. - Do not complete abruptly from a finally block
-#### Rule 73: Expanding archive files is security-sensitive
+### Rule 73: Expanding archive files is security-sensitive
 ##### Quality Category: Security Hotspot
 Expanding archive files is security-sensitive. For example, expanding archive files has led in the past to the following vulnerabilities:
 
@@ -2739,14 +2739,14 @@ This rule doesn't raise an issue when a ZipEntry or a ArchiveEntry:
  is declared as a class field
  is a parameter of an abstract method of an interface or abstract class
 ```
-*See*
+**See**
 
 MITRE, CWE-409 - Improper Handling of Highly Compressed Data (Data Amplification)
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS04-J. - Safely extract files from ZipInputStream
  Snyk Research Team: Zip Slip Vulnerability
-
-#### Rule 74: Controlling permissions is security-sensitive
+```
+### Rule 74: Controlling permissions is security-sensitive
 ##### Quality Category: Security Hotspot
 Controlling permissions is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -2824,7 +2824,7 @@ Log and monitor refused access requests as they can reveal an attack.
 See
  OWASP Top 10 2017 Category A5 - Broken Access Control
 SANS Top 25 - Porous Defenses
-#### Rule 75: Reading the Standard Input is security-sensitive
+### Rule 75: Reading the Standard Input is security-sensitive
 ##### Quality Category: Security Hotspot
 Reading Standard Input is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -2873,11 +2873,11 @@ All references to System.in will create issues except direct calls to System.in.
 Command line parsing libraries such as JCommander often read standard input when asked for passwords. However this rule doesn't raise any issue in this case as another hotspot rule covers command line arguments.
 
 ```
-*See*
+**See**
 :
 MITRE, CWE-20 - Improper Input Validation
-
-#### Rule 76: Sending HTTP requests is security-sensitive
+```
+### Rule 76: Sending HTTP requests is security-sensitive
 ##### Quality Category: Security Hotspot
 Sending HTTP requests is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3020,7 +3020,7 @@ MITRE, CWE-400 - Uncontrolled Resource Consumption ('Resource Exhaustion')
 MITRE, CWE-200 - Information Exposure
  OWASP Top 10 2017 Category A1 - Injection
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 77: Using command line arguments is security-sensitive
+### Rule 77: Using command line arguments is security-sensitive
 ##### Quality Category: Security Hotspot
 Using command line arguments is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3137,14 +3137,14 @@ The support of Argv4J without the use of org.kohsuke.argv4j.Option is out of sco
 No issue will be raised on public static void main(String[] argv) if argv is not referenced in the method.
 
 ```
-*See*
+**See**
 
 MITRE, CWE-88 - Argument Injection or Modification
 MITRE, CWE-214 - Information Exposure Through Process Environment
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-
-#### Rule 78: Using Sockets is security-sensitive
+```
+### Rule 78: Using Sockets is security-sensitive
 ##### Quality Category: Security Hotspot
 Using sockets is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3255,7 +3255,7 @@ MITRE, CWE-200 - Information Exposure
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Risky Resource Management
 SANS Top 25 - Porous Defenses
-#### Rule 79: Executing XPath expressions is security-sensitive
+### Rule 79: Executing XPath expressions is security-sensitive
 ##### Quality Category: Security Hotspot
 Executing XPATH expressions is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3355,7 +3355,7 @@ See
 MITRE, CWE-643 - Improper Neutralization of Data within XPath Expressions
  OWASP Top 10 2017 Category A1 - Injection
 CERT, IDS53-J. - Prevent XPath Injection
-#### Rule 80: Handling files is security-sensitive
+### Rule 80: Handling files is security-sensitive
 ##### Quality Category: Security Hotspot
 Handling files is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3388,7 +3388,7 @@ You are at risk if you answered yes to any of those questions.
 Recommended Secure Coding Practices
 
 Avoid using paths provided by users or other untrusted sources if possible. If this is required, check that the path does not reference an unauthorized directory or file. ```
-*See*
+**See**
  OWASP recommendations as to how to test for directory traversal. Note that the paths length should be validated too.
 
 No File and directory names should be exposed. They can contain sensitive information. This means that a user should not be able to list the content of unauthorized directories.
@@ -3514,7 +3514,7 @@ This rule doesn't highlight any function call receiving a Path or File arguments
 For example we highlight new File(String parent, String child) but not new File(File parent, String child) as the parent File should have been flagged earlier.
 
 ```
-*See*
+**See**
 
 MITRE, CWE-732 - Incorrect Permission Assignment for Critical Resource
 MITRE, CWE-73 - External Control of File Name or Path
@@ -3530,8 +3530,8 @@ CERT, FIO22-C. Close files before spawning processes
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Risky Resource Management
 SANS Top 25 - Porous Defenses
-
-#### Rule 81: Configuring loggers is security-sensitive
+```
+### Rule 81: Configuring loggers is security-sensitive
 ##### Quality Category: Security Hotspot
 Configuring loggers is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3574,7 +3574,7 @@ Remember that configuring loggers properly doesn't make them bullet-proof. Here 
  Monitor the logs for any suspicious activity.
 
 ```
-*See*
+**See**
 
 
 MITRE, CWE-532 - Information Exposure Through Log Files
@@ -3668,8 +3668,8 @@ class M {
 ```java
 
 Log4J 1.x is not covered as it has reached end of life.
-
-#### Rule 82: Hashing data is security-sensitive
+```
+### Rule 82: Hashing data is security-sensitive
 ##### Quality Category: Security Hotspot
 Hashing data is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3815,7 +3815,7 @@ MITRE, CWE-759 - Use of a One-Way Hash without a Salt
 MITRE, CWE-760 - Use of a One-Way Hash with a Predictable Salt
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Porous Defenses
-#### Rule 83: Encrypting data is security-sensitive
+### Rule 83: Encrypting data is security-sensitive
 ##### Quality Category: Security Hotspot
 Encrypting data is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3881,7 +3881,7 @@ MITRE, CWE-522 - Insufficiently Protected Credentials
  [OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
  [OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
-#### Rule 84: Using regular expressions is security-sensitive
+### Rule 84: Using regular expressions is security-sensitive
 ##### Quality Category: Security Hotspot
 Using regular expressions is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -3966,15 +3966,15 @@ Calls to java.util.regex.Pattern.matcher(...), java.util.regex.Pattern.split(...
 Calls to String.split(regex) and String.split(regex, limit) will not raise an exception despite their use of a regular expression. These methods are used most of the time to split on a single character, which doesn't create any vulnerability.
 
 ```
-*See*
+**See**
 
 MITRA, CWE-624 - Executable Regular Expression Error
 MITRA, CWE-185 - Incorrect Regular Expression
  OWASP Regular expression Denial of Service - ReDoS
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Porous Defenses
-
-#### Rule 85: Executing OS commands is security-sensitive
+```
+### Rule 85: Executing OS commands is security-sensitive
 ##### Quality Category: Security Hotspot
 OS commands are security-sensitive. For example, their use has led in the past to the following vulnerabilities:
 
@@ -4035,13 +4035,13 @@ ProcessBuilder pb = new ProcessBuilder();
 pb.command();
 
 ```
-*See*
+**See**
 
 MITRE, CWE-78 - Improper Neutralization of Special Elements used in an OS Command
  OWASP Top 10 2017 Category A1 - Injection
 SANS Top 25 - Insecure Interaction Between Components
-
-#### Rule 86: Using unsafe Jackson deserialization configuration is security-sensitive
+```
+### Rule 86: Using unsafe Jackson deserialization configuration is security-sensitive
 ##### Quality Category: Security Hotspot
 When Jackson is configured to allow Polymorphic Type Handling (aka PTH), formerly known as Polymorphic Deserialization, "deserialization gadgets" may allow an attacker to perform remote code execution.
 
@@ -4075,7 +4075,7 @@ abstract class PhoneNumber {
 - use @JsonTypeInfo(use = Id.NAME) instead of @JsonTypeInfo(use = Id.CLASS) or @JsonTypeInfo(use = Id. MINIMAL_CLASS) and so rely on @JsonTypeName and @JsonSubTypes
 
 ```
-*See*
+**See**
 
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
@@ -4084,7 +4084,7 @@ On Jackson CVEs: Don’t Panic
 CVE-2017-1509
 CVE-2017-7525
  Derived from FindSecBugs rule JACKSON_UNSAFE_DESERIALIZATION
-#### Rule 87: Exposing HTTP endpoints is security-sensitive
+### Rule 87: Exposing HTTP endpoints is security-sensitive
 ##### Quality Category: Security Hotspot
 Exposing HTTP endpoints is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -4134,7 +4134,7 @@ public UserProfile getUserProfile(String name) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-20 - Improper Input Validation
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
@@ -4146,7 +4146,7 @@ MITRE, CWE-22 - Improper Limitation of a Pathname to a Restricted Directory ('Pa
 SANS Top 25 - Insecure Interaction Between Components
 SANS Top 25 - Risky Resource Management
 SANS Top 25 - Porous Defenses
-#### Rule 88: Setting JavaBean properties is security-sensitive
+### Rule 88: Setting JavaBean properties is security-sensitive
 ##### Quality Category: Security Hotspot
 Setting JavaBean properties is security sensitive. Doing it with untrusted values has led in the past to the following vulnerability:
 
@@ -4183,13 +4183,13 @@ while (names.hasMoreElements()) {
 BeanUtils.populate(bean, map); // Noncompliant; "map" is populated with data coming from user input, here "request.getParameterNames()"
 
 ```
-*See*
+**See**
 
 MITRE, CWE-15 - External Control of System or Configuration Setting
  OWASP Top 10 2017 Category A1 - Injection
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
  Derived from FindSecBugs rule BEAN_PROPERTY_INJECTION
-#### Rule 89: Deserializing XML from an untrusted source is security-sensitive
+### Rule 89: Deserializing XML from an untrusted source is security-sensitive
 ##### Quality Category: Security Hotspot
 Deserialization from an untrusted source using the XMLDecoder library can lead to unexpected code execution. For example, it has led in the past to the following vulnerability:
 
@@ -4221,14 +4221,14 @@ public void decode(InputStream in) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A1 - Injection
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 OWASP Deserialization of untrusted data
  Derived from FindSecBugs rule XML_DECODER
-#### Rule 90: Deserializing objects from an untrusted source is security-sensitive
+### Rule 90: Deserializing objects from an untrusted source is security-sensitive
 ##### Quality Category: Security Hotspot
 Deserializing objects is security-sensitive. For example, it has led in the past to the following vulnerabilities:
 
@@ -4266,7 +4266,7 @@ MITRE, CWE-502 - Deserialization of Untrusted Data
  OWASP Top 10 2017 Category A8 - Insecure Deserialization
 OWASP Deserialization of untrusted data
  Derived from FindSecBugs rule OBJECT_DESERIALIZATION
-#### Rule 91: Delivering code in production with debug features activated is security-sensitive
+### Rule 91: Delivering code in production with debug features activated is security-sensitive
 ##### Quality Category: Security Hotspot
 Delivering code in production with debug features activated is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -4315,12 +4315,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-489 - Leftover Debug Code
 MITRE, CWE-215 - Information Exposure Through Debug Information
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 92: Disabling Spring Security's CSRF protection is security-sensitive
+### Rule 92: Disabling Spring Security's CSRF protection is security-sensitive
 ##### Quality Category: Security Hotspot
 Spring Security is coming out of the box with a protection against CSRF attacks. With 4.0, this protection is even enabled by default. Spring's recommendation is to "use CSRF protection for any request that could be processed by a browser by normal users". So there is no reason to disable it for standard web applications.
 
@@ -4338,7 +4338,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-352 - Cross-Site Request Forgery (CSRF)
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
@@ -4346,7 +4346,7 @@ OWASP: Cross-Site Request Forgery
 SANS Top 25 - Insecure Interaction Between Components
  Derived from FindSecBugs rule SPRING_CSRF_PROTECTION_DISABLED
 Spring Security Official Documentation: When to use CSRF protection
-#### Rule 93: Cookie domains should be as narrow as possible
+### Rule 93: Cookie domains should be as narrow as possible
 ##### Quality Category: Security Hotspot
 A cookie's domain specifies which websites should be able to read it. Left blank, browsers are supposed to only send the cookie to sites that exactly match the sending domain. For example, if a cookie was set by lovely.dream.com, it should only be readable by that domain, and not by nightmare.com or even strange.dream.com. If you want to allow sub-domain access for a cookie, you can specify it by adding a dot in front of the cookie's domain, like so: .dream.com. But cookie domains should always use at least two levels.
 
@@ -4374,10 +4374,10 @@ java.net.HttpCookie myOtherCookie = new java.net.HttpCookie("name", "val");
 myOtherCookie.setDomain(".myDomain.com"); // Compliant
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A7 - Cross-Site Scripting (XSS)
-#### Rule 94: Changing or bypassing accessibility is security-sensitive
+### Rule 94: Changing or bypassing accessibility is security-sensitive
 ##### Quality Category: Security Hotspot
 Changing or bypassing accessibility is security-sensitive. For example, it has led in the past to the following vulnerability:
 
@@ -4416,7 +4416,7 @@ public void setItAnyway(String fieldName, int value) {
 See
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, SEC05-J. - Do not use reflection to increase accessibility of classes, methods, or fields
-#### Rule 95: Using non-standard cryptographic algorithms is security-sensitive
+### Rule 95: Using non-standard cryptographic algorithms is security-sensitive
 ##### Quality Category: Security Hotspot
 The use of a non-standard algorithm is dangerous because a determined attacker may be able to break the algorithm and compromise whatever data has been protected. Standard algorithms like SHA-256, SHA-384, SHA-512, ... should be used instead.
 
@@ -4431,13 +4431,13 @@ MyCryptographicAlgorithm extends MessageDigest {
 }
 
 ```
-*See*
+**See**
 
 CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Porous Defenses
  Derived from FindSecBugs rule MessageDigest is Custom
-#### Rule 96: Using pseudorandom number generators (PRNGs) is security-sensitive
+### Rule 96: Using pseudorandom number generators (PRNGs) is security-sensitive
 ##### Quality Category: Security Hotspot
 Using pseudorandom number generators (PRNGs) is security-sensitive. For example, it has led in the past to the following vulnerabilities:
 
@@ -4481,7 +4481,7 @@ CERT, MSC30-C. - Do not use the rand() function for generating pseudorandom numb
 CERT, MSC50-CPP. - Do not use std::rand() for generating pseudorandom numbers
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
  Derived from FindSecBugs rule Predictable Pseudo Random Number Generator
-#### Rule 97: Executing SQL queries is security-sensitive
+### Rule 97: Executing SQL queries is security-sensitive
 ##### Quality Category: Security Hotspot
 Executing SQL queries is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -4595,7 +4595,7 @@ public User getUserHibernate(org.hibernate.Session session, String userInput) {
   // ...
 
 ```
-*See*
+**See**
 
 MITRE, CWE-89 - Improper Neutralization of Special Elements used in an SQL Command
 MITRE, CWE-564 - SQL Injection: Hibernate
@@ -4605,7 +4605,7 @@ MITRE, CWE-943 - Improper Neutralization of Special Elements in Data Query Logic
 CERT, IDS00-J. - Prevent SQL injection
 SANS Top 25 - Insecure Interaction Between Components
  Derived from FindSecBugs rules Potential SQL/JPQL Injection (JPA), Potential SQL/JDOQL Injection (JDO), Potential SQL/HQL Injection (Hibernate)
-#### Rule 98: Dynamically executing code is security-sensitive
+### Rule 98: Dynamically executing code is security-sensitive
 ##### Quality Category: Security Hotspot
 Executing code dynamically is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -4663,14 +4663,14 @@ public class Reflection {
 Calling reflection methods with a hard-coded type name, method name or field name will not raise an issue.
 
 ```
-*See*
+**See**
 
 MITRE CWE-95 - Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')
 MITRE CWE-470 - Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection')
  OWASP Top 10 2017 Category A1 - Injection
  OWASP Top 10 2017 Category A7 - Cross-Site Scripting (XSS)
-
-#### Rule 99: String offset-based methods should be preferred for finding substrings from offsets
+```
+### Rule 99: String offset-based methods should be preferred for finding substrings from offsets
 ##### Quality Category: Code Smell
 Looking for a given substring starting from a specified offset can be achieved by such code: str.substring(beginIndex).indexOf(char1). This works well, but it creates a new String for each call to the substring method. When this is done in a loop, a lot of Strings are created for nothing, which can lead to performance problems if str is large.
 
@@ -4700,7 +4700,7 @@ str.substring(beginIndex).indexOf(char1); // Noncompliant; a new String is going
 ```java
 str.indexOf(char1, beginIndex);
 ```
-#### Rule 100: "default" clauses should be last
+### Rule 100: "default" clauses should be last
 ##### Quality Category: Code Smell
 switch can contain a default clause for various reasons: to handle unexpected values, to show that all the cases were properly considered.
 
@@ -4737,13 +4737,13 @@ switch (param) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause
  MISRA C++:2008, 6-4-6 - The final clause of a switch statement shall be the default-clause
  MISRA C:2012, 16.4 - Every switch statement shall have a default label
  MISRA C:2012, 16.5 - A default label shall appear as either the first or the last switch label of a switch statement
-#### Rule 101: "equals" method parameters should not be marked "@Nonnull"
+### Rule 101: "equals" method parameters should not be marked "@Nonnull"
 ##### Quality Category: Code Smell
 By contract, the equals(Object) method, from java.lang.Object, should accept a null argument. Among all the other cases, the null case is even explicitly detailed in the Object.equals(...) Javadoc, stating "_For any non-null reference value x, x.equals(null) should return false._"
 
@@ -4768,7 +4768,7 @@ public boolean equals(Object obj) {
   // ...
 }
 ```
-#### Rule 102: A conditionally executed single line should be denoted by indentation
+### Rule 102: A conditionally executed single line should be denoted by indentation
 ##### Quality Category: Code Smell
 In the absence of enclosing curly braces, the line immediately after a conditional is the one that is conditionally executed. By both convention and good practice, such lines are indented. In the absence of both curly braces and indentation the intent of the original programmer is entirely unclear and perhaps not actually what is executed. Additionally, such code is highly likely to be confusing to maintainers.
 
@@ -4794,7 +4794,7 @@ somethingElseEntirely();
 
 foo();
 ```
-#### Rule 103: Conditionals should start on new lines
+### Rule 103: Conditionals should start on new lines
 ##### Quality Category: Code Smell
 Code is clearest when each statement has its own line. Nonetheless, it is a common pattern to combine on the same line an if and its resulting then statement. However, when an if is placed on the same line as the closing } from a preceding else or else if, it is either an error - else is missing - or the invitation to a future error as maintainers fail to understand that the two statements are unconnected.
 
@@ -4827,13 +4827,13 @@ if (condition2) {
   //...
 }
 ```
-#### Rule 104: Cognitive Complexity of methods should not be too high
+### Rule 104: Cognitive Complexity of methods should not be too high
 ##### Quality Category: Code Smell
 Cognitive Complexity is a measure of how hard the control flow of a method is to understand. Methods with high Cognitive Complexity will be difficult to maintain.
 
 See
 Cognitive Complexity
-#### Rule 105: Factory method injection should be used in "@Configuration" classes
+### Rule 105: Factory method injection should be used in "@Configuration" classes
 ##### Quality Category: Code Smell
 When @Autowired is used, dependencies need to be resolved when the class is instantiated, which may cause early initialization of beans or lead the context to look in places it shouldn't to find the bean. To avoid this tricky issue and optimize the way the context loads, dependencies should be requested as late as possible. That means using parameter injection instead of field injection for dependencies that are only used in a single @Bean method.
 
@@ -4869,8 +4869,8 @@ public class ​FooConfiguration {
 ```java
 
 Fields used in methods that are called directly by other methods in the application (as opposed to being invoked automatically by the Spring framework) are ignored by this rule so that direct callers don't have to provide the dependencies themselves.
-```
-#### Rule 106: Instance methods should not write to "static" fields
+``````
+### Rule 106: Instance methods should not write to "static" fields
 ##### Quality Category: Code Smell
 Correctly updating a static field from a non-static method is tricky to get right and could easily lead to bugs if there are multiple class instances and/or multiple threads in play. Ideally, static fields are only updated from synchronized static methods.
 
@@ -4888,7 +4888,7 @@ public class MyClass {
   }
 }
 ```
-#### Rule 107: "indexOf" checks should not be for positive numbers
+### Rule 107: "indexOf" checks should not be for positive numbers
 ##### Quality Category: Code Smell
 Most checks against an indexOf value compare it with -1 because 0 is a valid index. Any checks which look for values >0 ignore the first element, which is likely a bug. If the intent is merely to check inclusion of a value in a String or a List, consider using the contains method instead.
 
@@ -4934,7 +4934,7 @@ if (name.contains("ae") {
   // ...
 }
 ```
-#### Rule 108: Method overrides should not change contracts
+### Rule 108: Method overrides should not change contracts
 ##### Quality Category: Code Smell
 Because a subclass instance may be cast to and treated as an instance of the superclass, overriding methods should uphold the aspects of the superclass contract that relate to the Liskov Substitution Principle. Specifically, if the parameters or return type of the superclass method are marked with any of the following: @Nullable, @CheckForNull, @NotNull, @NonNull, and @Nonnull, then subclass parameters are not allowed to tighten the contract, and return values are not allowed to loosen it.
 
@@ -4966,10 +4966,10 @@ public class Raspberry extends Fruit {
 }
 
 ```
-*See*
+**See**
 
  https://en.wikipedia.org/wiki/Liskov_substitution_principle
-#### Rule 109: Null should not be returned from a "Boolean" method
+### Rule 109: Null should not be returned from a "Boolean" method
 ##### Quality Category: Code Smell
 While null is technically a valid Boolean value, that fact, and the distinction between Boolean and boolean is easy to forget. So returning null from a Boolean method is likely to cause problems with callers' code.
 
@@ -4981,11 +4981,11 @@ public Boolean isUsable() {
 }
 
 ```
-*See*
+**See**
 
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
-#### Rule 110: Classes should not access their own subclasses during initialization
+### Rule 110: Classes should not access their own subclasses during initialization
 ##### Quality Category: Code Smell
 When a parent class references a member of a subclass during its own initialization, the results might not be what you expect because the child class might not have been initialized yet. This could create what is known as an "initialisation cycle", or even a deadlock in some extreme cases.
 
@@ -5009,11 +5009,11 @@ class Child extends Parent {
 }
 
 ```
-*See*
+**See**
 
 CERT, DCL00-J. - Prevent class initialization cycles
  Java Language Specifications - Section 12.4: Initialization of Classes and Interfaces
-#### Rule 111: "Object.wait(...)" and "Condition.await(...)" should be called inside a "while" loop
+### Rule 111: "Object.wait(...)" and "Condition.await(...)" should be called inside a "while" loop
 ##### Quality Category: Code Smell
 According to the documentation of the Java Condition interface:
 
@@ -5051,10 +5051,10 @@ synchronized (obj) {
 }
 
 ```
-*See*
+**See**
 
 CERT THI03-J. - Always invoke wait() and await() methods inside a loop
-#### Rule 112: IllegalMonitorStateException should not be caught
+### Rule 112: IllegalMonitorStateException should not be caught
 ##### Quality Category: Code Smell
 According to Oracle Javadoc:
 
@@ -5088,7 +5088,7 @@ public void doSomething(){
   }
 }
 ```
-#### Rule 113: JUnit assertions should not be used in "run" methods
+### Rule 113: JUnit assertions should not be used in "run" methods
 ##### Quality Category: Code Smell
 JUnit assertions should not be made from the run method of a Runnable, because failed assertions result in AssertionErrors being thrown. If the error is thrown from a thread other than the one that ran the test, the thread will exit but the test won't fail.
 
@@ -5099,7 +5099,7 @@ public void run() {
   Assert.assertEquals(expected, actual);  // Noncompliant
 }
 ```
-#### Rule 114: Class names should not shadow interfaces or superclasses
+### Rule 114: Class names should not shadow interfaces or superclasses
 ##### Quality Category: Code Smell
 While it's perfectly legal to give a class the same simple name as a class in another package that it extends or interface it implements, it's confusing and could cause problems in the future.
 
@@ -5117,7 +5117,7 @@ package my.mypackage;
 
 public class FooJr implements a.b.Foo {
 ```
-#### Rule 115: "Cloneables" should implement "clone"
+### Rule 115: "Cloneables" should implement "clone"
 ##### Quality Category: Code Smell
 Simply implementing Cloneable without also overriding Object.clone() does not necessarily make the class cloneable. While the Cloneable interface does not include a clone method, it is required by convention, and ensures true cloneability. Otherwise the default JVM clone will be used, which copies primitive values and object references from the source to the target. I.e. without overriding clone, any cloned instances will potentially share members with the source instance.
 
@@ -5149,7 +5149,7 @@ class Team implements Cloneable {
   }
 }
 ```
-#### Rule 116: Try-with-resources should be used
+### Rule 116: Try-with-resources should be used
 ##### Quality Category: Code Smell
 Java 7 introduced the try-with-resources statement, which guarantees that the resource in question will be closed. Since the new syntax is closer to bullet-proof, it should be preferred over the older try/catch/finally version.
 
@@ -5201,10 +5201,10 @@ try (BufferedReader br =
 catch (...) {}
 
 ```
-*See*
+**See**
 
 CERT, ERR54-J. - Use a try-with-resources statement to safely handle closeable resources
-#### Rule 117: "readResolve" methods should be inheritable
+### Rule 117: "readResolve" methods should be inheritable
 ##### Quality Category: Code Smell
 The readResolve() method allows final tweaks to the state of an object during deserialization. Non-final classes which implement readResolve(), should not set its visibility to private since it will then be unavailable to child classes.
 
@@ -5240,7 +5240,7 @@ public class Raspberry extends Fruit implements Serializable {
   //...
 }
 ```
-#### Rule 118: "for" loop increment clauses should modify the loops' counters
+### Rule 118: "for" loop increment clauses should modify the loops' counters
 ##### Quality Category: Code Smell
 It can be extremely confusing when a for loop's counter is incremented outside of its increment clause. In such cases, the increment should be moved to the loop's increment clause if at all possible.
 
@@ -5267,7 +5267,7 @@ for (i = 0; i < 10; i++) {
   j++;
 }
 ```
-#### Rule 119: Fields in a "Serializable" class should either be transient or serializable
+### Rule 119: Fields in a "Serializable" class should either be transient or serializable
 ##### Quality Category: Code Smell
 Fields in a Serializable class must themselves be either Serializable or transient even if the class is never explicitly serialized or deserialized. For instance, under load, most J2EE application frameworks flush objects to disk, and an allegedly Serializable object with non-transient, non-serializable data members could cause program crashes, and open the door to attackers. In general a Serializable class is expected to fulfil its contract and not have an unexpected behaviour when an instance is serialized.
 
@@ -5314,20 +5314,20 @@ The alternative to making all members serializable or transient is to implement 
      throws IOException, ClassNotFoundException;
 
 ```
-*See*
+**See**
 
 MITRE, CWE-594 - Saving Unserializable Objects to Disk
 Oracle Java 6, Serializable
 Oracle Java 7, Serializable
-
-#### Rule 120: Package declaration should match source file directory
+```
+### Rule 120: Package declaration should match source file directory
 ##### Quality Category: Code Smell
 By convention, a Java class' physical location (source directories) and its logical representation (packages) should be kept in sync. Thus a Java file located at "src/org/bar/Foo.java" should have a package of "org.bar".
 
 Unfortunately, this convention is not enforced by Java compilers, and nothing prevents a developer from making the "Foo.java" class part of the "com.apple" package, which could degrade the maintainability of both the class and its application.
 
 Similarly, source placed in a folder with dots in its name instead of having the equivalent folder structure will compile but cause problems at run time. For instance, code with a package declaration of org.foo.bar that is placed in org/foo.bar will compile, but the classloader will always search for the class into the folder based on package structure, and will consequently expect sources to be in org/foo/bar folder. foo.bar is therefore not a proper folder name for sources.
-#### Rule 121: Generic wildcard types should not be used in return parameters
+### Rule 121: Generic wildcard types should not be used in return parameters
 ##### Quality Category: Code Smell
 It is highly recommended not to use wildcard types as return types. Because the type inference rules are fairly complex it is unlikely the user of that API will know how to use it correctly.
 
@@ -5350,7 +5350,7 @@ or
 
 List<Dog> getAnimals(){...}
 ```
-#### Rule 122: "switch" statements should have "default" clauses
+### Rule 122: "switch" statements should have "default" clauses
 ##### Quality Category: Code Smell
 The requirement for a final default clause is defensive programming. The clause should either take appropriate action, or contain a suitable comment as to why no action is taken.
 
@@ -5416,7 +5416,7 @@ switch(day) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 15.0 - The MISRA C switch syntax shall be used.
  MISRA C:2004, 15.3 - The final clause of a switch statement shall be the default clause
@@ -5427,8 +5427,8 @@ switch(day) {
  MISRA C:2012, 16.5 - A default label shall appear as either the first or the last switch label of a switch statement
 MITRE, CWE-478 - Missing Default Case in Switch Statement
 CERT, MSC01-C. - Strive for logical completeness
-
-#### Rule 123: Execution of the Garbage Collector should be triggered only by the JVM
+```
+### Rule 123: Execution of the Garbage Collector should be triggered only by the JVM
 ##### Quality Category: Code Smell
 Calling System.gc() or Runtime.getRuntime().gc() is a bad idea for a simple reason: there is no way to know exactly what will be done under the hood by the JVM because the behavior will depend on its vendor, version and options:
 
@@ -5438,7 +5438,7 @@ Calling System.gc() or Runtime.getRuntime().gc() is a bad idea for a simple reas
  ...
 
 An application relying on these unpredictable methods is also unpredictable and therefore broken. The task of running the garbage collector should be left exclusively to the JVM.
-#### Rule 124: Constants should not be defined in interfaces
+### Rule 124: Constants should not be defined in interfaces
 ##### Quality Category: Code Smell
 According to Joshua Bloch, author of "Effective Java":
 
@@ -5474,7 +5474,7 @@ public final class Status {             // Compliant
    public static final int CLOSED = 2;
 }
 ```
-#### Rule 125: String literals should not be duplicated
+### Rule 125: String literals should not be duplicated
 ##### Quality Category: Code Smell
 Duplicated string literals make the process of refactoring error-prone, since you must be sure to update all occurrences.
 
@@ -5519,8 +5519,8 @@ public void run() {
 ```java
 
 To prevent generating some false-positives, literals having less than 5 characters are excluded.
-```
-#### Rule 126: Methods should not be empty
+``````
+### Rule 126: Methods should not be empty
 ##### Quality Category: Code Smell
 There are several reasons for a method not to have a method body:
 
@@ -5561,8 +5561,8 @@ public abstract class Animal {
   }
 }
 
-```
-#### Rule 127: "Object.finalize()" should remain protected (versus public) when overriding
+``````
+### Rule 127: "Object.finalize()" should remain protected (versus public) when overriding
 ##### Quality Category: Code Smell
 The contract of the Object.finalize() method is clear: only the Garbage Collector is supposed to call this method.
 
@@ -5579,11 +5579,11 @@ public class MyClass {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-583 - finalize() Method Declared Public
 CERT, MET12-J. - Do not use finalizers
-#### Rule 128: Exceptions should not be thrown in finally blocks
+### Rule 128: Exceptions should not be thrown in finally blocks
 ##### Quality Category: Code Smell
 Throwing an exception from within a finally block will mask any exception which was previously thrown in the try or catch block, and the masked's exception message and stack trace will be lost.
 
@@ -5609,10 +5609,10 @@ try {
 }
 
 ```
-*See*
+**See**
 
 CERT, ERR05-J. - Do not let checked exceptions escape from a finally block
-#### Rule 129: Constant names should comply with a naming convention
+### Rule 129: Constant names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all constant names match a provided regular expression.
 
@@ -5641,7 +5641,7 @@ public enum MyEnum {
   FIRST;
 }
 ```
-#### Rule 130: Server-side requests should not be vulnerable to forging attacks
+### Rule 130: Server-side requests should not be vulnerable to forging attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads, or cookies, should always be considered untrusted and tainted. A remote server making requests to URLs based on tainted data could enable attackers to make arbitrary requests to the internal network or to the local file system.
 
@@ -5681,14 +5681,14 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 ```
-*See*
+**See**
 
 OWASP Attack Category - Server Side Request Forgery
 OWASP Top 10 2017 - Category A5 - Broken Access Control
 MITRE, CWE-918 - Server-Side Request Forgery (SSRF)
 MITRE, CWE-641 - Improper Restriction of Names for Files and Other Resources
 SANS Top 25 - Risky Resource Management
-#### Rule 131: TrustManagers should not blindly accept any certificates
+### Rule 131: TrustManagers should not blindly accept any certificates
 ##### Quality Category: Vulnerability
 Empty implementations of the X509TrustManager interface are often created to allow connection to a host that is not signed by a root certificate authority. Such an implementation will accept any certificate, which leaves the application vulnerable to Man-in-the-middle attacks. The correct solution is to provide an appropriate trust store.
 
@@ -5714,12 +5714,12 @@ class TrustAllManager implements X509TrustManager {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-295 - Improper Certificate Validation
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 CERT, MSC61-J. - Do not use insecure or weak cryptographic algorithms
-#### Rule 132: Weak SSL protocols should not be used
+### Rule 132: Weak SSL protocols should not be used
 ##### Quality Category: Vulnerability
 javax.net.ssl.SSLContext.getInstance returns a SSLContext object that implements the specified secure socket protocol. However, not all protocols are created equal and some legacy ones like "SSL", have been proven to be insecure.
 
@@ -5740,7 +5740,7 @@ context = SSLContext.getInstance("SSL"); // Noncompliant
 context = SSLContext.getInstance("TLSv1.2");
 
 ```
-*See*
+**See**
 
 MITRE, CWE-327 - Inadequate Encryption Strength
 MITRE, CWE-326 - Use of a Broken or Risky Cryptographic Algorithm
@@ -5748,7 +5748,7 @@ MITRE, CWE-326 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
 Diagnosing TLS, SSL, and HTTPS
-#### Rule 133: Strings and Boxed types should be compared using "equals()"
+### Rule 133: Strings and Boxed types should be compared using "equals()"
 ##### Quality Category: Bug
 It's almost always a mistake to compare two instances of java.lang.String or boxed types like java.lang.Integer using reference equality == or !=, because it is not comparing actual value but locations in memory.
 
@@ -5769,13 +5769,13 @@ String lastName = getLastName();
 if (firstName != null && firstName.equals(lastName)) { ... };
 
 ```
-*See*
+**See**
 
 MITRE, CWE-595 - Comparison of Object References Instead of Object Contents
 MITRE, CWE-597 - Use of Wrong Operator in String Comparison
 CERT, EXP03-J. - Do not use the equality operators when comparing values of boxed primitives
 CERT, EXP50-J. - Do not confuse abstract object equality with reference equality
-#### Rule 134: InputSteam.read() implementation should not return a signed byte
+### Rule 134: InputSteam.read() implementation should not return a signed byte
 ##### Quality Category: Bug
 According to the Java documentation, any implementation of the InputSteam.read() method is supposed to read the next byte of data from the input stream. The value byte must be an int in the range 0 to 255. If no byte is available because the end of the stream has been reached, the value -1 is returned.
 
@@ -5803,7 +5803,7 @@ public int read() throws IOException {
   return buffer.getByte(pos++) & 0xFF; // The 0xFF bitmask is applied
 }
 ```
-#### Rule 135: "compareTo" should not be overloaded
+### Rule 135: "compareTo" should not be overloaded
 ##### Quality Category: Bug
 When implementing the Comparable<T>.compareTo method, the parameter's type has to match the type used in the Comparable declaration. When a different type is used this creates an overload instead of an override, which is unlikely to be the intent.
 
@@ -5843,7 +5843,7 @@ public class Foo {
   }
 }
 ```
-#### Rule 136: "iterator" should not return "this"
+### Rule 136: "iterator" should not return "this"
 ##### Quality Category: Bug
 There are two classes in the Java standard library that deal with iterations: Iterable<T> and Iterator<T>. An Iterable<T> represents a data structure that can be the target of the "for-each loop" statement, and an Iterator<T> represents the state of an ongoing traversal. An Iterable<T> is generally expected to support multiple traversals.
 
@@ -5894,7 +5894,7 @@ class FooSequence implements Iterable<Foo> {
   // ...
 }
 ```
-#### Rule 137: Map values should not be replaced unconditionally
+### Rule 137: Map values should not be replaced unconditionally
 ##### Quality Category: Bug
 It is highly suspicious when a value is saved for a key or index and then unconditionally overwritten. Such replacements are likely in error.
 
@@ -5906,7 +5906,7 @@ letters.put("a", "Boy");  // Noncompliant
 towns[i] = "London";
 towns[i] = "Chicago";  // Noncompliant
 ```
-#### Rule 138: Week Year ("YYYY") should not be used for date formatting
+### Rule 138: Week Year ("YYYY") should not be used for date formatting
 ##### Quality Category: Bug
 Few developers are aware of the difference between Y for "Week year" and y for Year when formatting and parsing a date with SimpleDateFormat. That's likely because for most dates, Week year and Year are the same, so testing at any time other than the first or last week of the year will yield the same value for both y and Y. But in the last week of December and the first week of January, you may get unexpected results.
 
@@ -5935,8 +5935,8 @@ String result = new SimpleDateFormat("yyyy/MM/dd").format(date);   //Yields '201
 Date date = new SimpleDateFormat("yyyy/MM/dd").parse("2015/12/31");
 String result = new SimpleDateFormat("YYYY-ww").format(date);  //compliant, 'Week year' is used along with 'Week of year'. result = '2016-01'
 
-```
-#### Rule 139: Exception should not be created without being thrown
+``````
+### Rule 139: Exception should not be created without being thrown
 ##### Quality Category: Bug
 Creating a new Throwable without actually throwing it is useless and is probably due to a mistake.
 
@@ -5952,7 +5952,7 @@ if (x < 0)
 if (x < 0)
   throw new IllegalArgumentException("x must be nonnegative");
 ```
-#### Rule 140: Collection sizes and array length comparisons should make sense
+### Rule 140: Collection sizes and array length comparisons should make sense
 ##### Quality Category: Bug
 The size of a collection and the length of an array are always greater than or equal to zero. So testing that a size or length is greater than or equal to zero doesn't make sense, since the result is always true. Similarly testing that it is less than zero will always return false. Perhaps the intent was to check the non-emptiness of the collection or array instead.
 
@@ -5974,7 +5974,7 @@ if (!myList.isEmpty()) { ... }
 
 if (myArray.length >= 42) { ... }
 ```
-#### Rule 141: Consumed Stream pipelines should not be reused
+### Rule 141: Consumed Stream pipelines should not be reused
 ##### Quality Category: Bug
 Stream operations are divided into intermediate and terminal operations, and are combined to form stream pipelines. After the terminal operation is performed, the stream pipeline is considered consumed, and cannot be used again. Such a reuse will yield unexpected results.
 
@@ -5985,11 +5985,11 @@ int sum1 = pipeline.sum();
 int sum2 = pipeline.mapToInt(b -> b.getWeight()).sum(); // Noncompliant
 
 ```
-*See*
+**See**
 
 
 Stream Operations
-#### Rule 142: Intermediate Stream methods should not be left unused
+### Rule 142: Intermediate Stream methods should not be left unused
 ##### Quality Category: Bug
 There are two types of stream operations: intermediate operations, which return another stream, and terminal operations, which return something other than a stream. Intermediate operations are lazy, meaning they aren't actually executed until and unless a terminal stream operation is performed on their results. Consequently if the result of an intermediate stream operation is not fed to a terminal operation, it serves no purpose, which is almost certainly an error.
 
@@ -6011,11 +6011,11 @@ Stream<Widget> pipeline = widgets.stream()
 sum = pipeline.sum();
 
 ```
-*See*
+**See**
 
 
 Stream Operations
-#### Rule 143: All branches in a conditional structure should not have exactly the same implementation
+### Rule 143: All branches in a conditional structure should not have exactly the same implementation
 ##### Quality Category: Bug
 Having all branches in a switch or if chain with the same implementation is an error. Either a copy-paste error was made and something different should be executed, or there shouldn't be a switch/if chain at all.
 
@@ -6056,8 +6056,8 @@ if(b == 0) {    //no issue, this could have been done on purpose to make the cod
   doSomething();
 }
 
-```
-#### Rule 144: Optional value should only be accessed after calling isPresent()
+``````
+### Rule 144: Optional value should only be accessed after calling isPresent()
 ##### Quality Category: Bug
 Optional value can hold either a value or not. The value held in the Optional can be accessed using the get() method, but it will throw a
 
@@ -6095,10 +6095,10 @@ Optional<String> value = this.getOptionalValue();
 String stringValue = value.orElse("default");
 
 ```
-*See*
+**See**
 
 MITRE, CWE-476 - NULL Pointer Dereference
-#### Rule 145: Overrides should match their parent class methods in synchronization
+### Rule 145: Overrides should match their parent class methods in synchronization
 ##### Quality Category: Bug
 When @Overrides of synchronized methods are not themselves synchronized, the result can be improper synchronization as callers rely on the thread-safety promised by the parent class.
 
@@ -6141,10 +6141,10 @@ public class Child extends Parent {
 }
 
 ```
-*See*
+**See**
 
 CERT, TSM00-J - Do not override thread-safe methods with methods that are not thread-safe
-#### Rule 146: "DefaultMessageListenerContainer" instances should not drop messages during restarts
+### Rule 146: "DefaultMessageListenerContainer" instances should not drop messages during restarts
 ##### Quality Category: Bug
 DefaultMessageListenerContainer is implemented as a JMS poller. While the Spring container is shutting itself down, as each in-progress JMS Consumer.receive() call completes, any non-null return value will be a JMS message that the DMLC will discard due to the shutdown in progress. That will result in the received message never being processed.
 
@@ -6178,7 +6178,7 @@ To prevent message loss during restart operations, set acceptMessagesWhileStoppi
    <property name="acceptMessagesWhileStopping" value="true" />
 </bean>
 ```
-#### Rule 147: "SingleConnectionFactory" instances should be set to "reconnectOnException"
+### Rule 147: "SingleConnectionFactory" instances should be set to "reconnectOnException"
 ##### Quality Category: Bug
 Use of a Spring SingleConnectionFactory without enabling the reconnectOnException setting will prevent automatic connection recovery when the connection goes bad.
 
@@ -6206,7 +6206,7 @@ or
    <property name="reconnectOnException"><value>true</value></property>
  </bean>
 ```
-#### Rule 148: Value-based classes should not be used for locking
+### Rule 148: Value-based classes should not be used for locking
 ##### Quality Category: Bug
 According to the documentation,
 
@@ -6234,10 +6234,10 @@ synchronized (fOpt) {  // Noncompliant
 }
 
 ```
-*See*
+**See**
 
 Value-based classes
-#### Rule 149: Expressions used in "assert" should not produce side effects
+### Rule 149: Expressions used in "assert" should not produce side effects
 ##### Quality Category: Bug
 Since assert statements aren't executed by default (they must be enabled with JVM flags) developers should never rely on their execution the evaluation of any logic required for correct program function.
 
@@ -6253,10 +6253,10 @@ boolean removed = myList.remove(myList.get(0));
 assert removed;
 
 ```
-*See*
+**See**
 
 CERT, EXP06-J. - Expressions used in assertions must not produce side effects
-#### Rule 150: "volatile" variables should not be used with compound operators
+### Rule 150: "volatile" variables should not be used with compound operators
 ##### Quality Category: Bug
 Using compound operators as well as increments and decrements (and toggling, in the case of booleans) on primitive fields are not atomic operations. That is, they don't happen in a single step. For instance, when a volatile primitive field is incremented or decremented you run the risk of data loss if threads interleave in the steps of the update. Instead, use a guaranteed-atomic class such as AtomicInteger, or synchronize the access.
 
@@ -6289,10 +6289,10 @@ public synchronized void toggleBoo() {
 }
 
 ```
-*See*
+**See**
 
 CERT, VNA02-J. - Ensure that compound operations on shared variables are atomic
-#### Rule 151: "getClass" should not be used for synchronization
+### Rule 151: "getClass" should not be used for synchronization
 ##### Quality Category: Bug
 getClass should not be used for synchronization in non-final classes because child classes will synchronize on a different object than the parent or each other, allowing multiple threads into the code block at once, despite the synchronized keyword.
 
@@ -6319,10 +6319,10 @@ public class MyClass {
   }
 
 ```
-*See*
+**See**
 
 CERT, LCK02-J. - Do not synchronize on the class object returned by getClass()
-#### Rule 152: Min and max used in combination should not always return the same value
+### Rule 152: Min and max used in combination should not always return the same value
 ##### Quality Category: Bug
 When using Math.min() and Math.max() together for bounds checking, it's important to feed the right operands to each method. Math.min() should be used with the upper end of the range being checked, and Math.max() should be used with the lower end of the range. Get it backwards, and the result will always be the same end of the range.
 
@@ -6362,7 +6362,7 @@ or swapping bounds UPPER and LOWER used as parameters without changing the invok
     return Math.max(LOWER, result);     // Compliant; result is still 12
   }
 ```
-#### Rule 153: Raw byte values should not be used in bitwise operations in combination with shifts
+### Rule 153: Raw byte values should not be used in bitwise operations in combination with shifts
 ##### Quality Category: Bug
 When reading bytes in order to build other primitive values such as ints or longs, the byte values are automatically promoted, but that promotion can have unexpected results.
 
@@ -6395,10 +6395,10 @@ This rule raises an issue any time a byte value is used as an operand without & 
   }
 
 ```
-*See*
+**See**
 
 CERT, NUM52-J. - Be aware of numeric promotion behavior
-#### Rule 154: Getters and setters should be synchronized in pairs
+### Rule 154: Getters and setters should be synchronized in pairs
 ##### Quality Category: Bug
 When one part of a getter/setter pair is synchronized the other part should be too. Failure to synchronize both sides of a pair may result in inconsistent behavior at runtime as callers access an inconsistent method state.
 
@@ -6459,10 +6459,10 @@ public class Person {
 }
 
 ```
-*See*
+**See**
 
 CERT, VNA01-J. - Ensure visibility of shared references to immutable objects
-#### Rule 155: Non-thread-safe fields should not be static
+### Rule 155: Non-thread-safe fields should not be static
 ##### Quality Category: Bug
 Not all classes in the standard Java library were written to be thread-safe. Using them in a multi-threaded manner is highly likely to cause data problems or exceptions at runtime.
 
@@ -6482,7 +6482,7 @@ public class MyClass {
   private SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");
   private Calendar calendar = Calendar.getInstance();
 ```
-#### Rule 156: "null" should not be used with "Optional"
+### Rule 156: "null" should not be used with "Optional"
 ##### Quality Category: Bug
 The concept of Optional is that it will be used when null could cause errors. In a way, it replaces null, and when Optional is in use, there should never be a question of returning or receiving null from a call.
 
@@ -6517,7 +6517,7 @@ public Optional<String> getOptional() {
   return Optional.empty();
 }
 ```
-#### Rule 157: Unary prefix operators should not be repeated
+### Rule 157: Unary prefix operators should not be repeated
 ##### Quality Category: Bug
 The needless repetition of an operator is usually a typo. There is no reason to write !!!i when !i will do.
 
@@ -6555,8 +6555,8 @@ boolean c = !b;
 ```java
 
 Overflow handling for GWT compilation using ~~ is ignored.
-```
-#### Rule 158: "=+" should not be used instead of "+="
+``````
+### Rule 158: "=+" should not be used instead of "+="
 ##### Quality Category: Bug
 The use of operators pairs ( =+, =- or =! ) where the reversed, single operator was meant (+=, -= or !=) will compile and run, but not produce the expected results.
 
@@ -6580,7 +6580,7 @@ int num = 3;
 target = -num;  // Compliant; intent to assign inverse value of num is clear
 target += num;
 ```
-#### Rule 159: "read" and "readLine" return values should be used
+### Rule 159: "read" and "readLine" return values should be used
 ##### Quality Category: Bug
 When a method is called that returns data read from some data source, that data should be stored rather than thrown away. Any other course of action is surely a bug.
 
@@ -6617,7 +6617,7 @@ public void doSomethingWithFile(String fileName) {
   }
 }
 ```
-#### Rule 160: Inappropriate regular expressions should not be used
+### Rule 160: Inappropriate regular expressions should not be used
 ##### Quality Category: Bug
 Regular expressions are powerful but tricky, and even those long used to using them can make mistakes.
 
@@ -6638,7 +6638,7 @@ String clean4 = str.replaceFirst(".",""); // Noncompliant;
 String clean5 = str.replaceFirst("|","_"); // Noncompliant;
 String clean6 = str.replaceFirst(File.separator,""); // Noncompliant;
 ```
-#### Rule 161: Conditionally executed blocks should be reachable
+### Rule 161: Conditionally executed blocks should be reachable
 ##### Quality Category: Bug
 Conditional expressions which are always true or false can lead to dead code. Such code is always buggy and should never be used in production.
 
@@ -6678,15 +6678,15 @@ if (true) {
 In these cases it is obvious the code is as intended.
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 13.7 - Boolean operations whose results are invariant shall not be permitted.
  MISRA C:2012, 14.3 - Controlling expressions shall not be invariant
 MITRE, CWE-570 - Expression is Always False
 MITRE, CWE-571 - Expression is Always True
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-
-#### Rule 162: "notifyAll" should be used
+```
+### Rule 162: "notifyAll" should be used
 ##### Quality Category: Bug
 notify and notifyAll both wake up sleeping threads, but notify only rouses one, while notifyAll rouses all of them. Since notify might not wake up the right thread, notifyAll should be used instead.
 
@@ -6719,10 +6719,10 @@ class MyThread extends Thread{
 }
 
 ```
-*See*
+**See**
 
 CERT, THI02-J. - Notify all waiting threads rather than a single thread
-#### Rule 163: Blocks should be synchronized on "private final" fields
+### Rule 163: Blocks should be synchronized on "private final" fields
 ##### Quality Category: Bug
 Synchronizing on a class field synchronizes not on the field itself, but on the object assigned to it. So synchronizing on a non-final field makes it possible for the field's value to change while a thread is in a block synchronized on the old value. That would allow a second thread, synchronized on the new value, to enter the block at the same time.
 
@@ -6759,12 +6759,12 @@ private void doSomething(){
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-412 - Unrestricted Externally Accessible Lock
 MITRE, CWE-413 - Improper Resource Locking
 CERT, LCK00-J. - Use private final lock objects to synchronize classes that may interact with untrusted code
-#### Rule 164: Non-serializable objects should not be stored in "HttpSession" objects
+### Rule 164: Non-serializable objects should not be stored in "HttpSession" objects
 ##### Quality Category: Bug
 If you have no intention of writting an HttpSession object to file, then storing non-serializable objects in it may not seem like a big deal. But whether or not you explicitly serialize the session, it may be written to disk anyway, as the server manages its memory use in a process called "passivation". Further, some servers automatically write their active sessions out to file at shutdown & deserialize any such sessions at startup.
 
@@ -6781,10 +6781,10 @@ HttpSession session = request.getSession();
 session.setAttribute("address", new Address());  // Noncompliant; Address isn't serializable
 
 ```
-*See*
+**See**
 
 MITRE, CWE-579 - J2EE Bad Practices: Non-serializable Object Stored in Session
-#### Rule 165: "wait", "notify" and "notifyAll" should only be called when a lock is obviously held on an object
+### Rule 165: "wait", "notify" and "notifyAll" should only be called when a lock is obviously held on an object
 ##### Quality Category: Bug
 By contract, the method Object.wait(...), Object.notify() and Object.notifyAll() should be called by a thread that is the owner of the object's monitor. If this is not the case an IllegalMonitorStateException exception is thrown. This rule reinforces this constraint by making it mandatory to call one of these methods only inside a synchronized method or statement.
 
@@ -6830,7 +6830,7 @@ private synchronized void removeElement() {
   ... // Perform removal
 }
 ```
-#### Rule 166: Null pointers should not be dereferenced
+### Rule 166: Null pointers should not be dereferenced
 ##### Quality Category: Bug
 A reference to null should never be dereferenced/accessed. Doing so will cause a NullPointerException to be thrown. At best, such an exception will cause abrupt program termination. At worst, it could expose debugging information that would be useful to an attacker, or it could allow an attacker to bypass security measures.
 
@@ -6874,12 +6874,12 @@ void paint(Color color) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-476 - NULL Pointer Dereference
 CERT, EXP34-C. - Do not dereference null pointers
 CERT, EXP01-J. - Do not use a null in a case where an object is required
-#### Rule 167: Loop conditions should be true at least once
+### Rule 167: Loop conditions should be true at least once
 ##### Quality Category: Bug
 If a for loop's condition is false before the first loop iteration, the loop will never be executed. Such loops are almost always bugs, particularly when the initial value and stop conditions are hard-coded.
 
@@ -6888,7 +6888,7 @@ If a for loop's condition is false before the first loop iteration, the loop wil
 for (int i = 10; i < 10; i++) {  // Noncompliant
   // ...
 ```
-#### Rule 168: A "for" loop update clause should move the counter in the right direction
+### Rule 168: A "for" loop update clause should move the counter in the right direction
 ##### Quality Category: Bug
 A for loop with a counter that moves in the wrong direction is not an infinite loop. Because of wraparound, the loop will eventually reach its stop condition, but in doing so, it will run many, many more times than anticipated, potentially causing unexpected behavior.
 
@@ -6911,10 +6911,10 @@ public void doSomething(String [] strings) {
   }
 
 ```
-*See*
+**See**
 
 CERT, MSC54-J. - Avoid inadvertent wrapping of loop counters
-#### Rule 169: Non-public methods should not be "@Transactional"
+### Rule 169: Non-public methods should not be "@Transactional"
 ##### Quality Category: Bug
 Marking a non-public method @Transactional is both useless and misleading because Spring doesn't "see" non-public methods, and so makes no provision for their proper invocation. Nor does Spring make provision for the methods invoked by the method it called.
 
@@ -6927,7 +6927,7 @@ private void doTheThing(ArgClass arg) {
   // ...
 }
 ```
-#### Rule 170: Servlets should not have mutable instance fields
+### Rule 170: Servlets should not have mutable instance fields
 ##### Quality Category: Bug
 By contract, a servlet container creates one instance of each servlet and then a dedicated thread is attached to each new incoming HTTP request to process the request. So all threads share the servlet instances and by extension their instance fields. To prevent any misunderstanding and unexpected behavior at runtime, all servlet fields should then be either static and/or final, or simply removed.
 
@@ -6949,10 +6949,10 @@ public class MyAction extends Action {
 }
 
 ```
-*See*
+**See**
 
 CERT, MSC11-J. - Do not let session information leak within a servlet
-#### Rule 171: "toString()" and "clone()" methods should not return null
+### Rule 171: "toString()" and "clone()" methods should not return null
 ##### Quality Category: Bug
 Calling toString() or clone() on an object should always return a string or an object. Returning null instead contravenes the method's implicit contract.
 
@@ -6976,11 +6976,11 @@ public String toString () {
     // ...
 
 ```
-*See*
+**See**
 
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
-#### Rule 172: ".equals()" should not be used to test the values of "Atomic" classes
+### Rule 172: ".equals()" should not be used to test the values of "Atomic" classes
 ##### Quality Category: Bug
 AtomicInteger, and AtomicLong extend Number, but they're distinct from Integer and Long and should be handled differently. AtomicInteger and AtomicLong are designed to support lock-free, thread-safe programming on single variables. As such, an AtomicInteger will only ever be "equal" to itself. Instead, you should .get() the value and make comparisons on it.
 
@@ -7002,7 +7002,7 @@ AtomicInteger aInt2 = new AtomicInteger(0);
 
 if (aInt1.get() == aInt2.get()) { ... }
 ```
-#### Rule 173: Return values from functions without side effects should not be ignored
+### Rule 173: Return values from functions without side effects should not be ignored
 ##### Quality Category: Bug
 When the call to a function doesn't have any side effects, what is the point of making the call if the results are ignored? In such case, either the function call is useless and should be dropped or the source code doesn't behave as expected.
 
@@ -7073,13 +7073,13 @@ private boolean textIsInteger(String textToCheck) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2012, 17.7 - The value returned by a function having non-void return type shall be used
 CERT, EXP12-C. - Do not ignore values returned by functions
 CERT, EXP00-J. - Do not ignore values returned by methods
-
-#### Rule 174: Child class methods named for parent class methods should be overrides
+```
+### Rule 174: Child class methods named for parent class methods should be overrides
 ##### Quality Category: Bug
 When a method in a child class has the same signature as a method in a parent class, it is assumed to be an override. However, that's not the case when:
 
@@ -7148,7 +7148,7 @@ public class Child extends Parent {
   }
 }
 ```
-#### Rule 175: Inappropriate "Collection" calls should not be made
+### Rule 175: Inappropriate "Collection" calls should not be made
 ##### Quality Category: Bug
 A couple Collection methods can be called with arguments of an incorrect type, but doing so is pointless and likely the result of using the wrong argument. This rule will raise an issue when the type of the argument to List.contains or List.remove is unrelated to the type used for the list declaration.
 
@@ -7162,10 +7162,10 @@ if (list.contains(integer)) {  // Noncompliant. Always false.
 }
 
 ```
-*See*
+**See**
 
 CERT, EXP04-J. - Do not pass arguments to certain Java Collections Framework methods that are a different type than the collection parameter type
-#### Rule 176: Silly equality checks should not be made
+### Rule 176: Silly equality checks should not be made
 ##### Quality Category: Bug
 Comparisons of dissimilar types will always return false. The comparison and all its dependent code can simply be removed. This includes:
 
@@ -7219,10 +7219,10 @@ else if (tree.equals(null)) {  // Noncompliant
 }
 
 ```
-*See*
+**See**
 
 CERT, EXP02-J. - Do not use the Object.equals() method to compare two arrays
-#### Rule 177: Dissimilar primitive wrappers should not be used with the ternary operator without explicit casting
+### Rule 177: Dissimilar primitive wrappers should not be used with the ternary operator without explicit casting
 ##### Quality Category: Bug
 If wrapped primitive values (e.g. Integers and Floats) are used in a ternary operator (e.g. a?b:c), both values will be unboxed and coerced to a common type, potentially leading to unexpected results. To avoid this, add an explicit cast to a compatible type.
 
@@ -7240,7 +7240,7 @@ Integer i = 123456789;
 Float f = 1.0f;
 Number n = condition ? (Number) i : f;  // n = 123456789
 ```
-#### Rule 178: "InterruptedException" should not be ignored
+### Rule 178: "InterruptedException" should not be ignored
 ##### Quality Category: Bug
 Interrupted
 ```
@@ -7283,12 +7283,12 @@ public void run () {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-391 - Unchecked Error Condition
 Dealing with InterruptedException
-
-#### Rule 179: Classes extending java.lang.Thread should override the "run" method
+```
+### Rule 179: Classes extending java.lang.Thread should override the "run" method
 ##### Quality Category: Bug
 According to the Java API documentation:
 
@@ -7319,8 +7319,8 @@ class MyThread extends Thread { // Compliant - calling super constructor with a 
   }
 }
 
-```
-#### Rule 180: "Double.longBitsToDouble" should not be used for "int"
+``````
+### Rule 180: "Double.longBitsToDouble" should not be used for "int"
 ##### Quality Category: Bug
 Double.longBitsToDouble expects a 64-bit, long argument. Pass it a smaller value, such as an int and the mathematical conversion into a double simply won't work as anticipated because the layout of the bits will be interpreted incorrectly, as if a child were trying to use an adult's gloves.
 
@@ -7329,7 +7329,7 @@ Double.longBitsToDouble expects a 64-bit, long argument. Pass it a smaller value
 int i = 42;
 double d = Double.longBitsToDouble(i);  // Noncompliant
 ```
-#### Rule 181: Values should not be uselessly incremented
+### Rule 181: Values should not be uselessly incremented
 ##### Quality Category: Bug
 A value that is incremented or decremented and then not stored is at best wasted code and at worst a bug.
 
@@ -7356,7 +7356,7 @@ public int pickNumber() {
   return ++j;
 }
 ```
-#### Rule 182: Non-serializable classes should not be written
+### Rule 182: Non-serializable classes should not be written
 ##### Quality Category: Bug
 Nothing in a non-serializable class will be written out to file, and attempting to serialize such a class will result in an exception being thrown. Only a class that implements Serializable or one that extends such a class can successfully be serialized (or de-serialized).
 
@@ -7394,7 +7394,7 @@ public class Menu {
   }
 }
 ```
-#### Rule 183: "hashCode" and "toString" should not be called on array instances
+### Rule 183: "hashCode" and "toString" should not be called on array instances
 ##### Quality Category: Bug
 While hashCode and toString are available on arrays, they are largely useless. hashCode returns the array's "identity hash code", and toString returns nearly the same value. Neither method's output actually reflects the array's contents. Instead, you should pass the array to the relevant static Arrays method.
 
@@ -7416,7 +7416,7 @@ public static void main( String[] args )
     int argHash = Arrays.hashCode(args);
 
 ```
-#### Rule 184: Collections should not be passed as arguments to their own methods
+### Rule 184: Collections should not be passed as arguments to their own methods
 ##### Quality Category: Bug
 Passing a collection as an argument to the collection's own method is either an error - some other argument was intended - or simply nonsensical code.
 
@@ -7433,7 +7433,7 @@ objs.containsAll(objs); // Noncompliant; always true
 objs.removeAll(objs); // Noncompliant; confusing. Use clear() instead
 objs.retainAll(objs); // Noncompliant; NOOP
 ```
-#### Rule 185: "BigDecimal(double)" should not be used
+### Rule 185: "BigDecimal(double)" should not be used
 ##### Quality Category: Bug
 Because of floating point imprecision, you're unlikely to get the value you expect from the BigDecimal(double) constructor.
 
@@ -7460,10 +7460,10 @@ BigDecimal bd1 = BigDecimal.valueOf(d);
 BigDecimal bd2 = new BigDecimal("1.1"); // using String constructor will result in precise value
 
 ```
-*See*
+**See**
 
 CERT, NUM10-J. - Do not construct BigDecimal objects from floating-point literals
-#### Rule 186: Invalid "Date" values should not be used
+### Rule 186: Invalid "Date" values should not be used
 ##### Quality Category: Bug
 Whether the valid value ranges for Date fields start with 0 or 1 varies by field. For instance, month starts at 0, and day of month starts at 1. Enter a date value that goes past the end of the valid range, and the date will roll without error or exception. For instance, enter 12 for month, and you'll get January of the following year.
 
@@ -7504,7 +7504,7 @@ if (c.get(Calendar.MONTH) == 11) {
   // ...
 }
 ```
-#### Rule 187: Reflection should not be used to check non-runtime annotations
+### Rule 187: Reflection should not be used to check non-runtime annotations
 ##### Quality Category: Bug
 The writer of an annotation can set one of three retention policies for it:
 
@@ -7522,7 +7522,7 @@ Method m = String.class.getMethod("getBytes", new Class[] {int.class,
 int.class, byte[].class, int.class});
 if (m.isAnnotationPresent(Override.class)) {  // Noncompliant; test will always return false, even when @Override is present in the code
 ```
-#### Rule 188: Custom serialization method signatures should meet requirements
+### Rule 188: Custom serialization method signatures should meet requirements
 ##### Quality Category: Bug
 Writers of Serializable classes can choose to let Java's automatic mechanisms handle serialization and deserialization, or they can choose to handle it themselves by implementing specific methods. However, if the signatures of those methods are not exactly what is expected, they will be ignored and the default serialization mechanisms will kick back in.
 
@@ -7571,10 +7571,10 @@ public class Watermelon implements Serializable {
   {...}
 
 ```
-*See*
+**See**
 
 CERT, SER01-J. - Do not deviate from the proper signatures of serialization methods
-#### Rule 189: "Externalizable" classes should have no-arguments constructors
+### Rule 189: "Externalizable" classes should have no-arguments constructors
 ##### Quality Category: Bug
 An Externalizable class is one which handles its own Serialization and deserialization. During deserialization, the first step in the process is a default instantiation using the class' no-argument constructor. Therefore an Externalizable class without a no-arg constructor cannot be deserialized.
 
@@ -7595,7 +7595,7 @@ public class Tomato implements Externalizable {
   public Tomato (String color, int weight) { ... }
 }
 ```
-#### Rule 190: Classes should not be compared by name
+### Rule 190: Classes should not be compared by name
 ##### Quality Category: Bug
 There is no requirement that class names be unique, only that they be unique within a package. Therefore trying to determine an object's type based on its class name is an exercise fraught with danger. One of those dangers is that a malicious user will send objects of the same name as the trusted class and thereby gain trusted access.
 
@@ -7648,11 +7648,11 @@ class Store {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-486 - Comparison of Classes by Name
 CERT, OBJ09-J. - Compare classes and not class names
-#### Rule 191: Related "if/else if" statements should not have the same condition
+### Rule 191: Related "if/else if" statements should not have the same condition
 ##### Quality Category: Bug
 A chain of if/else if statements is evaluated from top to bottom. At most, only one branch will be executed: the first one with a condition that evaluates to true.
 
@@ -7682,10 +7682,10 @@ else if (param == 3)
 
 
 ```
-*See*
+**See**
 
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-#### Rule 192: Synchronization should not be based on Strings or boxed primitives
+### Rule 192: Synchronization should not be based on Strings or boxed primitives
 ##### Quality Category: Bug
 Objects which are pooled and potentially reused should not be used for synchronization. If they are, it can cause unrelated threads to deadlock with unhelpful stacktraces. Specifically, String literals, and boxed primitives such as Integers should not be used as lock objects because they are pooled and reused. The story is even worse for Boolean objects, because there are only two instances of Boolean, Boolean.TRUE and Boolean.FALSE and every class that uses a Boolean will be referring to one of the two.
 
@@ -7728,10 +7728,10 @@ public void doSomething() {
   }
 
 ```
-*See*
+**See**
 
 CERT, LCK01-J. - Do not synchronize on objects that may be reused
-#### Rule 193: "Iterator.hasNext()" should not call "Iterator.next()"
+### Rule 193: "Iterator.hasNext()" should not call "Iterator.next()"
 ##### Quality Category: Bug
 Calling Iterator.hasNext() is not supposed to have any side effects, and therefore should not change the state of the iterator. Iterator.next() advances the iterator by one item. So calling it inside Iterator.hasNext(), breaks the hasNext() contract, and will lead to unexpected behavior in production.
 
@@ -7749,7 +7749,7 @@ public boolean hasNext() {
 ...
 }
 ```
-#### Rule 194: Identical expressions should not be used on both sides of a binary operator
+### Rule 194: Identical expressions should not be used on both sides of a binary operator
 ##### Quality Category: Bug
 Using the same value on either side of a binary operator is almost always a mistake. In the case of logical operators, it is either a copy/paste error and therefore a bug, or it is simply wasted code, and should be simplified. In the case of bitwise operators and most binary mathematical operators, having the same value on both sides of an operator yields predictable results, and should be simplified.
 
@@ -7789,12 +7789,12 @@ int i = 1 << 1; // Compliant
 int j = a << a; // Noncompliant
 
 ```
-*See*
+**See**
 
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
  {rule:squid:S1656} - Implements a check on =.
-
-#### Rule 195: Loops with at most one iteration should be refactored
+```
+### Rule 195: Loops with at most one iteration should be refactored
 ##### Quality Category: Bug
 A loop with at most one iteration is equivalent to the use of an if statement to conditionally execute one piece of code. No developer expects to find such a use of a loop statement. If the initial intention of the author was really to conditionally execute one piece of code, an if statement should be used instead.
 
@@ -7832,7 +7832,7 @@ for (int i = 0; i < 10; i++) {
   }
 }
 ```
-#### Rule 196: Variables should not be self-assigned
+### Rule 196: Variables should not be self-assigned
 ##### Quality Category: Bug
 There is no reason to re-assign a variable to itself. Either this statement is redundant and should be removed, or the re-assignment is a mistake and some other value or variable was intended for the assignment instead.
 
@@ -7851,10 +7851,10 @@ public void setName(String name) {
 }
 
 ```
-*See*
+**See**
 
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-#### Rule 197: "StringBuilder" and "StringBuffer" should not be instantiated with a character
+### Rule 197: "StringBuilder" and "StringBuffer" should not be instantiated with a character
 ##### Quality Category: Bug
 Instantiating a StringBuilder or a StringBuffer with a character is misleading because most Java developers would expect the character to be the initial value of the StringBuffer.
 
@@ -7870,7 +7870,7 @@ StringBuffer foo = new StringBuffer('x');   //equivalent to StringBuffer foo = n
 ```java
 StringBuffer foo = new StringBuffer("x");
 ```
-#### Rule 198: Methods should not be named "tostring", "hashcode" or "equal"
+### Rule 198: Methods should not be named "tostring", "hashcode" or "equal"
 ##### Quality Category: Bug
 Naming a method tostring, hashcode() or equal is either:
 
@@ -7900,7 +7900,7 @@ public String toString() { /* ... */ }
 @Override
 public boolean equals(Object obj) { /* ... */ }
 ```
-#### Rule 199: "Thread.run()" should not be called directly
+### Rule 199: "Thread.run()" should not be called directly
 ##### Quality Category: Bug
 The purpose of the Thread.run() method is to execute code in a separate, dedicated thread. Calling this method directly doesn't make sense because it causes its code to be executed in the current thread.
 
@@ -7919,11 +7919,11 @@ Thread myThread = new Thread(runnable);
 myThread.start(); // Compliant
 
 ```
-*See*
+**See**
 
 MITRE, CWE-572 - Call to Thread run() instead of start()
 CERT THI00-J. - Do not invoke Thread.run()
-#### Rule 200: "equals" method overrides should accept "Object" parameters
+### Rule 200: "equals" method overrides should accept "Object" parameters
 ##### Quality Category: Bug
 "equals" as a method name should be used exclusively to override Object.equals(Object) to prevent any confusion.
 
@@ -7988,7 +7988,7 @@ class MyClass2 {
   }
 }
 ```
-#### Rule 201: "Class.forName()" should not load JDBC 4.0+ drivers
+### Rule 201: "Class.forName()" should not load JDBC 4.0+ drivers
 ##### Quality Category: Code Smell
 In the past, it was required to load a JDBC driver before creating a java.sql.Connection. Nowadays, when using JDBC 4.0 drivers, this is no longer required and Class.forName() can be safely removed because JDBC 4.0 (JDK 6) drivers available in the classpath are automatically loaded.
 
@@ -8040,7 +8040,7 @@ public class Demo {
     }
 }
 ```
-#### Rule 202: Java 8 features should be preferred to Guava
+### Rule 202: Java 8 features should be preferred to Guava
 ##### Quality Category: Code Smell
 Some Guava features were really useful for Java 7 application because Guava was bringing APIs missing in the JDK. Java 8 fixed these limitations. When migrating an application to Java 8 or even when starting a new one, it's recommended to prefer Java 8 APIs over Guava ones to ease its maintenance: developers don't need to learn how to use two APIs and can stick to the standard one.
 
@@ -8057,7 +8057,7 @@ com.google.common.base.Optional	java.util.Optional
 com.google.common.base.Predicate	java.util.function.Predicate
 com.google.common.base.Function	java.util.function.Function
 com.google.common.base.Supplier	java.util.function.Supplier
-#### Rule 203: Nullness of parameters should be guaranteed
+### Rule 203: Nullness of parameters should be guaranteed
 ##### Quality Category: Code Smell
 When using null-related annotations at global scope level, for instance using javax.annotation.ParametersAreNonnullByDefault (from JSR-305) at package level, it means that all the parameters to all the methods included in the package will, or should, be considered Non-null. It is equivalent to annotating every parameter in every method with non-null annotations (such as @Nonnull).
 
@@ -8125,7 +8125,7 @@ abstract class A {
   abstract Object getValue();
 }
 ```
-#### Rule 204: "Integer.toHexString" should not be used to build hexadecimal strings
+### Rule 204: "Integer.toHexString" should not be used to build hexadecimal strings
 ##### Quality Category: Code Smell
 Using Integer.toHexString is a common mistake when converting sequences of bytes into hexadecimal string representations. The problem is that the method trims leading zeroes, which can lead to wrong conversions. For instance a two bytes value of 0x4508 would be converted into 45 and 8 which once concatenated would give 0x458.
 
@@ -8156,11 +8156,11 @@ for (byte b : bytes) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-704 - Incorrect Type Conversion or Cast
  Derived from FindSecBugs rule BAD_HEXA_CONVERSION
-#### Rule 205: Asserts should not be used to check the parameters of a public method
+### Rule 205: Asserts should not be used to check the parameters of a public method
 ##### Quality Category: Code Smell
 An assert is inappropriate for parameter validation because assertions can be disabled at runtime in the JVM, meaning that a bad operational setting would completely eliminate the intended checks. Further, asserts that fail throw AssertionErrors, rather than throwing some type of Exception. Throwing Errors is completely outside of the normal realm of expected catch/throw behavior in normal programs.
 
@@ -8185,11 +8185,11 @@ This rule raises an issue when a public method uses one or more of its parameter
  }
 
 ```
-*See*
+**See**
 
 
 Programming With Assertions
-#### Rule 206: Assignments should not be redundant
+### Rule 206: Assignments should not be redundant
 ##### Quality Category: Code Smell
 The transitive property says that if a == b and b == c, then a == c. In such cases, there's no point in assigning a to c or vice versa because they're already equivalent.
 
@@ -8208,7 +8208,7 @@ b = c; // Noncompliant: c and b are already the same
 a = b;
 c = a;
 ```
-#### Rule 207: Methods should not have identical implementations
+### Rule 207: Methods should not have identical implementations
 ##### Quality Category: Code Smell
 When two methods have the same implementation, either it was a mistake - something else was intended - or the duplication was intentional, but may be confusing to maintainers. In the latter case, one implementation should invoke the other. Numerical and string literals are not taken into account.
 
@@ -8247,8 +8247,8 @@ public String getName() {
 ```java
 
 Methods that are not accessors (getters and setters), with fewer than 2 statements are ignored.
-```
-#### Rule 208: "java.nio.Files#delete" should be preferred
+``````
+### Rule 208: "java.nio.Files#delete" should be preferred
 ##### Quality Category: Code Smell
 When java.io.File#delete fails, this boolean method simply returns false with no indication of the cause. On the other hand, when java.nio.Files#delete fails, this void method returns one of a series of exception types to better indicate the cause of the failure. And since more information is generally better in a debugging situation, java.nio.Files#delete is the preferred option.
 
@@ -8269,7 +8269,7 @@ public void cleanUp(Path path) throws NoSuchFileException, DirectoryNotEmptyExce
   Files.delete(path);
 }
 ```
-#### Rule 209: Unused "private" classes should be removed
+### Rule 209: Unused "private" classes should be removed
 ##### Quality Category: Code Smell
 private classes that are never used are dead code: unnecessary, inoperative code that should be removed. Cleaning out dead code decreases the size of the maintained codebase, making it easier to understand the program and preventing bugs from being introduced.
 
@@ -8281,7 +8281,7 @@ public class Foo
   private class MyUnusedPrivateClass {...} // Noncompliant
 }
 ```
-#### Rule 210: "Stream.peek" should be used with caution
+### Rule 210: "Stream.peek" should be used with caution
 ##### Quality Category: Code Smell
 According to its JavaDocs, java.util.Stream.peek() “exists mainly to support debugging” purposes. Although this does not mean that using it for other purposes is discouraged, relying on peek() without careful consideration can lead to error-prone code such as:
 
@@ -8297,12 +8297,12 @@ Stream.of("one", "two", "three", "four")
          .peek(e -> System.out.println("Filtered value: " + e)); // Noncompliant
 
 ```
-*See*
+**See**
 
 Java 8 API Documentation
  4comprehension: Idiomatic Peeking with Java Stream API
  Data Geekery: 10 Subtle Mistakes When Using the Streams API
-#### Rule 211: "Map.get" and value test should be replaced with single method call
+### Rule 211: "Map.get" and value test should be replaced with single method call
 ##### Quality Category: Code Smell
 It's a common pattern to test the result of a java.util.Map.get() against null before proceeding with adding or changing the value in the map. However the java.util.Map API offers a significantly better alternative in the form of the computeIfPresent() and computeIfAbsent() methods. Using these instead leads to cleaner and more readable code.
 
@@ -8325,7 +8325,7 @@ return value;
 ```java
 return map.computeIfAbsent(key, k -> V.createFor(k));
 ```
-#### Rule 212: Java 8's "Files.exists" should not be used
+### Rule 212: Java 8's "Files.exists" should not be used
 ##### Quality Category: Code Smell
 The Files.exists method has noticeably poor performance in JDK 8, and can slow an application significantly when used to check files that don't actually exist.
 
@@ -8350,11 +8350,11 @@ if(myPath.toFile().exists())) {
 }
 
 ```
-*See*
+**See**
 
 https://bugs.openjdk.java.net/browse/JDK-8153414
 https://bugs.openjdk.java.net/browse/JDK-8154077
-#### Rule 213: "Arrays.stream" should be used for primitive arrays
+### Rule 213: "Arrays.stream" should be used for primitive arrays
 ##### Quality Category: Code Smell
 For arrays of objects, Arrays.asList(T ... a).stream() and Arrays.stream(array) are basically equivalent in terms of performance. However, for arrays of primitives, using Arrays.asList will force the construction of a list of boxed types, and then use that list as a stream. On the other hand, Arrays.stream uses the appropriate primitive stream type (IntStream, LongStream, DoubleStream) when applicable, with much better performance.
 
@@ -8381,7 +8381,7 @@ Arrays.stream(intArray)
     .filter(...)
     .forEach(...);
 ```
-#### Rule 214: Printf-style format strings should be used correctly
+### Rule 214: Printf-style format strings should be used correctly
 ##### Quality Category: Code Smell
 Because printf-style format strings are interpreted at runtime, rather than validated by the compiler, they can contain errors that result in the wrong strings being created. This rule statically validates the correlation of printf-style format strings to their arguments when calling the format(...) methods of java.util.Formatter, java.lang.String, java.io.PrintStream, MessageFormat, and java.io.PrintWriter classes and the printf(...) methods of java.io.PrintStream or java.io.PrintWriter classes.
 
@@ -8438,10 +8438,10 @@ slf4jLog.debug(marker, "message {}");
 slf4jLog.debug(marker, "message {}", 1);
 
 ```
-*See*
+**See**
 
 CERT, FIO47-C. - Use valid format strings
-#### Rule 215: Assertion arguments should be passed in the correct order
+### Rule 215: Assertion arguments should be passed in the correct order
 ##### Quality Category: Code Smell
 The standard assertions library methods such as org.junit.Assert.assertEquals, and org.junit.Assert.assertSame expect the first argument to be the expected value and the second argument to be the actual value. Swap them, and your test will still have the same outcome (succeed/fail when it should) but the error messages will be confusing.
 
@@ -8457,7 +8457,7 @@ org.junit.Assert.assertEquals(runner.exitCode(), 0, "Unexpected exit code");  //
 ```java
 org.junit.Assert.assertEquals(0, runner.exitCode(), "Unexpected exit code");
 ```
-#### Rule 216: Ternary operators should not be nested
+### Rule 216: Ternary operators should not be nested
 ##### Quality Category: Code Smell
 Just because you can do something, doesn't mean you should, and that's the case with nested ternary operations. Nesting ternary operators results in the kind of code that may seem clear as day when you write it, but six months later will leave maintainers (or worse - future you) scratching their heads and cursing.
 
@@ -8480,7 +8480,7 @@ public String getTitle(Person p) {
   return p.isMarried() ? "Mrs. " : "Miss ";
 }
 ```
-#### Rule 217: "writeObject" should not be the only "synchronized" code in a class
+### Rule 217: "writeObject" should not be the only "synchronized" code in a class
 ##### Quality Category: Code Smell
 The purpose of synchronization is to ensure that only one thread executes a given block of code at a time. There's no real problem with marking writeObject synchronized, but it's highly suspicious if this serialization-related method is the only synchronized code in a class.
 
@@ -8526,7 +8526,7 @@ public class RubberBall {
   }
 }
 ```
-#### Rule 218: String function use should be optimized for single characters
+### Rule 218: String function use should be optimized for single characters
 ##### Quality Category: Code Smell
 An indexOf or lastIndexOf call with a single letter String can be made more performant by switching to a call with a char argument.
 
@@ -8550,7 +8550,7 @@ int pos = myStr.indexOf('W');
 int otherPos = myStr.lastIndexOf('r');
 // ...
 ```
-#### Rule 219: Static fields should not be updated in constructors
+### Rule 219: Static fields should not be updated in constructors
 ##### Quality Category: Code Smell
 Assigning a value to a static field in a constructor could cause unreliable behavior at runtime since it will change the value for all instances of the class.
 
@@ -8581,7 +8581,7 @@ public class Person {
   }
 }
 ```
-#### Rule 220: "Thread.sleep" should not be used in tests
+### Rule 220: "Thread.sleep" should not be used in tests
 ##### Quality Category: Code Smell
 Using Thread.sleep in a test is just generally a bad idea. It creates brittle tests that can fail unpredictably depending on environment ("Passes on my machine!") or load. Don't rely on timing (use mocks) or use libraries such as Awaitility for asynchroneous testing.
 
@@ -8619,7 +8619,7 @@ private Callable<Boolean> didTheThing() {
   };
 }
 ```
-#### Rule 221: "entrySet()" should be iterated when both the key and value are needed
+### Rule 221: "entrySet()" should be iterated when both the key and value are needed
 ##### Quality Category: Code Smell
 When only the keys from a map are needed in a loop, iterating the keySet makes sense. But when both the key and the value are needed, it's more efficient to iterate the entrySet, which will give access to both the key and value, instead.
 
@@ -8644,7 +8644,7 @@ public void doSomethingWithMap(Map<String,Object> map) {
   }
 }
 ```
-#### Rule 222: "DateUtils.truncate" from Apache Commons Lang library should not be used
+### Rule 222: "DateUtils.truncate" from Apache Commons Lang library should not be used
 ##### Quality Category: Code Smell
 The use of the ZonedDateTime class introduced in Java 8 to truncate a date can be significantly faster than the DateUtils class from Commons Lang.
 
@@ -8668,7 +8668,7 @@ public Date trunc(Date date) {
   return Date.from(truncatedInstant);
 }
 ```
-#### Rule 223: Multiline blocks should be enclosed in curly braces
+### Rule 223: Multiline blocks should be enclosed in curly braces
 ##### Quality Category: Code Smell
 Curly braces can be omitted from a one-line block, such as with an if statement or for loop, but doing so can be misleading and induce bugs.
 
@@ -8710,11 +8710,11 @@ for (int i = 0; i < array.length; i++) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-483 - Incorrect Block Delimitation
 CERT, EXP52-J. - Use braces for the body of an if, for, or while statement
-#### Rule 224: "readObject" should not be "synchronized"
+### Rule 224: "readObject" should not be "synchronized"
 ##### Quality Category: Code Smell
 A readObject method is written when a Serializable object needs special handling to be rehydrated from file. It should be the case that the object being created by readObject is only visible to the thread that invoked the method, and the synchronized keyword is not needed, and using synchronized anyway is just confusing. If this is not the case, the method should be refactored to make it the case.
 
@@ -8734,7 +8734,7 @@ private void readObject(java.io.ObjectInputStream in)
   //...
 }
 ```
-#### Rule 225: "Preconditions" and logging arguments should not require evaluation
+### Rule 225: "Preconditions" and logging arguments should not require evaluation
 ##### Quality Category: Code Smell
 Passing message arguments that require further evaluation into a Guava com.google.common.base.Preconditions check can result in a performance penalty. That's because whether or not they're needed, each argument must be resolved before the method is actually called.
 
@@ -8790,8 +8790,8 @@ if (!condition) {
 ```java
 
 catch blocks are ignored, because the performance penalty is unimportant on exceptional paths (catch block should not be a part of standard program flow). Getters are ignored as well as methods called on annotations which can be considered as getters. This rule accounts for explicit test-level testing with SLF4J methods isXXXEnabled and ignores the bodies of such if statements.
-```
-#### Rule 226: Boolean expressions should not be gratuitous
+``````
+### Rule 226: Boolean expressions should not be gratuitous
 ##### Quality Category: Code Smell
 If a boolean expression doesn't change the evaluation of the condition, then it is entirely unnecessary, and can be removed. If it is gratuitous because it does not match the programmer's intent, then it's a bug and the expression should be fixed.
 
@@ -8828,7 +8828,7 @@ if (c) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 13.7 - Boolean operations whose results are invariant shall not be permitted.
  MISRA C:2012, 14.3 - Controlling expressions shall not be invariant
@@ -8836,7 +8836,7 @@ MITRE, CWE-571 - Expression is Always True
 MITRE, CWE-570 - Expression is Always False
 MITRE, CWE-489 - Leftover Debug Code
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-#### Rule 227: "Lock" objects should not be "synchronized"
+### Rule 227: "Lock" objects should not be "synchronized"
 ##### Quality Category: Code Smell
 java.util.concurrent.locks.Lock offers far more powerful and flexible locking operations than are available with synchronized blocks. So synchronizing on a Lock throws away the power of the object, and is just silly. Instead, such objects should be locked and unlocked using tryLock() and unlock().
 
@@ -8856,10 +8856,10 @@ lock.tryLock();
 //...
 
 ```
-*See*
+**See**
 
 CERT, LCK03-J. - Do not synchronize on the intrinsic locks of high-level concurrency objects
-#### Rule 228: Classes with only "static" methods should not be instantiated
+### Rule 228: Classes with only "static" methods should not be instantiated
 ##### Quality Category: Code Smell
 static methods can be accessed without an instance of the enclosing class, so there's no reason to instantiate a class that has only static methods.
 
@@ -8906,10 +8906,10 @@ public class TextManipulator {
 }
 
 ```
-*See*
+**See**
  Also
  {rule:squid:S1118} - Utility classes should not have public constructors
-#### Rule 229: "Threads" should not be used where "Runnables" are expected
+### Rule 229: "Threads" should not be used where "Runnables" are expected
 ##### Quality Category: Code Smell
 While it is technically correct to use a Thread where a Runnable is called for, the semantics of the two objects are different, and mixing them is a bad practice that will likely lead to headaches in the future.
 
@@ -8943,7 +8943,7 @@ The crux of the issue is that Thread is a larger concept than Runnable. A Runnab
 		};
 		new Thread(r).start();
 ```
-#### Rule 230: Inner class calls to super class methods should be unambiguous
+### Rule 230: Inner class calls to super class methods should be unambiguous
 ##### Quality Category: Code Smell
 When an inner class extends another class, and both its outer class and its parent class have a method with the same name, calls to that method can be confusing. The compiler will resolve the call to the superclass method, but maintainers may be confused, so the superclass method should be called explicitly, using super..
 
@@ -8987,7 +8987,7 @@ public class Outer {
   }
 }
 ```
-#### Rule 231: Unused type parameters should be removed
+### Rule 231: Unused type parameters should be removed
 ##### Quality Category: Code Smell
 Type parameters that aren't used are dead code, which can only distract and possibly confuse developers during maintenance. Therefore, unused type parameters should be removed.
 
@@ -9007,7 +9007,7 @@ int Add(int a, int b)
   return a + b;
 }
 ```
-#### Rule 232: Parameters should be passed in the correct order
+### Rule 232: Parameters should be passed in the correct order
 ##### Quality Category: Code Smell
 When the names of parameters in a method call match the names of the method arguments, it contributes to clearer, more readable code. However, when the names match, but are passed in a different order than the method arguments, it indicates a mistake in the parameter order which will likely lead to unexpected results.
 
@@ -9041,7 +9041,7 @@ public void doTheThing() {
   //...
 }
 ```
-#### Rule 233: "ResultSet.isLast()" should not be used
+### Rule 233: "ResultSet.isLast()" should not be used
 ##### Quality Category: Code Smell
 There are several reasons to avoid ResultSet.isLast(). First, support for this method is optional for TYPE_FORWARD_ONLY result sets. Second, it can be expensive (the driver may need to fetch the next row to answer the question). Finally, the specification is not clear on what should be returned when the ResultSet is empty, so some drivers may return the opposite of what is expected.
 
@@ -9062,7 +9062,7 @@ while (! rs.next()) {
   // process row
 }
 ```
-#### Rule 234: "static" members should be accessed statically
+### Rule 234: "static" members should be accessed statically
 ##### Quality Category: Code Smell
 While it is possible to access static members from a class instance, it's bad form, and considered by most to be misleading because it implies to the readers of your code that there's an instance of the member per class instance.
 
@@ -9100,7 +9100,7 @@ public class B {
   }
 }
 ```
-#### Rule 235: Silly math should not be performed
+### Rule 235: Silly math should not be performed
 ##### Quality Category: Code Smell
 Certain math operations are just silly and should not be performed because their results are predictable.
 
@@ -9139,7 +9139,7 @@ public void doMath(int a) {
   double arcTan = Math.atan(0.0);  // Noncompliant
 }
 ```
-#### Rule 236: Classes named like "Exception" should extend "Exception" or a subclass
+### Rule 236: Classes named like "Exception" should extend "Exception" or a subclass
 ##### Quality Category: Code Smell
 Clear, communicative naming is important in code. It helps maintainers and API users understand the intentions for and uses of a unit of code. Using "exception" in the name of a class that does not extend Exception or one of its subclasses is a clear violation of the expectation that a class' name will indicate what it is and/or does.
 
@@ -9171,7 +9171,7 @@ public class CarException extends Exception {
   public CarException(String message, Throwable cause) {
   // ...
 ```
-#### Rule 237: Exceptions should be either logged or rethrown but not both
+### Rule 237: Exceptions should be either logged or rethrown but not both
 ##### Quality Category: Code Smell
 In applications where the accepted practice is to log an Exception and then rethrow it, you end up with miles-long logs that contain multiple instances of the same exception. In multi-threaded applications debugging this type of log can be particularly hellish because messages from other threads will be interwoven with the repetitions of the logged-and-thrown Exception. Instead, exceptions should be either logged or rethrown, not both.
 
@@ -9201,7 +9201,7 @@ catch (SQLException e) {
   // handle exception...
 }
 ```
-#### Rule 238: Objects should not be created only to "getClass"
+### Rule 238: Objects should not be created only to "getClass"
 ##### Quality Category: Code Smell
 Creating an object for the sole purpose of calling getClass on it is a waste of memory and cycles. Instead, simply use the class' .class property.
 
@@ -9216,7 +9216,7 @@ Class c = myOb.getClass();
 ```java
 Class c = MyObject.class;
 ```
-#### Rule 239: Primitives should not be boxed just for "String" conversion
+### Rule 239: Primitives should not be boxed just for "String" conversion
 ##### Quality Category: Code Smell
 "Boxing" is the process of putting a primitive value into a primitive-wrapper object. When that's done purely to use the wrapper class' toString method, it's a waste of memory and cycles because those methods are static, and can therefore be used without a class instance. Similarly, using the static method valueOf in the primitive-wrapper classes with a non-String argument should be avoided.
 
@@ -9233,7 +9233,7 @@ myIntString = Integer.valueOf(myInt).toString(); // Noncompliant
 int myInt = 4;
 String myIntString = Integer.toString(myInt);
 ```
-#### Rule 240: Constructors should not be used to instantiate "String", "BigInteger", "BigDecimal" and primitive-wrapper classes
+### Rule 240: Constructors should not be used to instantiate "String", "BigInteger", "BigDecimal" and primitive-wrapper classes
 ##### Quality Category: Code Smell
 Constructors for String, BigInteger, BigDecimal and the objects used to wrap primitives should never be used. Doing so is less clear and uses more memory than simply using the desired value in the case of strings, and using valueOf for everything else.
 
@@ -9267,10 +9267,10 @@ BigInteger bigInteger3 = new BigInteger("111222333444555666777888999");
 ```java
 
 BigDecimal constructor with double argument is ignored as using valueOf instead might change resulting value. ```
-*See*
+**See**
  {rule:squid:S2111}.
-
-#### Rule 241: "URL.hashCode" and "URL.equals" should be avoided
+```
+### Rule 241: "URL.hashCode" and "URL.equals" should be avoided
 ##### Quality Category: Code Smell
 The equals and hashCode methods of java.net.URL both may trigger a name service (usually DNS) lookup to resolve the host name or IP address. Depending on the configuration, and network status, that can take a long time. URI on the other hand makes no such calls and should be used instead unless the specific URL functionality is required.
 
@@ -9303,7 +9303,7 @@ public void checkUrl(URL url) {
   }
 }
 ```
-#### Rule 242: Two branches in a conditional structure should not have exactly the same implementation
+### Rule 242: Two branches in a conditional structure should not have exactly the same implementation
 ##### Quality Category: Code Smell
 Having two cases in a switch statement or two branches in an if chain with the same implementation is at best duplicate code, and at worst a coding error. If the same logic is truly needed for both instances, then in an if chain they should be combined, or for a switch, one should fall through to the other.
 
@@ -9364,8 +9364,8 @@ if(a == 1) {
   doSomething();
 }
 
-```
-#### Rule 243: Dead stores should be removed
+``````
+### Rule 243: Dead stores should be removed
 ##### Quality Category: Code Smell
 A dead store happens when a local variable is assigned a value that is not read by any subsequent instruction. Calculating or retrieving a value only to then overwrite it or throw it away, could indicate a serious error in the code. Even if it's not an error, it is at best a waste of resources. Therefore all calculated values should be used.
 
@@ -9389,13 +9389,13 @@ i += compute();
 This rule ignores initializations to -1, 0, 1, null, true, false and "".
 
 ```
-*See*
+**See**
 
 MITRE, CWE-563 - Assignment to Variable without Use ('Unused Variable')
 CERT, MSC13-C. - Detect and remove unused values
 CERT, MSC56-J. - Detect and remove superfluous code and values
-
-#### Rule 244: "Object.wait(...)" should never be called on objects that implement "java.util.concurrent.locks.Condition"
+```
+### Rule 244: "Object.wait(...)" should never be called on objects that implement "java.util.concurrent.locks.Condition"
 ##### Quality Category: Code Smell
 From the Java API documentation:
 
@@ -9419,7 +9419,7 @@ final Condition notFull  = lock.newCondition();
 ...
 notFull.await();
 ```
-#### Rule 245: A field should not duplicate the name of its containing class
+### Rule 245: A field should not duplicate the name of its containing class
 ##### Quality Category: Code Smell
 It's confusing to have a class member with the same name (case differences aside) as its enclosing class. This is particularly so when you consider the common practice of naming a class instance for the class itself.
 
@@ -9471,8 +9471,8 @@ public class Foo {
   ...
 }
 
-```
-#### Rule 246: Tests should not be ignored
+``````
+### Rule 246: Tests should not be ignored
 ##### Quality Category: Code Smell
 When a test fails due, for example, to infrastructure issues, you might want to ignore it temporarily. But without some kind of notation about why the test is being ignored, it may never be reactivated. Such tests are difficult to address without comprehensive knowledge of the project, and end up polluting their projects.
 
@@ -9499,8 +9499,8 @@ public void testDoTheThing() {
 ```java
 
 The rule doesn't raise an issue if there is a comment in the @Ignore annotation
-```
-#### Rule 247: Anonymous inner classes containing only one method should become lambdas
+``````
+### Rule 247: Anonymous inner classes containing only one method should become lambdas
 ##### Quality Category: Code Smell
 Before Java 8, the only way to partially support closures in Java was by using anonymous inner classes. But the syntax of anonymous classes may seem unwieldy and unclear.
 
@@ -9530,7 +9530,7 @@ myCollection.stream().map(input -> new StringBuilder(input).reverse().toString()
 
 Predicate<String> isEmpty = myString -> myString.isEmpty();
 ```
-#### Rule 248: "switch" statements should not have too many "case" clauses
+### Rule 248: "switch" statements should not have too many "case" clauses
 ##### Quality Category: Code Smell
 When switch statements have large sets of case clauses, it is usually an attempt to map two sets of data. A real map structure would be more readable and maintainable, and should be used instead.
 
@@ -9540,8 +9540,8 @@ When switch statements have large sets of case clauses, it is usually an attempt
 ```java
 
 This rule ignores switches over Enums and empty, fall-through cases.
-```
-#### Rule 249: "for" loop stop conditions should be invariant
+``````
+### Rule 249: "for" loop stop conditions should be invariant
 ##### Quality Category: Code Smell
 A for loop stop condition should test the loop counter against an invariant value (i.e. one that is true at both the beginning and ending of every loop iteration). Ideally, this means that the stop condition is set to a local variable just before the loop begins.
 
@@ -9567,11 +9567,11 @@ for (int i = 0; i < 10; i++) {
 for (int i = 0; i < 10; i++) {...}
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 13.6 - Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.
  MISRA C++:2008, 6-5-3 - The loop-counter shall not be modified within condition or statement.
-#### Rule 250: Sections of code should not be commented out
+### Rule 250: Sections of code should not be commented out
 ##### Quality Category: Code Smell
 Programmers should not comment out code as it bloats programs and reduces readability.
 
@@ -9582,7 +9582,7 @@ See
  MISRA C++:2008, 2-7-2 - Sections of code shall not be "commented out" using C-style comments.
  MISRA C++:2008, 2-7-3 - Sections of code should not be "commented out" using C++ comments.
  MISRA C:2012, Dir. 4.4 - Sections of code should not be "commented out"
-#### Rule 251: Non-constructor methods should not have the same name as the enclosing class
+### Rule 251: Non-constructor methods should not have the same name as the enclosing class
 ##### Quality Category: Code Smell
 Having a class and some of its methods sharing the same name is misleading, and leaves others to wonder whether it was done that way on purpose, or was the methods supposed to be a constructor.
 
@@ -9602,7 +9602,7 @@ public class Foo {
    public void foo(String label) {...}  // Compliant
 }
 ```
-#### Rule 252: Exception types should not be tested using "instanceof" in catch blocks
+### Rule 252: Exception types should not be tested using "instanceof" in catch blocks
 ##### Quality Category: Code Smell
 Multiple catch blocks of the appropriate type should be used instead of catching a general exception, and then testing on the type.
 
@@ -9625,10 +9625,10 @@ try {
 } catch (NullPointerException e) { /* ... */ }       // Compliant
 
 ```
-*See*
+**See**
 
 CERT, ERR51-J. - Prefer user-defined exceptions over more general exception types
-#### Rule 253: Classes from "sun.*" packages should not be used
+### Rule 253: Classes from "sun.*" packages should not be used
 ##### Quality Category: Code Smell
 Classes in the sun.* or com.sun.* packages are considered implementation details, and are not part of the Java API.
 
@@ -9641,7 +9641,7 @@ Such classes are almost always wrapped by Java API classes that should be used i
 import com.sun.jna.Native;     // Noncompliant
 import sun.misc.BASE64Encoder; // Noncompliant
 ```
-#### Rule 254: Throwable and Error should not be caught
+### Rule 254: Throwable and Error should not be caught
 ##### Quality Category: Code Smell
 Throwable is the superclass of all errors and exceptions in Java. Error is the superclass of all errors, which are not meant to be caught by applications.
 
@@ -9660,11 +9660,11 @@ try { /* ... */ } catch (RuntimeException e) { /* ... */ }
 try { /* ... */ } catch (MyException e) { /* ... */ }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-396 - Declaration of Catch for Generic Exception
 CERT, ERR08-J. - Do not catch NullPointerException or any of its ancestors
-#### Rule 255: Unused method parameters should be removed
+### Rule 255: Unused method parameters should be removed
 ##### Quality Category: Code Smell
 Unused parameters are misleading. Whatever the values passed to such parameters, the behavior will be the same.
 
@@ -9720,13 +9720,13 @@ protected void foobar(int a, String s) { // no issue, method is overridable and 
 }
 
 ```
-*See*
+**See**
 
  MISRA C++:2008, 0-1-11 - There shall be no unused parameters (named or unnamed) in nonvirtual functions.
  MISRA C:2012, 2.7 - There should be no unused parameters in functions
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-
-#### Rule 256: Only static class initializers should be used
+```
+### Rule 256: Only static class initializers should be used
 ##### Quality Category: Code Smell
 Non-static initializers are rarely used, and can be confusing for most developers because they only run when new class instances are created. When possible, non-static initializers should be refactored into standard constructors or field initializers.
 
@@ -9763,7 +9763,7 @@ class MyClass {
   private static final Map<String, String> MY_MAP = ImmutableMap.of("a", "b");
 }
 ```
-#### Rule 257: Empty arrays and collections should be returned instead of null
+### Rule 257: Empty arrays and collections should be returned instead of null
 ##### Quality Category: Code Smell
 Returning null instead of an actual array or collection forces callers of the method to explicitly test for nullity, making them more complex and less readable.
 
@@ -9809,11 +9809,11 @@ public static void main(String[] args) {
 }
 
 ```
-*See*
+**See**
 
 CERT, MSC19-C. - For functions that return an array, prefer returning an empty array over a null value
 CERT, MET55-J. - Return an empty array or collection instead of a null value for methods that return an array or collection
-#### Rule 258: "@Override" should be used on overriding and implementing methods
+### Rule 258: "@Override" should be used on overriding and implementing methods
 ##### Quality Category: Code Smell
 Using the @Override annotation is useful for two reasons :
 
@@ -9846,8 +9846,8 @@ class FirstChildClass extends ParentClass {
 ```java
 
 This rule is relaxed when overriding a method from the Object class like toString(), hashCode(), ...
-```
-#### Rule 259: Enumeration should not be implemented
+``````
+### Rule 259: Enumeration should not be implemented
 ##### Quality Category: Code Smell
 From the official Oracle Javadoc:
 
@@ -9867,7 +9867,7 @@ public class MyClass implements Iterator {     // Compliant
   /* ... */
 }
 ```
-#### Rule 260: Synchronized classes Vector, Hashtable, Stack and StringBuffer should not be used
+### Rule 260: Synchronized classes Vector, Hashtable, Stack and StringBuffer should not be used
 ##### Quality Category: Code Smell
 Early classes of the Java API, such as Vector, Hashtable and StringBuffer, were synchronized to make them thread-safe. Unfortunately, synchronization has a big negative impact on performance, even when using these collections from a single thread.
 
@@ -9897,8 +9897,8 @@ Use of those synchronized classes is ignored in the signatures of overriding met
 @Override
 public Vector getCats() {...}
 
-```
-#### Rule 261: Unused "private" methods should be removed
+``````
+### Rule 261: Unused "private" methods should be removed
 ##### Quality Category: Code Smell
 private methods that are never executed are dead code: unnecessary, inoperative code that should be removed. Cleaning out dead code decreases the size of the maintained codebase, making it easier to understand the program and preventing bugs from being introduced.
 
@@ -9941,11 +9941,11 @@ public class Foo implements Serializable
 ```java
 
 This rule doesn't raise any issue on annotated methods.
-```
-#### Rule 262: Try-catch blocks should not be nested
+``````
+### Rule 262: Try-catch blocks should not be nested
 ##### Quality Category: Code Smell
 Nesting try/catch blocks severely impacts the readability of source code because it makes it too difficult to understand which block will catch which exception.
-#### Rule 263: Track uses of "FIXME" tags
+### Rule 263: Track uses of "FIXME" tags
 ##### Quality Category: Code Smell
 FIXME tags are commonly used to mark places where a bug is suspected, but which the developer wants to deal with later.
 
@@ -9960,10 +9960,10 @@ int divide(int numerator, int denominator) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-546 - Suspicious Comment
-#### Rule 264: Deprecated elements should have both the annotation and the Javadoc tag
+### Rule 264: Deprecated elements should have both the annotation and the Javadoc tag
 ##### Quality Category: Code Smell
 Deprecation should be marked with both the @Deprecated annotation and @deprecated Javadoc tag. The annotation enables tools such as IDEs to warn about referencing deprecated elements, and the tag can be used to explain when it was deprecated, why, and how references should be refactored.
 
@@ -10048,8 +10048,8 @@ interface Plop {
 
 }
 
-```
-#### Rule 265: Assignments should not be made from within sub-expressions
+``````
+### Rule 265: Assignments should not be made from within sub-expressions
 ##### Quality Category: Code Smell
 Assignments within sub-expressions are hard to spot and therefore make the code less readable. Ideally, sub-expressions should not have side-effects.
 
@@ -10085,7 +10085,7 @@ int k = (j += 1);
 result = (bresult = new byte[len]);
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 13.1 - Assignment operators shall not be used in expressions that yield a Boolean value
  MISRA C++:2008, 6-2-1 - Assignment operators shall not be used in sub-expressions
@@ -10093,8 +10093,8 @@ result = (bresult = new byte[len]);
 MITRE, CWE-481 - Assigning instead of Comparing
 CERT, EXP45-C. - Do not perform assignments in selection statements
 CERT, EXP51-J. - Do not perform assignments in conditional expressions
-
-#### Rule 266: Generic exceptions should never be thrown
+```
+### Rule 266: Generic exceptions should never be thrown
 ##### Quality Category: Code Smell
 Using such generic exceptions as Error, RuntimeException, Throwable, and Exception prevents calling methods from handling true, system-generated exceptions differently than application-generated errors.
 
@@ -10130,12 +10130,12 @@ public void myOtherMethod throws Exception {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-397 - Declaration of Throws for Generic Exception
 CERT, ERR07-J. - Do not throw RuntimeException, Exception, or Throwable
-
-#### Rule 267: Utility classes should not have public constructors
+```
+### Rule 267: Utility classes should not have public constructors
 ##### Quality Category: Code Smell
 Utility classes, which are collections of static members, are not meant to be instantiated. Even abstract utility classes, which can be extended, should not have public constructors.
 
@@ -10173,8 +10173,8 @@ class StringUtils { // Compliant
 ```java
 
 When class contains public static void main(String[] args) method it is not considered as utility class and will be ignored by this rule.
-```
-#### Rule 268: Local variables should not shadow class fields
+``````
+### Rule 268: Local variables should not shadow class fields
 ##### Quality Category: Code Smell
 Shadowing fields with a local variable is a bad practice that reduces code readability: it makes it confusing to know whether the field or the variable is being used.
 
@@ -10190,10 +10190,10 @@ class Foo {
 }
 
 ```
-*See*
+**See**
 
 CERT, DCL51-J. - Do not shadow or obscure identifiers in subscopes
-#### Rule 269: Redundant pairs of parentheses should be removed
+### Rule 269: Redundant pairs of parentheses should be removed
 ##### Quality Category: Code Smell
 The use of parentheses, even those not required to enforce a desired order of operations, can clarify the intent behind a piece of code. But redundant pairs of parentheses could be misleading, and should be removed.
 
@@ -10219,12 +10219,12 @@ if (a && (x+y > 0)) {
 
 return (x + 1);
 ```
-#### Rule 270: Inheritance tree of classes should not be too deep
+### Rule 270: Inheritance tree of classes should not be too deep
 ##### Quality Category: Code Smell
 Inheritance is certainly one of the most valuable concepts in object-oriented programming. It's a way to compartmentalize and reuse code by creating collections of attributes and behaviors called classes which can be based on previously created classes. But abusing this concept by creating a deep inheritance tree can lead to very complex and unmaintainable source code. Most of the time a too deep inheritance tree is due to bad object oriented design which has led to systematically use 'inheritance' when for instance 'composition' would suit better.
 
 This rule raises an issue when the inheritance tree, starting from Object has a greater depth than is allowed.
-#### Rule 271: Nested blocks of code should not be left empty
+### Rule 271: Nested blocks of code should not be left empty
 ##### Quality Category: Code Smell
 Most of the time a block of code is empty when a piece of code is really missing. So such empty block must be either filled or removed.
 
@@ -10238,8 +10238,8 @@ for (int i = 0; i < 42; i++){}  // Empty on purpose or missing piece of code ?
 ```java
 
 When a block contains a comment, this block is not considered to be empty unless it is a synchronized block. synchronized blocks are still considered empty even with comments because they can still affect program flow.
-```
-#### Rule 272: Methods should not have too many parameters
+``````
+### Rule 272: Methods should not have too many parameters
 ##### Quality Category: Code Smell
 A long parameter list can indicate that a new structure should be created to wrap the numerous parameters or that the function is doing too many things.
 
@@ -10266,8 +10266,8 @@ public void doSomething(int param1, int param2, int param3, String param4) {
 ```java
 
 Methods annotated with Spring's @RequestMapping (and related shortcut annotations, like @GetRequest) or @JsonCreator may have a lot of parameters, encapsulation being possible. Such methods are therefore ignored.
-```
-#### Rule 273: Unused "private" fields should be removed
+``````
+### Rule 273: Unused "private" fields should be removed
 ##### Quality Category: Code Smell
 If a private field is declared but not used in the program, it can be considered dead code and should therefore be removed. This will improve maintainability because developers will not wonder what the variable is used for.
 
@@ -10309,8 +10309,8 @@ public class MyClass implements java.io.Serializable {
 
 
 Moreover, this rule doesn't raise any issue on annotated fields.
-```
-#### Rule 274: Collapsible "if" statements should be merged
+``````
+### Rule 274: Collapsible "if" statements should be merged
 ##### Quality Category: Code Smell
 Merging collapsible if statements increases the code's readability.
 
@@ -10334,7 +10334,7 @@ private static boolean isFileOrDirectory(File file) {
   return file.isFile() || file.isDirectory();
 }
 ```
-#### Rule 275: Unused labels should be removed
+### Rule 275: Unused labels should be removed
 ##### Quality Category: Code Smell
 If a label is declared but not used in the program, it can be considered as dead code and should therefore be removed.
 
@@ -10360,11 +10360,11 @@ void foo() {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2012, 2.6 - A function should not contain unused label declarations
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
-#### Rule 276: Standard outputs should not be used directly to log anything
+### Rule 276: Standard outputs should not be used directly to log anything
 ##### Quality Category: Code Smell
 When logging a message there are several important requirements which must be fulfilled:
 
@@ -10386,10 +10386,10 @@ System.out.println("My Message");  // Noncompliant
 logger.log("My Message");
 
 ```
-*See*
+**See**
 
 CERT, ERR02-J. - Prevent exceptions while logging data
-#### Rule 277: Return values should not be ignored when they contain the operation status code
+### Rule 277: Return values should not be ignored when they contain the operation status code
 ##### Quality Category: Vulnerability
 When the return value of a function call contain the operation status code, this value should be tested to make sure the operation completed successfully.
 
@@ -10425,7 +10425,7 @@ public void doSomething(File file, Lock lock) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 16.10 - If a function returns error information, then that error information shall be tested
  MISRA C++:2008, 0-1-7 - The value returned by a function having a non-void return type that is not an overloaded operator shall always be used.
@@ -10437,7 +10437,7 @@ CERT, EXP00-J. - Do not ignore values returned by methods
 CERT, EXP12-C. - Do not ignore values returned by functions
 CERT, FIO02-J. - Detect and handle file-related errors
 MITRE, CWE-754 - Improper Check for Unusual Exceptional Conditions
-#### Rule 278: Logging should not be vulnerable to injection attacks
+### Rule 278: Logging should not be vulnerable to injection attacks
 ##### Quality Category: Vulnerability
 User provided data, such as URL parameters, POST data payloads or cookies, should always be considered untrusted and tainted. Applications logging tainted data could enable an attacker to inject characters that would break the log file pattern. This could be used to block monitors and SIEM (Security Information and Event Management) systems from detecting other malicious events.
 
@@ -10466,14 +10466,14 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IO
 }
 
 ```
-*See*
+**See**
 
 OWASP Cheat Sheet - Logging
 OWASP Attack Category - Log Injection
 OWASP Top 10 2017 - Category A1 - Injection
 MITRE, CWE-117 - Improper Output Neutralization for Logs
 SANS Top 25 - Insecure Interaction Between Components
-#### Rule 279: "enum" fields should not be publicly mutable
+### Rule 279: "enum" fields should not be publicly mutable
 ##### Quality Category: Vulnerability
 enums are generally thought of as constant, but an enum with a public field or public setter is not only non-constant, but also vulnerable to malicious code. Ideally fields in an enum are private and set in the constructor, but if that's not possible, their visibility should be reduced as much as possible.
 
@@ -10513,7 +10513,7 @@ public enum Continent {
     // ...
   }
 ```
-#### Rule 280: Mutable fields should not be "public static"
+### Rule 280: Mutable fields should not be "public static"
 ##### Quality Category: Vulnerability
 There is no good reason to have a mutable object as the public (by default), static member of an interface. Such variables should be moved into classes and their visibility lowered.
 
@@ -10537,13 +10537,13 @@ public class A {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-582 - Array Declared Public, Final, and Static
 MITRE, CWE-607 - Public Static Final Field References Mutable Object
 CERT, OBJ01-J. - Limit accessibility of fields
 CERT, OBJ13-J. - Ensure that references to mutable objects are not exposed
-#### Rule 281: Exceptions should not be thrown from servlet methods
+### Rule 281: Exceptions should not be thrown from servlet methods
 ##### Quality Category: Vulnerability
 Even though the signatures for methods in a servlet include throws IOException, ServletException, it's a bad idea to let such exceptions be thrown. Failure to catch exceptions in a servlet could leave a system in a vulnerable state, possibly resulting in denial-of-service attacks, or the exposure of sensitive information because when a servlet throws an exception, the servlet container typically sends debugging information back to the user. And that information could be very valuable to an attacker.
 
@@ -10575,12 +10575,12 @@ public void doGet(HttpServletRequest request, HttpServletResponse response)
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-600 - Uncaught Exception in Servlet
 CERT, ERR01-J. - Do not allow exceptions to expose sensitive information
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 282: "public static" fields should be constant
+### Rule 282: "public static" fields should be constant
 ##### Quality Category: Vulnerability
 There is no good reason to declare a field "public" and "static" without also declaring it "final". Most of the time this is a kludge to share a state among several objects. But with this approach, any object can do whatever it wants with the shared state, such as setting it to null.
 
@@ -10601,11 +10601,11 @@ public class Greeter {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-500 - Public Static Field Not Marked Final
 CERT OBJ10-J. - Do not use public static nonfinal fields
-#### Rule 283: Throwable.printStackTrace(...) should not be called
+### Rule 283: Throwable.printStackTrace(...) should not be called
 ##### Quality Category: Vulnerability
 Throwable.printStackTrace(...) prints a Throwable and its stack trace to some stream. By default that stream System.Err, which could inadvertently expose sensitive information.
 
@@ -10635,11 +10635,11 @@ try {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-489 - Leftover Debug Code
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 284: Double Brace Initialization should not be used
+### Rule 284: Double Brace Initialization should not be used
 ##### Quality Category: Bug
 Because Double Brace Initialization (DBI) creates an anonymous class with a reference to the instance of the owning object, its use can lead to memory leaks if the anonymous inner class is returned and held by other objects. Even when there's no leak, DBI is so obscure that it's bound to confuse most maintainers.
 
@@ -10662,7 +10662,7 @@ source.put("firstName", "John");
 source.put("lastName", "Smith");
 // ...
 ```
-#### Rule 285: Non-primitive fields should not be "volatile"
+### Rule 285: Non-primitive fields should not be "volatile"
 ##### Quality Category: Bug
 Marking an array volatile means that the array itself will always be read fresh and never thread cached, but the items in the array will not be. Similarly, marking a mutable object field volatile means the object reference is volatile but the object itself is not, and other threads may not see updates to the object state.
 
@@ -10681,10 +10681,10 @@ private AtomicIntegerArray vInts;
 private MyObj myObj;
 
 ```
-*See*
+**See**
 
 CERT, CON50-J. - Do not assume that declaring a reference volatile guarantees safe publication of the members of the referenced object
-#### Rule 286: "toArray" should be passed an array of the proper type
+### Rule 286: "toArray" should be passed an array of the proper type
 ##### Quality Category: Bug
 Given no arguments, the Collections.toArray method returns an Object [], which will cause a ClassCastException at runtime if you try to cast it to an array of the proper class. Instead, pass an array of the correct type in to the call.
 
@@ -10702,7 +10702,7 @@ public String [] getStringArray(List<String> strings) {
   return strings.toArray(new String[0]);
 }
 ```
-#### Rule 287: Neither "Math.abs" nor negation should be used on numbers that could be "MIN_VALUE"
+### Rule 287: Neither "Math.abs" nor negation should be used on numbers that could be "MIN_VALUE"
 ##### Quality Category: Bug
 It is possible for a call to hashCode to return Integer.MIN_VALUE. Take the absolute value of such a hashcode and you'll still have a negative number. Since your code is likely to assume that it's a positive value instead, your results will be unreliable.
 
@@ -10726,7 +10726,7 @@ public void doSomething(String str) {
   }
 }
 ```
-#### Rule 288: The value returned from a stream read should be checked
+### Rule 288: The value returned from a stream read should be checked
 ##### Quality Category: Bug
 You cannot assume that any given stream reading call will fill the byte[] passed in to the method. Instead, you must check the value returned by the read method to see how many bytes were read. Fail to do so, and you introduce bug that is both harmful and difficult to reproduce.
 
@@ -10761,10 +10761,10 @@ public void doSomething(String fileName) {
 }
 
 ```
-*See*
+**See**
 
 CERT, FIO10-J. - Ensure the array is filled when using read() to fill an array
-#### Rule 289: "@NonNull" values should not be set to null
+### Rule 289: "@NonNull" values should not be set to null
 ##### Quality Category: Bug
 Fields, parameters and return values marked @NotNull, @NonNull, or @Nonnull are assumed to have non-null values and are not typically null-checked before use. Therefore setting one of these values to null, or failing to set such a class field in a constructor, could cause NullPointer
 ```
@@ -10796,12 +10796,12 @@ public class MainClass {
   }
 
 ```
-*See*
+**See**
 
 MITRE CWE-476 - NULL Pointer Dereference
 CERT, EXP01-J. - Do not use a null in a case where an object is required
-
-#### Rule 290: "Iterator.next()" methods should throw "NoSuchElementException"
+```
+### Rule 290: "Iterator.next()" methods should throw "NoSuchElementException"
 ##### Quality Category: Bug
 By contract, any implementation of the java.util.Iterator.next() method should throw a NoSuchElementException exception when the iteration has no more elements. Any other behavior when the iteration is done could lead to unexpected behavior for users of this Iterator.
 
@@ -10831,7 +10831,7 @@ public class MyIterator implements Iterator<String>{
   }
 }
 ```
-#### Rule 291: "compareTo" results should not be checked for specific values
+### Rule 291: "compareTo" results should not be checked for specific values
 ##### Quality Category: Bug
 While most compareTo methods return -1, 0, or 1, some do not, and testing the result of a compareTo against a specific value other than 0 could result in false negatives.
 
@@ -10849,7 +10849,7 @@ if (myClass.compareTo(arg) < 0) {
   // ...
 }
 ```
-#### Rule 292: Math operands should be cast before assignment
+### Rule 292: Math operands should be cast before assignment
 ##### Quality Category: Bug
 When arithmetic is performed on integers, the result will always be an integer. You can assign that result to a long, double, or float with automatic type conversion, but having started as an int or long, the result will likely not be what you expect.
 
@@ -10909,14 +10909,14 @@ public float compute2(float factor){
 }
 
 ```
-*See*
+**See**
 
  MISRA C++:2008, 5-0-8 - An explicit integral or floating-point conversion shall not increase the size of the underlying type of a cvalue expression.
 MITRE, CWE-190 - Integer Overflow or Wraparound
 CERT, NUM50-J. - Convert integers to floating point for floating-point operations
 CERT, INT18-C. - Evaluate integer expressions in a larger size before comparing or assigning to that size
 SANS Top 25 - Risky Resource Management
-#### Rule 293: Ints and longs should not be shifted by zero or more than their number of bits-1
+### Rule 293: Ints and longs should not be shifted by zero or more than their number of bits-1
 ##### Quality Category: Bug
 Since an int is a 32-bit variable, shifting by more than +/-31 is confusing at best and an error at worst. When the runtime shifts 32-bit integers, it uses the lowest 5 bits of the shift count operand. In other words, shifting an int by 32 is the same as shifting it by 0, and shifting it by 33 is the same as shifting it by 1.
 
@@ -10950,8 +10950,8 @@ This rule doesn't raise an issue when the shift by zero is obviously for cosmeti
 bytes[loc+0] = (byte)(value >> 8);
 bytes[loc+1] = (byte)(value >> 0);
 
-```
-#### Rule 294: "compareTo" should not return "Integer.MIN_VALUE"
+``````
+### Rule 294: "compareTo" should not return "Integer.MIN_VALUE"
 ##### Quality Category: Bug
 It is the sign, rather than the magnitude of the value returned from compareTo that matters. Returning Integer.MIN_VALUE does not convey a higher degree of inequality, and doing so can cause errors because the return value of compareTo is sometimes inversed, with the expectation that negative values become positive. However, inversing Integer.MIN_VALUE yields Integer.MIN_VALUE rather than Integer.MAX_VALUE.
 
@@ -10971,7 +10971,7 @@ public int compareTo(MyClass) {
     return -1;
   }
 ```
-#### Rule 295: Boxing and unboxing should not be immediately reversed
+### Rule 295: Boxing and unboxing should not be immediately reversed
 ##### Quality Category: Bug
 Boxing is the process of putting a primitive value into an analogous object, such as creating an Integer to hold an int value. Unboxing is the process of retrieving the primitive value from such an object.
 
@@ -11028,7 +11028,7 @@ public void func() {
   examineInteger(iger1);
 }
 ```
-#### Rule 296: "equals(Object obj)" should test argument type
+### Rule 296: "equals(Object obj)" should test argument type
 ##### Quality Category: Bug
 Because the equals method takes a generic Object as a parameter, any type of object may be passed to it. The method should not assume it will only be used to test objects of its class type. It must instead check the parameter's type.
 
@@ -11054,7 +11054,7 @@ public boolean equals(Object obj) {
   // ...
 }
 ```
-#### Rule 297: "Serializable" inner classes of non-serializable classes should be "static"
+### Rule 297: "Serializable" inner classes of non-serializable classes should be "static"
 ##### Quality Category: Bug
 Serializing a non-static inner class will result in an attempt at serializing the outer class as well. If the outer class is not serializable, then serialization will fail, resulting in a runtime error.
 
@@ -11068,7 +11068,7 @@ public class Pomegranate {
   // ...
 
   public class ```
-*See*
+**See**
 d implements Serializable {  // Noncompliant; serialization will fail
     // ...
   }
@@ -11082,17 +11082,17 @@ public class Pomegranate {
   // ...
 
   public static class ```
-*See*
+**See**
 d implements Serializable {
     // ...
   }
 }
 
 ```
-*See*
+**See**
 
 CERT SER05-J. - Do not serialize instances of inner classes
-#### Rule 298: The non-serializable super class of a "Serializable" class should have a no-argument constructor
+### Rule 298: The non-serializable super class of a "Serializable" class should have a no-argument constructor
 ##### Quality Category: Bug
 When a Serializable object has a non-serializable ancestor in its inheritance chain, object deserialization (re-instantiating the object from file) starts at the first non-serializable class, and proceeds down the chain, adding the properties of each subsequent child class, until the final object has been instantiated.
 
@@ -11143,7 +11143,7 @@ public class Raspberry extends Fruit
   public String getVarity() {...}
 }
 ```
-#### Rule 299: Method parameters, caught exceptions and foreach variables' initial values should not be ignored
+### Rule 299: Method parameters, caught exceptions and foreach variables' initial values should not be ignored
 ##### Quality Category: Bug
 While it is technically correct to assign to parameters from within method bodies, doing so before the parameter value is read is likely a bug. Instead, initial values of parameters, caught exceptions, and foreach parameters should be, if not treated as final, then at least read before reassignment.
 
@@ -11158,10 +11158,10 @@ public void doTheThing(String str, int i, List<String> strings) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2012, 17.8 - A function parameter should not be modified
-#### Rule 300: "equals(Object obj)" and "hashCode()" should be overridden in pairs
+### Rule 300: "equals(Object obj)" and "hashCode()" should be overridden in pairs
 ##### Quality Category: Bug
 According to the Java Language Specification, there is a contract between equals(Object) and hashCode():
 
@@ -11203,11 +11203,11 @@ class MyClass {    // Compliant
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-581 - Object Model Violation: Just One of Equals and Hashcode Defined
 CERT, MET09-J. - Classes that define an equals() method must also define a hashCode() method
-#### Rule 301: Enabling Cross-Origin Resource Sharing is security-sensitive
+### Rule 301: Enabling Cross-Origin Resource Sharing is security-sensitive
 ##### Quality Category: Security Hotspot
 Enabling Cross-Origin Resource Sharing (CORS) is security-sensitive. For example, it has led in the past to the following vulnerabilities:
 
@@ -11260,7 +11260,7 @@ OWASP CORS RequestPreflighScrutiny
 SANS Top 25 - Porous Defenses
 MITRE, CWE-346 - Origin Validation Error
 MITRE, CWE-942 - Overly Permissive Cross-domain Whitelist
-#### Rule 302: Using cookies is security-sensitive
+### Rule 302: Using cookies is security-sensitive
 ##### Quality Category: Security Hotspot
 Using cookies is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -11396,7 +11396,7 @@ MITRE CWE-565 - Reliance on Cookies without Validation and Integrity Checking
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, FIO52-J. - Do not store unencrypted sensitive information on the client side
  Derived from FindSecBugs rule COOKIE_USAGE
-#### Rule 303: Creating cookies without the "secure" flag is security-sensitive
+### Rule 303: Creating cookies without the "secure" flag is security-sensitive
 ##### Quality Category: Security Hotspot
 The "secure" attribute prevents cookies from being sent over plaintext connections such as HTTP, where they would be easily eavesdropped upon. Instead, cookies with the secure attribute are only sent over encrypted HTTPS connections.
 
@@ -11416,7 +11416,7 @@ c.setSecure(true);
 response.addCookie(c);
 
 ```
-*See*
+**See**
 
 MITRE, CWE-311 - Missing Encryption of Sensitive Data
 MITRE, CWE-315 - Cleartext Storage of Sensitive Information in a Cookie
@@ -11424,7 +11424,7 @@ MITRE, CWE-614 - Sensitive Cookie in HTTPS Session Without 'Secure' Attribute
  OWASP Top 10 2017 Category A2 - Broken Authentication
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 SANS Top 25 - Porous Defenses
-#### Rule 304: Using hardcoded IP addresses is security-sensitive
+### Rule 304: Using hardcoded IP addresses is security-sensitive
 ##### Quality Category: Security Hotspot
 Hardcoding IP addresses is security-sensitive. It has led in the past to the following vulnerabilities:
 
@@ -11457,12 +11457,12 @@ No issue is reported for the following cases because they are not considered sen
  Non routable address 0.0.0.0
  Strings of the form 2.5.<number>.<number> as they often match Object Identifiers (OID).
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
 CERT, MSC03-J. - Never hard code sensitive information
-
-#### Rule 305: "read(byte[],int,int)" should be overridden
+```
+### Rule 305: "read(byte[],int,int)" should be overridden
 ##### Quality Category: Code Smell
 When directly subclassing java.io.InputStream or java.io.FilterInputStream, the only requirement is that you implement the method read(). However most uses for such streams don't read a single byte at a time and the default implementation for read(byte[],int,int) will call read(int) for every single byte in the array which can create a lot of overhead and is utterly inefficient. It is therefore strongly recommended that subclasses provide an efficient implementation of read(byte[],int,int).
 
@@ -11511,8 +11511,8 @@ public class MyInputStream extends java.io.InputStream {
 ```java
 
 This rule doesn't raise an issue when the class is declared abstract.
-```
-#### Rule 306: An iteration on a Collection should be performed on the type handled by the Collection
+``````
+### Rule 306: An iteration on a Collection should be performed on the type handled by the Collection
 ##### Quality Category: Code Smell
 This rule raises an issue when an iteration over the items of a Collection is performed on a super-type of the type handled by the Collection.
 
@@ -11535,7 +11535,7 @@ for (Person person : getPersons()) { // Compliant
   person.getAddress() ;
 }
 ```
-#### Rule 307: "StandardCharsets" constants should be preferred
+### Rule 307: "StandardCharsets" constants should be preferred
 ##### Quality Category: Code Smell
 JDK7 introduced the class java.nio.charset.StandardCharsets. It provides constants for all charsets that are guaranteed to be available on every implementation of the Java platform.
 
@@ -11568,7 +11568,7 @@ byte[] bytes = string.getBytes(Charsets.UTF_8); // Noncompliant; Guava way obsol
 ```java
 byte[] bytes = string.getBytes(StandardCharsets.UTF_8)
 ```
-#### Rule 308: "@CheckForNull" or "@Nullable" should not be used on primitive types
+### Rule 308: "@CheckForNull" or "@Nullable" should not be used on primitive types
 ##### Quality Category: Code Smell
 By definition, primitive types are not Objects and so they can't be null. Adding @CheckForNull or @Nullable on primitive types adds confusion and is useless.
 
@@ -11589,7 +11589,7 @@ boolean isFoo() {
  ...
 }
 ```
-#### Rule 309: Composed "@RequestMapping" variants should be preferred
+### Rule 309: Composed "@RequestMapping" variants should be preferred
 ##### Quality Category: Code Smell
 Spring framework 4.3 introduced variants of the @RequestMapping annotation to better represent the semantics of the annotated methods. The use of @GetMapping, @PostMapping, @PutMapping, @PatchMapping and @DeleteMapping should be preferred to the use of the raw @RequestMapping(method = RequestMethod.XYZ).
 
@@ -11609,7 +11609,7 @@ public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") S
 ...
 }
 ```
-#### Rule 310: "write(byte[],int,int)" should be overridden
+### Rule 310: "write(byte[],int,int)" should be overridden
 ##### Quality Category: Code Smell
 When directly subclassing java.io.OutputStream or java.io.FilterOutputStream, the only requirement is that you implement the method write(int). However most uses for such streams don't write a single byte at a time and the default implementation for write(byte[],int,int) will call write(int) for every single byte in the array which can create a lot of overhead and is utterly inefficient. It is therefore strongly recommended that subclasses provide an efficient implementation of write(byte[],int,int).
 
@@ -11672,8 +11672,8 @@ public class MyStream extends OutputStream {
 ```java
 
 This rule doesn't raise an issue when the class is declared abstract.
-```
-#### Rule 311: Functional Interfaces should be as specialised as possible
+``````
+### Rule 311: Functional Interfaces should be as specialised as possible
 ##### Quality Category: Code Smell
 The java.util.function package provides a large array of functional interface definitions for use in lambda expressions and method references. In general it is recommended to use the more specialised form to avoid auto-boxing. For instance IntFunction<Foo> should be preferred over Function<Integer, Foo>.
 
@@ -11734,7 +11734,7 @@ public class Foo implements IntSupplier {
   }
 }
 ```
-#### Rule 312: Null checks should not be used with "instanceof"
+### Rule 312: Null checks should not be used with "instanceof"
 ##### Quality Category: Code Smell
 There's no need to null test in conjunction with an instanceof test. null is not an instanceof anything, so a null check is redundant.
 
@@ -11752,7 +11752,7 @@ if (x instanceof MyClass) { ... }
 
 if (! x instanceof MyClass) { ... }
 ```
-#### Rule 313: "close()" calls should not be redundant
+### Rule 313: "close()" calls should not be redundant
 ##### Quality Category: Code Smell
 Java 7's try-with-resources structure automatically handles closing the resources that the try itself opens. Thus, adding an explicit close() call is redundant and potentially confusing.
 
@@ -11775,7 +11775,7 @@ try (PrintWriter writer = new PrintWriter(process.getOutputStream())) {
   writer.flush();
 }
 ```
-#### Rule 314: "ThreadLocal.withInitial" should be preferred
+### Rule 314: "ThreadLocal.withInitial" should be preferred
 ##### Quality Category: Code Smell
 Java 8 introduced ThreadLocal.withInitial which is a simpler alternative to creating an anonymous inner class to initialise a ThreadLocal instance.
 
@@ -11797,7 +11797,7 @@ ThreadLocal<List<String>> myThreadLocal =
 ```java
 ThreadLocal<List<String>> myThreadLocal = ThreadLocal.withInitial(ArrayList::new);
 ```
-#### Rule 315: "Stream" call chains should be simplified when possible
+### Rule 315: "Stream" call chains should be simplified when possible
 ##### Quality Category: Code Smell
 When using the Stream API, call chains should be simplified as much as possible. Not only does it make the code easier to read, it also avoid creating unnecessary temporary objects.
 
@@ -11819,10 +11819,10 @@ boolean hasRed = widgets.stream().filter(w -> w.getColor() == RED).findFirst().i
 ```java
 boolean hasRed = widgets.stream().anyMatch(w -> w.getColor() == RED);
 ```
-#### Rule 316: Packages containing only "package-info.java" should be removed
+### Rule 316: Packages containing only "package-info.java" should be removed
 ##### Quality Category: Code Smell
 There is no reason to have a package that is empty except for "package-info.java". Such packages merely clutter a project, taking up space but adding no value.
-#### Rule 317: Arrays should not be created for varargs parameters
+### Rule 317: Arrays should not be created for varargs parameters
 ##### Quality Category: Code Smell
 There's no point in creating an array solely for the purpose of passing it as a varargs (...) argument; varargs is an array. Simply pass the elements directly. They will be consolidated into an array automatically. Incidentally passing an array where Object ... is expected makes the intent ambiguous: Is the array supposed to be one object or a collection of objects?
 
@@ -11864,7 +11864,7 @@ public void doTheOtherThing(Object ... args) {
   // ...
 }
 ```
-#### Rule 318: Jump statements should not be redundant
+### Rule 318: Jump statements should not be redundant
 ##### Quality Category: Code Smell
 Jump statements such as return and continue let you change the default flow of program execution, but jump statements that direct the control flow to the original direction are just a waste of keystrokes.
 
@@ -11893,7 +11893,7 @@ public void foo() {
   }
 }
 ```
-#### Rule 319: Deprecated "${pom}" properties should not be used
+### Rule 319: Deprecated "${pom}" properties should not be used
 ##### Quality Category: Code Smell
 Deprecated features are those that have been retained temporarily for backward compatibility, but which will eventually be removed. In effect, deprecation announces a grace period to allow the smooth transition from the old features to the new ones. In that period, no use of the deprecated features should be added, and all existing uses should be gradually removed.
 
@@ -11917,7 +11917,7 @@ or
   <build>
     <finalName>${artifactId}-${version}</finalName>
 ```
-#### Rule 320: Methods should not return constants
+### Rule 320: Methods should not return constants
 ##### Quality Category: Code Smell
 There's no point in forcing the overhead of a method call for a method that always returns the same constant value. Even worse, the fact that a method call must be made will likely mislead developers who call the method thinking that something more is done. Declare a constant instead.
 
@@ -11941,8 +11941,8 @@ static int bestNumber = 12;
 ```java
 
 Methods with annotations, such as @Override and Spring's @RequestMapping, are ignored.
-```
-#### Rule 321: "private" methods called only by inner classes should be moved to those classes
+``````
+### Rule 321: "private" methods called only by inner classes should be moved to those classes
 ##### Quality Category: Code Smell
 When a private method is only invoked by an inner class, there's no reason not to move it into that class. It will still have the same access to the outer class' members, but the outer class will be clearer and less cluttered.
 
@@ -11980,7 +11980,7 @@ public class Outie {
   }
 }
 ```
-#### Rule 322: Abstract methods should not be redundant
+### Rule 322: Abstract methods should not be redundant
 ##### Quality Category: Code Smell
 There's no point in redundantly defining an abstract method with the same signature as a method in an interface that the class implements. Any concrete child classes will have to implement the method either way.
 
@@ -11996,7 +11996,7 @@ public abstract class AbstractRuleReport implements Reportable{
   // ...
 }
 ```
-#### Rule 323: Static non-final field names should comply with a naming convention
+### Rule 323: Static non-final field names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate efficiently. This rule checks that static non-final field names match a provided regular expression.
 
@@ -12017,7 +12017,7 @@ class MyClass {
    private static String fooBar;
 }
 ```
-#### Rule 324: JUnit rules should be used
+### Rule 324: JUnit rules should be used
 ##### Quality Category: Code Smell
 While some TestRule classes have the desired effect without ever being directly referenced by a test, several others do not, and there's no reason to leave them cluttering up the file if they're not in use.
 
@@ -12054,7 +12054,7 @@ public class ProjectDefinitionTest {
   }
 }
 ```
-#### Rule 325: "indexOf" checks should use a start position
+### Rule 325: "indexOf" checks should use a start position
 ##### Quality Category: Code Smell
 One thing that makes good code good is the clarity with which it conveys the intent of the original programmer to maintainers, and the proper choice of indexOf methods can help move code from confusing to clear.
 
@@ -12078,7 +12078,7 @@ if (name.indexOf("ae", 2) > -1) {
   // ...
 }
 ```
-#### Rule 326: Nested "enum"s should not be declared static
+### Rule 326: Nested "enum"s should not be declared static
 ##### Quality Category: Code Smell
 According to the docs:
 
@@ -12108,7 +12108,7 @@ public class Flower {
   // ...
 }
 ```
-#### Rule 327: "catch" clauses should do more than rethrow
+### Rule 327: "catch" clauses should do more than rethrow
 ##### Quality Category: Code Smell
 A catch clause that only rethrows the caught exception has the same effect as omitting the catch altogether and letting it bubble up automatically, but with more code and the additional detriment of leaving maintainers scratching their heads.
 
@@ -12165,7 +12165,7 @@ public String readFile(File f) throws IOException {
   return sb.toString();
 }
 ```
-#### Rule 328: The diamond operator ("<>") should be used
+### Rule 328: The diamond operator ("<>") should be used
 ##### Quality Category: Code Smell
 Java 7 introduced the diamond operator (<>) to reduce the verbosity of generics code. For instance, instead of having to declare a List's type in both its declaration and its constructor, you can now simplify the constructor declaration with <>, and the compiler will infer the type.
 
@@ -12183,7 +12183,7 @@ Map<String,List<Integer>> map = new HashMap<String,List<Integer>>();  // Noncomp
 List<String> strings = new ArrayList<>();
 Map<String,List<Integer>> map = new HashMap<>();
 ```
-#### Rule 329: "finalize" should not set fields to "null"
+### Rule 329: "finalize" should not set fields to "null"
 ##### Quality Category: Code Smell
 There is no point in setting class fields to null in a finalizer. If this this is a hint to the garbage collector, it is unnecessary - the object will be garbage collected anyway - and doing so may actually cause extra work for the garbage collector.
 
@@ -12196,7 +12196,7 @@ public class Foo {
   void finalize() {
     name = null;  // Noncompliant; completely unnecessary
 ```
-#### Rule 330: Subclasses that add fields should override "equals"
+### Rule 330: Subclasses that add fields should override "equals"
 ##### Quality Category: Code Smell
 Extend a class that overrides equals and add fields without overriding equals in the subclass, and you run the risk of non-equivalent instances of your subclass being seen as equal, because only the superclass fields will be considered in the equality test.
 
@@ -12266,7 +12266,7 @@ public class Raspberry extends Fruit {
   }
 }
 ```
-#### Rule 331: Catches should be combined
+### Rule 331: Catches should be combined
 ##### Quality Category: Code Smell
 Since Java 7 it has been possible to catch multiple exceptions at once. Therefore, when multiple catch blocks have the same code, they should be combined for better readability.
 
@@ -12300,7 +12300,7 @@ catch (TimeoutException e) {
   throw e;
 }
 ```
-#### Rule 332: Methods of "Random" that return floating point values should not be used in random integer generation
+### Rule 332: Methods of "Random" that return floating point values should not be used in random integer generation
 ##### Quality Category: Code Smell
 There is no need to multiply the output of Random's nextDouble method to get a random integer. Use the nextInt method instead.
 
@@ -12319,7 +12319,7 @@ int rand2 = (int)r.nextFloat(); // Noncompliant; will always be 0;
 Random r = new Random();
 int rand = r.nextInt(50);  // returns pseudo-random value between 0 and 50
 ```
-#### Rule 333: Parsing should be used to convert "Strings" to primitives
+### Rule 333: Parsing should be used to convert "Strings" to primitives
 ##### Quality Category: Code Smell
 Rather than creating a boxed primitive from a String to extract the primitive value, use the relevant parse method instead. It will be clearer and more efficient.
 
@@ -12337,7 +12337,7 @@ String myNum = "12.2";
 
 float f = Float.parseFloat(myNum);
 ```
-#### Rule 334: Classes should not be empty
+### Rule 334: Classes should not be empty
 ##### Quality Category: Code Smell
 There is no good excuse for an empty class. If it's being used simply as a common extension point, it should be replaced with an interface. If it was stubbed in as a placeholder for future development it should be fleshed-out. In any other case, it should be eliminated.
 
@@ -12366,8 +12366,8 @@ public final class ApplicationConfiguration {
 
 }
 
-```
-#### Rule 335: Fields in non-serializable classes should not be "transient"
+``````
+### Rule 335: Fields in non-serializable classes should not be "transient"
 ##### Quality Category: Code Smell
 transient is used to mark fields in a Serializable class which will not be written out to file (or stream). In a class that does not implement Serializable, this modifier is simply wasted keystrokes, and should be removed.
 
@@ -12387,7 +12387,7 @@ class Vegetable {
   // ...
 }
 ```
-#### Rule 336: Boolean checks should not be inverted
+### Rule 336: Boolean checks should not be inverted
 ##### Quality Category: Code Smell
 It is needlessly complex to invert the result of a boolean comparison. The opposite comparison should be made instead.
 
@@ -12403,7 +12403,7 @@ boolean b = !(i < 10);  // Noncompliant
 if (a != 2) { ...}
 boolean b = (i >= 10);
 ```
-#### Rule 337: Redundant casts should not be used
+### Rule 337: Redundant casts should not be used
 ##### Quality Category: Code Smell
 Unnecessary casting expressions make the code harder to read and understand.
 
@@ -12454,8 +12454,8 @@ class C {
 
 }
 
-```
-#### Rule 338: "@Deprecated" code should not be used
+``````
+### Rule 338: "@Deprecated" code should not be used
 ##### Quality Category: Code Smell
 Once deprecated, classes, and interfaces, and their members should be avoided, rather than used, inherited or extended. Deprecation is a warning that the class or interface has been superseded, and will eventually be removed. The deprecation period allows you to make a smooth transition away from the aging, soon-to-be-retired technology.
 
@@ -12490,11 +12490,11 @@ public class Bar extends Fum {  // Noncompliant; Fum is deprecated
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-477 - Use of Obsolete Functions
 CERT, MET02-J. - Do not use deprecated or obsolete classes or methods
-#### Rule 339: "toString()" should never be called on a String object
+### Rule 339: "toString()" should never be called on a String object
 ##### Quality Category: Code Smell
 Invoking a method designed to return a string representation of an object which is already a string is a waste of keystrokes. This redundant construction may be optimized by the compiler, but will be confusing in the meantime.
 
@@ -12510,7 +12510,7 @@ System.out.println(message.toString()); // Noncompliant;
 String message = "hello world";
 System.out.println(message);
 ```
-#### Rule 340: Annotation repetitions should not be wrapped
+### Rule 340: Annotation repetitions should not be wrapped
 ##### Quality Category: Code Smell
 Before Java 8 if you needed to use multiple instances of the same annotation, they had to be wrapped in a container annotation. With Java 8, that's no longer necessary, allowing for cleaner, more readable code.
 
@@ -12538,7 +12538,7 @@ public class SomeClass {
   ...
 }
 ```
-#### Rule 341: Multiple variables should not be declared on the same line
+### Rule 341: Multiple variables should not be declared on the same line
 ##### Quality Category: Code Smell
 Declaring multiple variables on one line is difficult to read.
 
@@ -12569,12 +12569,12 @@ class MyClass {
 }
 
 ```
-*See*
+**See**
 
  MISRA C++:2008, 8-0-1 - An init-declarator-list or a member-declarator-list shall consist of a single init-declarator or member-declarator respectively
 CERT, DCL52-J. - Do not declare more than one variable per declaration
 CERT, DCL04-C. - Do not declare more than one variable per declaration
-#### Rule 342: Strings should not be concatenated using '+' in a loop
+### Rule 342: Strings should not be concatenated using '+' in a loop
 ##### Quality Category: Code Smell
 Strings are immutable objects, so concatenation doesn't simply add the new String to the end of the existing string. Instead, in each loop iteration, the first String is converted to an intermediate object type, the second string is appended, and then the intermediate object is converted back to a String. Further, performance of these intermediate operations degrades as the String gets longer. Therefore, the use of StringBuilder is preferred.
 
@@ -12595,7 +12595,7 @@ StringBuilder bld = new StringBuilder();
   }
   String str = bld.toString();
 ```
-#### Rule 343: Maps with keys that are enum values should be replaced with EnumMap
+### Rule 343: Maps with keys that are enum values should be replaced with EnumMap
 ##### Quality Category: Code Smell
 When all the keys of a Map are values from the same enum, the Map can be replaced with an EnumMap, which can be much more efficient than other sets because the underlying data structure is a simple array.
 
@@ -12627,7 +12627,7 @@ public class MyClass {
   }
 }
 ```
-#### Rule 344: Lambdas should be replaced with method references
+### Rule 344: Lambdas should be replaced with method references
 ##### Quality Category: Code Smell
 Method/constructor references are more compact and readable than using lambdas, and are therefore preferred. Similarly, null checks can be replaced with references to the Objects::isNull and Objects::nonNull methods.
 
@@ -12663,7 +12663,7 @@ class A {
   }
 }
 ```
-#### Rule 345: Parentheses should be removed from a single lambda input parameter when its type is inferred
+### Rule 345: Parentheses should be removed from a single lambda input parameter when its type is inferred
 ##### Quality Category: Code Smell
 There are two possible syntaxes for a lambda having only one input parameter with an inferred type: with and without parentheses around that single parameter. The simpler syntax, without parentheses, is more compact and readable than the one with parentheses, and is therefore preferred.
 
@@ -12679,7 +12679,7 @@ Note that this rule is automatically disabled when the project's sonar.java.sour
 ```java
 x -> x * 2
 ```
-#### Rule 346: Abstract classes without fields should be converted to interfaces
+### Rule 346: Abstract classes without fields should be converted to interfaces
 ##### Quality Category: Code Smell
 With Java 8's "default method" feature, any abstract class without direct or inherited field should be converted into an interface. However, this change may not be appropriate in libraries or other applications where the class is intended to be used as an API.
 
@@ -12707,7 +12707,7 @@ public interface Car {
   }
 }
 ```
-#### Rule 347: Lamdbas containing only one statement should not nest this statement in a block
+### Rule 347: Lamdbas containing only one statement should not nest this statement in a block
 ##### Quality Category: Code Smell
 There are two ways to write lambdas that contain single statement, but one is definitely more compact and readable than the other.
 
@@ -12725,7 +12725,7 @@ x -> {System.out.println(x+1);}
 x -> System.out.println(x+1)
 (a, b) -> a+b    //For return statement, the return keyword should also be dropped
 ```
-#### Rule 348: "Collections.EMPTY_LIST", "EMPTY_MAP", and "EMPTY_SET" should not be used
+### Rule 348: "Collections.EMPTY_LIST", "EMPTY_MAP", and "EMPTY_SET" should not be used
 ##### Quality Category: Code Smell
 Since the introduction of generics in Java 5, the use of generic types such as List<String> is recommended over the use of raw ones such as List. Assigning a raw type to a generic one is not type safe, and will generate a warning. The old EMPTY_... fields of the Collections class return raw types, whereas the newer empty...() methods return generic ones.
 
@@ -12743,7 +12743,7 @@ List<String> collection1 = Collections.emptyList();
 Map<String, String> collection2 = Collections.emptyMap();
 Set<String> collection3 = Collections.emptySet();
 ```
-#### Rule 349: Local variables should not be declared and then immediately returned or thrown
+### Rule 349: Local variables should not be declared and then immediately returned or thrown
 ##### Quality Category: Code Smell
 Declaring a variable only to immediately return or throw it is a bad practice.
 
@@ -12773,7 +12773,7 @@ public void doSomething() {
   throw new RuntimeException();
 }
 ```
-#### Rule 350: Unused local variables should be removed
+### Rule 350: Unused local variables should be removed
 ##### Quality Category: Code Smell
 If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will not wonder what the variable is used for.
 
@@ -12792,7 +12792,7 @@ public int numberOfMinutes(int hours) {
   return hours * 60;
 }
 ```
-#### Rule 351: Private fields only used as local variables in methods should become local variables
+### Rule 351: Private fields only used as local variables in methods should become local variables
 ##### Quality Category: Code Smell
 When the value of a private field is always assigned to in a class' methods before being read, then it is not being used to store class information. Therefore, it should become a local variable in the relevant methods to prevent any misunderstanding.
 
@@ -12843,8 +12843,8 @@ public class Foo {
 ```java
 
 This rule doesn't raise any issue on annotated field.
-```
-#### Rule 352: Loops should not contain more than a single "break" or "continue" statement
+``````
+### Rule 352: Loops should not contain more than a single "break" or "continue" statement
 ##### Quality Category: Code Smell
 Restricting the number of break and continue statements in a loop is done in the interest of good structured programming.
 
@@ -12864,7 +12864,7 @@ for (int i = 1; i <= 10; i++) {     // Noncompliant - 2 continue - one might be 
   System.out.println("i = " + i);
 }
 ```
-#### Rule 353: Declarations should use Java collection interfaces such as "List" rather than specific implementation classes such as "LinkedList"
+### Rule 353: Declarations should use Java collection interfaces such as "List" rather than specific implementation classes such as "LinkedList"
 ##### Quality Category: Code Smell
 The purpose of the Java Collections API is to provide a well defined hierarchy of interfaces in order to hide implementation details.
 
@@ -12897,7 +12897,7 @@ public class Employees {
   }
 }
 ```
-#### Rule 354: "switch" statements should have at least 3 "case" clauses
+### Rule 354: "switch" statements should have at least 3 "case" clauses
 ##### Quality Category: Code Smell
 switch statements are useful when there are many different cases depending on the value of the same expression.
 
@@ -12925,12 +12925,12 @@ if (variable == 0) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 15.5 - Every switch statement shall have at least one case clause.
  MISRA C++:2008, 6-4-8 - Every switch statement shall have at least one case-clause.
  MISRA C:2012, 16.6 - Every switch statement shall have at least two switch-clauses
-#### Rule 355: A "while" loop should be used instead of a "for" loop
+### Rule 355: A "while" loop should be used instead of a "for" loop
 ##### Quality Category: Code Smell
 When only the condition expression is defined in a for loop, and the initialization and increment expressions are missing, a while loop should be used instead to increase readability.
 
@@ -12944,7 +12944,7 @@ for (;condition;) { /*...*/ }
 ```java
 while (condition) { /*...*/ }
 ```
-#### Rule 356: The default unnamed package should not be used
+### Rule 356: The default unnamed package should not be used
 ##### Quality Category: Code Smell
 According to the Java Language Specification:
 
@@ -12964,7 +12964,7 @@ package org.example;
 
 public class MyClass{ /* ... */ }
 ```
-#### Rule 357: "equals(Object obj)" should be overridden along with the "compareTo(T obj)" method
+### Rule 357: "equals(Object obj)" should be overridden along with the "compareTo(T obj)" method
 ##### Quality Category: Code Smell
 According to the Java Comparable.compareTo(T o) documentation:
 
@@ -12997,7 +12997,7 @@ public class Foo implements Comparable<Foo> {
   public boolean equals(Object obj) { /* ... */ }
 }
 ```
-#### Rule 358: Package names should comply with a naming convention
+### Rule 358: Package names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all package names match a provided regular expression.
 
@@ -13014,7 +13014,7 @@ package org.exAmple; // Noncompliant
 ```java
 package org.example;
 ```
-#### Rule 359: Nested code blocks should not be used
+### Rule 359: Nested code blocks should not be used
 ##### Quality Category: Code Smell
 Nested code blocks can be used to create a new scope and restrict the visibility of the variables defined inside it. Using this feature in a method typically indicates that the method has too many responsibilities, and should be refactored into smaller methods.
 
@@ -13055,7 +13055,7 @@ private void evaluateAdd() {
   stack.push(result);
 }
 ```
-#### Rule 360: Array designators "[]" should be on the type, not the variable
+### Rule 360: Array designators "[]" should be on the type, not the variable
 ##### Quality Category: Code Smell
 Array designators should always be located on the type for better code readability. Otherwise, developers must look both at the type and the variable name to know whether or not a variable is an array.
 
@@ -13070,7 +13070,7 @@ int[] matrix[];   // Noncompliant
 ```java
 int[][] matrix;   // Compliant
 ```
-#### Rule 361: Array designators "[]" should be located after the type in method signatures
+### Rule 361: Array designators "[]" should be located after the type in method signatures
 ##### Quality Category: Code Smell
 According to the Java Language Specification:
 
@@ -13094,7 +13094,7 @@ public int[] getVector() { /* ... */ }
 
 public int[][] getMatrix() { /* ... */ }
 ```
-#### Rule 362: Type parameter names should comply with a naming convention
+### Rule 362: Type parameter names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions make it possible for a team to collaborate efficiently. Following the established convention of single-letter type parameter names helps users and maintainers of your code quickly see the difference between a type parameter and a poorly named class.
 
@@ -13116,7 +13116,7 @@ public class MyClass<T> {
   }
 }
 ```
-#### Rule 363: Overriding methods should do more than simply call the same method in the super class
+### Rule 363: Overriding methods should do more than simply call the same method in the super class
 ##### Quality Category: Code Smell
 Overriding a method just to call the same method from the super class without performing any other actions is useless and misleading. The only time this is justified is in final overriding methods, where the effect is to lock in the parent class behavior. This rule ignores such overrides of equals, hashCode and toString.
 
@@ -13146,7 +13146,7 @@ public int getId() {                            // Compliant - there is annotati
   return super.getId();
 }
 ```
-#### Rule 364: Classes that override "clone" should be "Cloneable" and call "super.clone()"
+### Rule 364: Classes that override "clone" should be "Cloneable" and call "super.clone()"
 ##### Quality Category: Code Smell
 Cloneable is the marker Interface that indicates that clone() may be called on an object. Overriding clone() without implementing Cloneable can be useful if you want to control how subclasses clone themselves, but otherwise, it's probably a mistake.
 
@@ -13212,11 +13212,11 @@ class Application {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-580 - clone() Method Without super.clone()
 CERT, MET53-J. - Ensure that the clone() method calls super.clone()
-#### Rule 365: Public constants and fields initialized at declaration should be "static final" rather than merely "final"
+### Rule 365: Public constants and fields initialized at declaration should be "static final" rather than merely "final"
 ##### Quality Category: Code Smell
 Making a public constant just final as opposed to static final leads to duplicating its value for every instance of the class, uselessly increasing the amount of memory required to execute the application.
 
@@ -13244,8 +13244,8 @@ public class Myclass {
 No issues are reported on final fields of inner classes whose type is not a primitive or a String. Indeed according to the Java specification:
 
 An inner class is a nested class that is not explicitly or implicitly declared static. Inner classes may not declare static initializers (§8.7) or member interfaces. Inner classes may not declare static members, unless they are compile-time constant fields (§15.28).
-```
-#### Rule 366: Local variable and method parameter names should comply with a naming convention
+``````
+### Rule 366: Local variable and method parameter names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a local variable or function parameter name does not match the provided regular expression.
 
@@ -13287,8 +13287,8 @@ try {
 } catch (Exception e) { // Compliant
 }
 
-```
-#### Rule 367: Exception classes should be immutable
+``````
+### Rule 367: Exception classes should be immutable
 ##### Quality Category: Code Smell
 
 ```
@@ -13341,8 +13341,8 @@ public class MyException extends Exception {
 
 }
 
-```
-#### Rule 368: Field names should comply with a naming convention
+``````
+### Rule 368: Field names should comply with a naming convention
 ##### Quality Category: Code Smell
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that field names match a provided regular expression.
 
@@ -13363,7 +13363,7 @@ class MyClass {
    private int myField;
 }
 ```
-#### Rule 369: Primitive wrappers should not be instantiated only for "toString" or "compareTo" calls
+### Rule 369: Primitive wrappers should not be instantiated only for "toString" or "compareTo" calls
 ##### Quality Category: Code Smell
 Creating temporary primitive wrapper objects only for String conversion or the use of the compareTo method is inefficient.
 
@@ -13379,7 +13379,7 @@ new Integer(myInteger).toString();  // Noncompliant
 ```java
 Integer.toString(myInteger);        // Compliant
 ```
-#### Rule 370: Case insensitive string comparisons should be made without intermediate upper or lower casing
+### Rule 370: Case insensitive string comparisons should be made without intermediate upper or lower casing
 ##### Quality Category: Code Smell
 Using toLowerCase() or toUpperCase() to make case insensitive comparisons is inefficient because it requires the creation of temporary, intermediate String objects.
 
@@ -13395,7 +13395,7 @@ boolean result3 = foo.toLowerCase().equals(bar.LowerCase()); // Noncompliant
 ```java
 boolean result = foo.equalsIgnoreCase(bar);                  // Compliant
 ```
-#### Rule 371: Collection.isEmpty() should be used to test for emptiness
+### Rule 371: Collection.isEmpty() should be used to test for emptiness
 ##### Quality Category: Code Smell
 Using Collection.size() to test for emptiness works, but using Collection.isEmpty() makes the code more readable and can be more performant. The time complexity of any isEmpty() method implementation should be O(1) whereas some implementations of size() can be O(n).
 
@@ -13413,7 +13413,7 @@ if (myCollection.isEmpty()) {
   /* ... */
 }
 ```
-#### Rule 372: String.valueOf() should not be appended to a String
+### Rule 372: String.valueOf() should not be appended to a String
 ##### Quality Category: Code Smell
 Appending String.valueOf() to a String decreases the code readability.
 
@@ -13433,7 +13433,7 @@ public void display(int i){
   System.out.println("Output is " + i);                    // Compliant
 }
 ```
-#### Rule 373: Interface names should comply with a naming convention
+### Rule 373: Interface names should comply with a naming convention
 ##### Quality Category: Code Smell
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all interface names match a provided regular expression.
 
@@ -13450,7 +13450,7 @@ public interface myInterface {...} // Noncompliant
 ```java
 public interface MyInterface {...}
 ```
-#### Rule 374: Return of boolean expressions should not be wrapped into an "if-then-else" statement
+### Rule 374: Return of boolean expressions should not be wrapped into an "if-then-else" statement
 ##### Quality Category: Code Smell
 Return of boolean literal statements wrapped into if-then-else ones should be simplified.
 
@@ -13482,7 +13482,7 @@ boolean foo(Object param) {
   return expression;
 }
 ```
-#### Rule 375: Boolean literals should not be redundant
+### Rule 375: Boolean literals should not be redundant
 ##### Quality Category: Code Smell
 Redundant Boolean literals should be removed from expressions to improve readability.
 
@@ -13516,7 +13516,7 @@ booleanVariable = !booleanMethod() && exp;
 booleanVariable = !booleanMethod() || exp;
 booleanVariable = booleanMethod() && exp;
 ```
-#### Rule 376: Empty statements should be removed
+### Rule 376: Empty statements should be removed
 ##### Quality Category: Code Smell
 Empty statements, i.e. ;, are usually introduced by mistake, for example because:
 
@@ -13547,14 +13547,14 @@ void doSomethingElse() {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 14.3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character.
  MISRA C++:2008, 6-2-3 - Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment, provided that the first character following the null statement is a white-space character.
 CERT, MSC12-C. - Detect and remove code that has no effect or is never executed
 CERT, MSC51-J. - Do not place a semicolon immediately following an if, for, or while condition
 CERT, EXP15-C. - Do not place a semicolon on the same line as an if, for, or while statement
-#### Rule 377: URIs should not be hardcoded
+### Rule 377: URIs should not be hardcoded
 ##### Quality Category: Code Smell
 Hard coding a URI makes it difficult to test a program: path literals are not always portable across operating systems, a given absolute path may not exist on a specific test environment, a specified Internet URL may not be available when executing the tests, production environment filesystems usually differ from the development environment, ...etc. For all those reasons, a URI should never be hard coded. Instead, it should be replaced by customizable parameter.
 
@@ -13593,10 +13593,10 @@ public class Foo {
 }
 
 ```
-*See*
+**See**
 
 CERT, MSC03-J. - Never hard code sensitive information
-#### Rule 378: Class names should comply with a naming convention
+### Rule 378: Class names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate effectively. This rule allows to check that all class names match a provided regular expression.
 
@@ -13613,7 +13613,7 @@ class my_class {...}
 ```java
 class MyClass {...}
 ```
-#### Rule 379: Method names should comply with a naming convention
+### Rule 379: Method names should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate efficiently. This rule checks that all method names match a provided regular expression.
 
@@ -13640,8 +13640,8 @@ Overriding methods are excluded.
 @Override
 public int Do_Something(){...}
 
-```
-#### Rule 380: Track uses of "TODO" tags
+``````
+### Rule 380: Track uses of "TODO" tags
 ##### Quality Category: Code Smell
 TODO tags are commonly used to mark places where some more code is required, but which the developer wants to implement later.
 
@@ -13656,10 +13656,10 @@ void doSomething() {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-546 - Suspicious Comment
-#### Rule 381: Deprecated code should be removed
+### Rule 381: Deprecated code should be removed
 ##### Quality Category: Code Smell
 This rule is meant to be used as a way to track code which is marked as being deprecated. Deprecated code should eventually be removed.
 
@@ -13680,7 +13680,7 @@ class Foo {
   }
 }
 ```
-#### Rule 382: Security constraints should be defined
+### Rule 382: Security constraints should be defined
 ##### Quality Category: Vulnerability
 Websphere, Tomcat, and JBoss web servers allow the definition of role-based access to servlets. It may not be granular enough for your purposes, but it's a start, and should be used at least as a base.
 
@@ -13689,13 +13689,13 @@ This rule raises an issue when a web.xml file has no <security-constraint> eleme
 See
 MITRE, CWE-284 - Improper Access Control
  OWASP Top 10 2017 Category A5 - Broken Access Control
-#### Rule 383: Custom resources should be closed
+### Rule 383: Custom resources should be closed
 ##### Quality Category: Bug
 Leaking resources in an application is never a good idea, as it can lead to memory issues, and even the crash of the application. This rule template allows you to specify which constructions open a resource and how it is closed in order to raise issue within a method scope when custom resources are leaked.
 
 See also
  {rule:squid:S2095} - Resources should be closed
-#### Rule 384: EJB interceptor exclusions should be declared as annotations
+### Rule 384: EJB interceptor exclusions should be declared as annotations
 ##### Quality Category: Code Smell
 Exclusions for default interceptors can be declared either in xml or as class annotations. Since annotations are more visible to maintainers, they are preferred.
 
@@ -13727,7 +13727,7 @@ public class MyExcludedClass implements MessageListener
     // ...
   }
 ```
-#### Rule 385: Threads should not be started in constructors
+### Rule 385: Threads should not be started in constructors
 ##### Quality Category: Code Smell
 The problem with invoking Thread.start() in a constructor is that you'll have a confusing mess on your hands if the class is ever extended because the superclass' constructor will start the thread before the child class has truly been initialized.
 
@@ -13746,10 +13746,10 @@ public class MyClass {
 }
 
 ```
-*See*
+**See**
 
 CERT, TSM02-J. - Do not use background threads during class initialization
-#### Rule 386: "main" should not "throw" anything
+### Rule 386: "main" should not "throw" anything
 ##### Quality Category: Code Smell
 There's no reason for a main method to throw anything. After all, what's going to catch it?
 
@@ -13773,7 +13773,7 @@ public static void main(String args[]) {
   }
 }
 ```
-#### Rule 387: Track lack of copyright and license headers
+### Rule 387: Track lack of copyright and license headers
 ##### Quality Category: Code Smell
 Each source file should start with a header stating file ownership and the license which must be used to distribute the application.
 
@@ -13800,7 +13800,7 @@ Compliant Solution
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#### Rule 388: Octal values should not be used
+### Rule 388: Octal values should not be used
 ##### Quality Category: Code Smell
 Integer literals starting with a zero are octal rather than decimal values. While using octal values is fully supported, most developers do not have experience with them. They may not recognize octal values as such, mistaking them instead for decimal values.
 
@@ -13815,14 +13815,14 @@ int myNumber = 010;   // Noncompliant. myNumber will hold 8, not 10 - was this r
 int myNumber = 8;
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 7.1 - Octal constants (other than zero) and octal escape sequences shall not be used.
  MISRA C++:2008, 2-13-2 - Octal constants (other than zero) and octal escape sequences (other than "\0") shall not be used
  MISRA C:2012, 7.1 - Octal constants shall not be used
 CERT, DCL18-C. - Do not begin integer constants with 0 when specifying a decimal value
 CERT, DCL50-J. - Use visually distinct identifiers
-#### Rule 389: Exit methods should not be called
+### Rule 389: Exit methods should not be called
 ##### Quality Category: Code Smell
 Calling System.exit(int status) or Rutime.getRuntime().exit(int status) calls the shutdown hooks and shuts downs the entire Java virtual machine. Calling Runtime.getRuntime().halt(int) does an immediate shutdown, without calling the shutdown hooks, and skipping finalization.
 
@@ -13842,12 +13842,12 @@ Runtime.getRuntime().halt(0);
 These methods are ignored inside main.
 
 ```
-*See*
+**See**
 
 MITRE, CWE-382 - Use of System.exit()
 CERT, ERR09-J. - Do not allow untrusted code to terminate the JVM
-
-#### Rule 390: Members of Spring components should be injected
+```
+### Rule 390: Members of Spring components should be injected
 ##### Quality Category: Vulnerability
 Spring @Controller, @Service, and @Repository classes are singletons by default, meaning only one instance of the class is ever instantiated in the application. Typically such a class might have a few static members, such as a logger, but all non-static members should be managed by Spring. That is, they should have one of these annotations: @Resource, @Inject, @Autowired or @Value.
 
@@ -13878,10 +13878,10 @@ public class HelloWorld {
 }
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A3 - Sensitive Data Exposure
-#### Rule 391: Cypher Block Chaining IV's should be random and unique
+### Rule 391: Cypher Block Chaining IV's should be random and unique
 ##### Quality Category: Vulnerability
 In encryption, when Cipher Block Chaining (CBC) is used, the Initialization Vector (IV) must be random and unpredictable. Otherwise, the encrypted value is vulnerable to crypto-analysis attacks such as the "Chosen-Plaintext Attack".
 
@@ -13944,12 +13944,12 @@ public class MyCbcClass {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-330 - Use of Insufficiently Random Values
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
  Derived from FindSecBugs rule STATIC_IV
-#### Rule 392: Classes should not be loaded dynamically
+### Rule 392: Classes should not be loaded dynamically
 ##### Quality Category: Vulnerability
 Dynamically loaded classes could contain malicious code executed by a static class initializer. I.E. you wouldn't even have to instantiate or explicitly invoke methods on such classes to be vulnerable to an attack.
 
@@ -13961,10 +13961,10 @@ String className = System.getProperty("messageClassName");
 Class clazz = Class.forName(className);  // Noncompliant
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A1 - Injection
-#### Rule 393: HTTP referers should not be relied on
+### Rule 393: HTTP referers should not be relied on
 ##### Quality Category: Vulnerability
 The fields in an HTTP request are putty in the hands of an attacker, and you cannot rely on them to tell you the truth about anything. While it may be safe to store such values after they have been neutralized, decisions should never be made based on their contents.
 
@@ -13984,13 +13984,13 @@ public class MyServlet extends HttpServlet {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-807 - Reliance on Untrusted Inputs in a Security Decision
 MITRE, CWE-293 - Using Referer Field for Authentication
  OWASP Top 10 2017 Category A2 - Broken Authentication
 SANS Top 25 - Porous Defenses
-#### Rule 394: SHA-1 and Message-Digest hash algorithms should not be used in secure contexts
+### Rule 394: SHA-1 and Message-Digest hash algorithms should not be used in secure contexts
 ##### Quality Category: Vulnerability
 The MD5 algorithm and its successor, SHA-1, are no longer considered secure, because it is too easy to create hash collisions with them. That is, it takes too little computational effort to come up with a different input that produces the same MD5 or SHA-1 hash, and using the new, same-hash value gives an attacker the same access as if he had the originally-hashed value. This applies as well to the other Message-Digest algorithms: MD2, MD4, MD6, HAVAL-128, HMAC-MD5, DSA (which uses SHA-1), RIPEMD, RIPEMD-128, RIPEMD-160, HMACRIPEMD160.
 
@@ -14043,14 +14043,14 @@ MessageDigest md = MessageDigest.getInstance("SHA1");  // Noncompliant
 MessageDigest md = MessageDigest.getInstance("SHA-256");
 
 ```
-*See*
+**See**
 
 MITRE, CWE-328 - Reversible One-Way Hash
 MITRE, CWE-327 - Use of a Broken or Risky Cryptographic Algorithm
  OWASP Top 10 2017 Category A6 - Security Misconfiguration
 SANS Top 25 - Porous Defenses
 SHAttered - The first concrete collision attack against SHA-1.
-#### Rule 395: "super.finalize()" should be called at the end of "Object.finalize()" implementations
+### Rule 395: "super.finalize()" should be called at the end of "Object.finalize()" implementations
 ##### Quality Category: Bug
 Overriding the Object.finalize() method must be done with caution to dispose some system resources.
 
@@ -14077,11 +14077,11 @@ protected void finalize() {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-568 - finalize() Method Without super.finalize()
 CERT, MET12-J. - Do not use finalizers
-#### Rule 396: Equality operators should not be used in "for" loop termination conditions
+### Rule 396: Equality operators should not be used in "for" loop termination conditions
 ##### Quality Category: Code Smell
 Testing for loop termination using an equality operator (== and !=) is dangerous, because it could set up an infinite loop. Using a broader relational operator instead casts a wider net, and makes it harder (but not impossible) to accidentally write an infinite loop.
 
@@ -14122,13 +14122,13 @@ for (int i = 0; (item = arr[i]) != null; i++) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C++:2008, 6-5-2
 MITRE, CWE-835 - Loop with Unreachable Exit Condition ('Infinite Loop')
 CERT, MSC21-C. - Use robust loop termination conditions
-
-#### Rule 397: Spring beans should be considered by "@ComponentScan"
+```
+### Rule 397: Spring beans should be considered by "@ComponentScan"
 ##### Quality Category: Code Smell
 Spring beans belonging to packages that are not included in a @ComponentScan configuration will not be accessible in the Spring Application Context. Therefore, it's likely to be a configuration mistake that will be detected by this rule. Note: the @ComponentScan is implicit in the @SpringBootApplication annotation, case in which Spring Boot will auto scan for components in the package containing the Spring Boot main class and its sub-packages.
 
@@ -14164,7 +14164,7 @@ public class MyController { // Compliant; "com.mycompany.app.web" is referenced 
 ...
 }
 ```
-#### Rule 398: Number patterns should be regular
+### Rule 398: Number patterns should be regular
 ##### Quality Category: Code Smell
 The use of punctuation characters to separate subgroups in a number can make the number more readable. For instance consider 1,000,000,000 versus 1000000000. But when the grouping is irregular, such as 1,000,00,000; it indicates an error.
 
@@ -14177,7 +14177,7 @@ int million = 1_000_00_000;  // Noncompliant
 int thousand = 1000;
 int tenThousand = 100_00;  // Noncompliant
 ```
-#### Rule 399: Literal boolean values should not be used in assertions
+### Rule 399: Literal boolean values should not be used in assertions
 ##### Quality Category: Code Smell
 There's no reason to use literal boolean values in assertions. Doing so is at best confusing for maintainers, and at worst a bug.
 
@@ -14186,7 +14186,7 @@ There's no reason to use literal boolean values in assertions. Doing so is at be
 Assert.assertTrue(true);  // Noncompliant
 assertThat(true).isTrue(); // Noncompliant
 ```
-#### Rule 400: Lazy initialization of "static" fields should be "synchronized"
+### Rule 400: Lazy initialization of "static" fields should be "synchronized"
 ##### Quality Category: Code Smell
 In a multi-threaded situation, un-synchronized lazy initialization of static fields could mean that a second thread has access to a half-initialized object while the first thread is still creating it. Allowing such access could cause serious bugs. Instead. the initialization block should be synchronized.
 
@@ -14226,7 +14226,7 @@ private static synchronized Properties getPreferences() {
     }
 }
 ```
-#### Rule 401: Wildcard imports should not be used
+### Rule 401: Wildcard imports should not be used
 ##### Quality Category: Code Smell
 Blindly importing all the classes in a package clutters the class namespace and could lead to conflicts between classes in different packages with the same name. On the other hand, specifically listing the necessary classes avoids that problem and makes clear which versions were wanted.
 
@@ -14256,8 +14256,8 @@ Static imports are ignored by this rule. E.G.
 
 import static java.lang.Math.*;
 
-```
-#### Rule 402: Modulus results should not be checked for direct equality
+``````
+### Rule 402: Modulus results should not be checked for direct equality
 ##### Quality Category: Code Smell
 When the modulus of a negative number is calculated, the result will either be negative or zero. Thus, comparing the modulus of a variable for equality with a positive number (or a negative one) could result in unexpected results.
 
@@ -14276,11 +14276,11 @@ public boolean isOdd(int x) {
 }
 
 ```
-*See*
+**See**
 
 CERT, NUM51-J. - Do not assume that the remainder operator always returns a nonnegative result for integral operands
 CERT, INT10-C - Do not assume a positive remainder when using the % operator
-#### Rule 403: Comparators should be "Serializable"
+### Rule 403: Comparators should be "Serializable"
 ##### Quality Category: Code Smell
 A non-serializable Comparator can prevent an otherwise-Serializable ordered collection from being serializable. Since the overhead to make a Comparator serializable is usually low, doing so can be considered good defensive programming.
 
@@ -14302,7 +14302,7 @@ public class FruitComparator implements Comparator<Fruit>, Serializable {
   boolean equals(Object obj) {...}
 }
 ```
-#### Rule 404: "Serializable" classes should have a "serialVersionUID"
+### Rule 404: "Serializable" classes should have a "serialVersionUID"
 ##### Quality Category: Code Smell
 A serialVersionUID field is strongly recommended in all Serializable classes. If you do not provide one, one will be calculated for you by the compiler. The danger in not explicitly choosing the value is that when the class changes, the compiler will generate an entirely new id, and you will be suddenly unable to deserialize (read from file) objects that were serialized with the previous version of the class.
 
@@ -14348,11 +14348,11 @@ Swing and AWT classes, abstract classes, Throwable and its subclasses (
 ```java and Errors), and classes marked with @SuppressWarnings("serial") are ignored.
 
 ```
-*See*
+**See**
 
 CERT, SER00-J. - Enable serialization compatibility during class evolution
-
-#### Rule 405: "switch" statements should not be nested
+```
+### Rule 405: "switch" statements should not be nested
 ##### Quality Category: Code Smell
 Nested switch structures are difficult to understand because you can easily confuse the cases of an inner switch as belonging to an outer statement. Therefore nested switch statements should be avoided.
 
@@ -14394,7 +14394,7 @@ void bar(int m){
   }
 }
 ```
-#### Rule 406: Constructors should only call non-overridable methods
+### Rule 406: Constructors should only call non-overridable methods
 ##### Quality Category: Code Smell
 Calling an overridable method from a constructor could result in failures or strange behaviors when instantiating a subclass which overrides the method.
 
@@ -14432,11 +14432,11 @@ public class Child extends Parent {
 }
 
 ```
-*See*
+**See**
 
 CERT, MET05-J. - Ensure that constructors do not call overridable methods
 CERT, OOP50-CPP. - Do not invoke virtual functions from constructors or destructors
-#### Rule 407: @FunctionalInterface annotation should be used to flag Single Abstract Method interfaces
+### Rule 407: @FunctionalInterface annotation should be used to flag Single Abstract Method interfaces
 ##### Quality Category: Code Smell
 A Single Abstract Method (SAM) interface is a Java interface containing only one method. The Java API is full of SAM interfaces, such as java.lang.Runnable, java.awt.event.ActionListener, java.util.Comparator and java.util.concurrent.Callable. SAM interfaces have a special place in Java 8 because they can be implemented using Lambda expressions or Method references.
 
@@ -14462,7 +14462,7 @@ public interface Changeable<T> {
 Deprecated
 
 This rule is deprecated, and will eventually be removed.```
-#### Rule 408: Methods should not be too complex
+### Rule 408: Methods should not be too complex
 ##### Quality Category: Code Smell
 The cyclomatic complexity of methods should not exceed a defined threshold.
 
@@ -14474,8 +14474,8 @@ Complex code can perform poorly and will in any case be difficult to understand 
 ```java
 
 While having a large number of fields in a class may indicate that it should be split, this rule nonetheless ignores high complexity in equals and hashCode methods.
-```
-#### Rule 409: Control flow statements "if", "for", "while", "switch" and "try" should not be nested too deeply
+``````
+### Rule 409: Control flow statements "if", "for", "while", "switch" and "try" should not be nested too deeply
 ##### Quality Category: Code Smell
 Nested if, for, while, switch, and try statements are key ingredients for making what's known as "Spaghetti code".
 
@@ -14502,7 +14502,7 @@ if (condition1) {                  // Compliant - depth = 1
   }
 }
 ```
-#### Rule 410: Classes should not be too complex
+### Rule 410: Classes should not be too complex
 ##### Quality Category: Code Smell
 The Cyclomatic Complexity is measured by the number of && and || operators and if, while, do, for, ?:, catch, switch, case, return and throw statements in the body of a class plus one for each constructor, method, static initializer, or instance initializer in the class. The last return statement in method, if exists, is not taken into account.
 
@@ -14511,7 +14511,7 @@ Even when the Cyclomatic Complexity of a class is very high, this complexity mig
 Deprecated
 
 This rule is deprecated, and will eventually be removed.
-#### Rule 411: "if ... else if" constructs should end with "else" clauses
+### Rule 411: "if ... else if" constructs should end with "else" clauses
 ##### Quality Category: Code Smell
 This rule applies whenever an if statement is followed by one or more else if statements; the final else if should be followed by an else statement.
 
@@ -14540,14 +14540,14 @@ if (x == 0) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 14.10 - All if...else if constructs shall be terminated with an else clause.
  MISRA C++:2008, 6-4-2 - All if...else if constructs shall be terminated with an else clause.
  MISRA C:2012, 15.7 - All if...else if constructs shall be terminated with an else statement
 CERT, MSC01-C. - Strive for logical completeness
 CERT, MSC57-J. - Strive for logical completeness
-#### Rule 412: Control structures should use curly braces
+### Rule 412: Control structures should use curly braces
 ##### Quality Category: Code Smell
 While not technically incorrect, the omission of curly braces can be misleading, and may lead to the introduction of errors during maintenance.
 
@@ -14565,7 +14565,7 @@ if (condition) {
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 14.8 - The statement forming the body of a switch, while, do ... while or for statement shall be a compound statement
  MISRA C:2004, 14.9 - An if (expression) construct shall be followed by a compound statement. The else keyword shall be followed by either a compound statement, or another if statement
@@ -14574,7 +14574,7 @@ if (condition) {
  MISRA C:2012, 15.6 - The body of an iteration-statement or a selection-statement shall be a compound-statement
 CERT, EXP19-C. - Use braces for the body of an if, for, or while statement
 CERT, EXP52-J. - Use braces for the body of an if, for, or while statement
-#### Rule 413: The Object.finalize() method should not be overriden
+### Rule 413: The Object.finalize() method should not be overriden
 ##### Quality Category: Code Smell
 The Object.finalize() method is called on an object by the garbage collector when it determines that there are no more references to the object. But there is absolutely no warranty that this method will be called AS SOON AS the last references to the object are removed. It can be few microseconds to few minutes later. So when system resources need to be disposed by an object, it's better to not rely on this asynchronous mechanism to dispose them.
 
@@ -14589,10 +14589,10 @@ public class MyClass {
 }
 
 ```
-*See*
+**See**
 
 CERT, MET12-J. - Do not use finalizers
-#### Rule 414: Expressions should not be too complex
+### Rule 414: Expressions should not be too complex
 ##### Quality Category: Code Smell
 The complexity of an expression is defined by the number of &&, || and condition ? ifTrue : ifFalse operators it contains.
 
@@ -14611,7 +14611,7 @@ if (((condition1 && condition2) || (condition3 && condition4)) && condition5) { 
 ```java
 if ( (myFirstCondition() || mySecondCondition()) && myLastCondition()) { ... }
 ```
-#### Rule 415: Spring "@Controller" classes should not use "@Scope"
+### Rule 415: Spring "@Controller" classes should not use "@Scope"
 ##### Quality Category: Bug
 Spring @Controllers, @Services, and @Repositorys have singleton scope by default, meaning only one instance of the class is ever instantiated in the application. Defining any other scope for one of these class types will result in needless churn as new instances are created and destroyed. In a busy web application, this could cause a significant amount of needless additional load on the server.
 
@@ -14630,7 +14630,7 @@ public class HelloWorld {
 @Controller
 public class HelloWorld {
 ```
-#### Rule 416: Constructor injection should be used instead of field injection
+### Rule 416: Constructor injection should be used instead of field injection
 ##### Quality Category: Bug
 Field injection seems like a tidy way to get your classes what they need to do their jobs, but it's really a NullPointerException waiting to happen unless all your class constructors are private. That's because any class instances that are constructed by callers, rather than instantiated by a Dependency Injection framework compliant with the JSR-330 (Spring, Guice, ...), won't have the ability to perform the field injection.
 
@@ -14668,7 +14668,7 @@ class MyComponent {
   }
 }
 ```
-#### Rule 417: Classes that don't define "hashCode()" should not be used in hashes
+### Rule 417: Classes that don't define "hashCode()" should not be used in hashes
 ##### Quality Category: Bug
 Because Object implements hashCode, any Java class can be put into a hash structure. However, classes that define equals(Object) but not hashCode() aren't truly hash-able because instances that are equivalent according to the equals method can return different hashes.
 
@@ -14708,7 +14708,7 @@ public class School {
 
   // ...
 ```
-#### Rule 418: "instanceof" operators that always return "true" or "false" should be removed
+### Rule 418: "instanceof" operators that always return "true" or "false" should be removed
 ##### Quality Category: Bug
 instanceof operators that always return true or false are either useless or the result of a misunderstanding which could lead to unexpected behavior in production.
 
@@ -14741,7 +14741,7 @@ public boolean isSuitable(Integer param) {
 Deprecated
 
 This rule is deprecated; use {rule:squid:S2589} instead.```
-#### Rule 419: Short-circuit logic should be used to prevent null pointer dereferences in conditionals
+### Rule 419: Short-circuit logic should be used to prevent null pointer dereferences in conditionals
 ##### Quality Category: Bug
 When either the equality operator in a null test or the logical operator that follows it is reversed, the code has the appearance of safely null-testing the object before dereferencing it. Unfortunately the effect is just the opposite - the object is null-tested and then dereferenced only if it is null, leading to a guaranteed null pointer dereference.
 
@@ -14770,7 +14770,7 @@ if (str != null && str.length() > 0) {
 Deprecated
 
 This rule is deprecated; use {rule:squid:S2259} instead.```
-#### Rule 420: Floating point numbers should not be tested for equality
+### Rule 420: Floating point numbers should not be tested for equality
 ##### Quality Category: Bug
 Floating point math is imprecise because of the challenges of storing such values in a binary representation. Even worse, floating point math is not associative; push a float or a double through a series of simple mathematical operations and the answer will be different based on the order of those operation because of the rounding that takes place at each step.
 
@@ -14820,12 +14820,12 @@ if(f != f) { // Compliant; test for NaN value
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 13.3 - Floating-point expressions shall not be tested for equality or inequality.
  MISRA C++:2008, 6-2-2 - Floating-point expressions shall not be directly or indirectly tested for equality or inequality
-
-#### Rule 421: Useless "if(true) {...}" and "if(false){...}" blocks should be removed
+```
+### Rule 421: Useless "if(true) {...}" and "if(false){...}" blocks should be removed
 ##### Quality Category: Bug
 if statements with conditions that are always false have the effect of making blocks of code non-functional. if statements with conditions that are always true are completely redundant, and make the code less readable.
 
@@ -14868,7 +14868,7 @@ doSomething();
 ...
 
 ```
-*See*
+**See**
 
 MITRE, CWE-489 - Leftover Debug Code
 MITRE, CWE-570 - Expression is Always False
@@ -14878,7 +14878,7 @@ MITRE, CWE-571 - Expression is Always True
 Deprecated
 
 This rule is deprecated; use {rule:squid:S2583} instead.
-#### Rule 422: The Object.finalize() method should not be called
+### Rule 422: The Object.finalize() method should not be called
 ##### Quality Category: Bug
 According to the official javadoc documentation, this Object.finalize() is called by the garbage collector on an object when garbage collection determines that there are no more references to the object. Calling this method explicitly breaks this contract and so is misleading.
 
@@ -14889,11 +14889,11 @@ public void dispose() throws Throwable {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-586 - Explicit Call to Finalize()
 CERT, MET12-J. - Do not use finalizers
-#### Rule 423: Using setters in Struts 2 ActionSupport is security-sensitive
+### Rule 423: Using setters in Struts 2 ActionSupport is security-sensitive
 ##### Quality Category: Security Hotspot
 Using setters in Struts 2 ActionSupport is security-sensitive. For example, their use has led in the past to the following vulnerabilities:
 
@@ -14935,10 +14935,10 @@ public class AccountBalanceAction extends ActionSupport {
 }
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A1 - Injection
-#### Rule 424: Using Struts 1 ActionForm is security-sensitive
+### Rule 424: Using Struts 1 ActionForm is security-sensitive
 ##### Quality Category: Security Hotspot
 Using Struts 1 ActionForm is security-sensitive. For example, their use has led in the past to the following vulnerability:
 
@@ -14979,11 +14979,11 @@ public final class CashTransferAction extends Action {
 }
 
 ```
-*See*
+**See**
 
  OWASP Top 10 2017 Category A1 - Injection
 MITRE, CWE-105: Struts Form Field Without Validator
-#### Rule 425: Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression
+### Rule 425: Increment (++) and decrement (--) operators should not be used in a method call or mixed with other operators in an expression
 ##### Quality Category: Code Smell
 The use of increment and decrement operators in method calls or in combination with other arithmetic operators is not recommended, because:
 
@@ -15009,7 +15009,7 @@ foo = bar / 4;
 bar++;
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 12.1 - Limited dependence should be placed on the C operator precedence rules in expressions.
  MISRA C:2004, 12.13 - The increment (++) and decrement (--) operators should not be mixed with other operators in an expression.
@@ -15019,7 +15019,7 @@ bar++;
 CERT, EXP30-C. - Do not depend on the order of evaluation for side effects
 CERT, EXP50-CPP. - Do not depend on the order of evaluation for side effects
 CERT, EXP05-J. - Do not follow a write by a subsequent write or read of the same object within an expression
-#### Rule 426: Limited dependence should be placed on operator precedence
+### Rule 426: Limited dependence should be placed on operator precedence
 ##### Quality Category: Code Smell
 The rules of operator precedence are complicated and can lead to errors. For this reason, parentheses should be used for clarification in complex statements. However, this does not mean that parentheses should be gratuitously added around every operation.
 
@@ -15052,7 +15052,7 @@ if ( (a > b && c < d) || a == b) {...}
 if ( (a = f(b,c)) == 1) { ... }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 12.1 - Limited dependence should be placed on C's operator precedence rules in expressions
  MISRA C:2004, 12.2 - The value of an expression shall be the same under any order of evaluation that the standard permits.
@@ -15064,7 +15064,7 @@ if ( (a = f(b,c)) == 1) { ... }
 CERT, EXP00-C. - Use parentheses for precedence of operation
 CERT, EXP53-J. - Use parentheses for precedence of operation
 MITRE, CWE-783 - Operator Precedence Logic Error
-#### Rule 427: "@EnableAutoConfiguration" should be fine-tuned
+### Rule 427: "@EnableAutoConfiguration" should be fine-tuned
 ##### Quality Category: Code Smell
 "@EnableAutoConfiguration" is a convenient feature to configure the Spring Application Context by attempting to guess the beans that you are likely to need. The drawback is that it may load and configure beans the application will never use and therefore consume more CPU and RAM than really required. @EnableAutoConfiguration should be configured to exclude all the beans not required by the application. Alternatively, use the @Import annotation instead of @EnableAutoConfiguration, to explicitly import the useful AutoConfiguration classes.
 
@@ -15121,7 +15121,7 @@ public class MyApplication {
 ...
 }
 ```
-#### Rule 428: "@Import"s should be preferred to "@ComponentScan"s
+### Rule 428: "@Import"s should be preferred to "@ComponentScan"s
 ##### Quality Category: Code Smell
 @ComponentScan is used to find which Spring @Component beans (@Service or @Repository or Controller) are available in the classpath so they can be used in the application context. This is a convenient feature especially when you begin a new project but it comes with the drawback of slowing down the application start-up time especially when the application becomes bigger (ie: it references a large JAR file, or it references a significant number of JAR files, or the base-package refers to a large amount of .class files).
 
@@ -15161,10 +15161,10 @@ public class MyApplication {
 }
 
 ```
-*See*
+**See**
 
 Optimizing Spring Framework for App Engine Applications
-#### Rule 429: Enum values should be compared with "=="
+### Rule 429: Enum values should be compared with "=="
 ##### Quality Category: Code Smell
 Testing equality of an enum value with equals is perfectly valid because an enum is an Object and every Java developer knows "==" should not be used to compare the content of an Object. At the same time, using "==" on enums:
 
@@ -15208,10 +15208,10 @@ public boolean isFruitGrape(Cake candidateFruit) {
 }
 
 ```
-*See*
+**See**
 
 Use == (or !=) to Compare Java Enums
-#### Rule 430: Spring components should use constructor injection
+### Rule 430: Spring components should use constructor injection
 ##### Quality Category: Code Smell
 Spring @Controller, @Service, and @Repository classes are singletons by default, meaning only one instance of the class is ever instantiated in the application. Typically such a class might have a few static members, such as a logger, but all non-static members should be managed by Spring and supplied via constructor injection rather than by field injection.
 
@@ -15250,7 +15250,7 @@ public class HelloWorld {
   // ...
 }
 ```
-#### Rule 431: Regex patterns should not be created needlessly
+### Rule 431: Regex patterns should not be created needlessly
 ##### Quality Category: Code Smell
 The java.util.regex.Pattern.compile() methods have a significant performance cost, and therefore should be used sensibly.
 
@@ -15299,8 +15299,8 @@ String.split doesn't create a regex when the string passed as argument meets eit
  It is a two-char String and the first char is the backslash and the second is not the ascii digit or ascii letter.
 
 In which case no issue will be raised.
-```
-#### Rule 432: Duplicate values should not be passed as arguments
+``````
+### Rule 432: Duplicate values should not be passed as arguments
 ##### Quality Category: Code Smell
 There are valid cases for passing a variable multiple times into the same method call, but usually doing so is a mistake, and something else was intended for one of the arguments.
 
@@ -15331,7 +15331,7 @@ if (compare(v1, v2) != 0) {
 Deprecated
 
 This rule is deprecated, and will eventually be removed.```
-#### Rule 433: Track uses of disallowed constructors
+### Rule 433: Track uses of disallowed constructors
 ##### Quality Category: Code Smell
 This rule allows banning usage of certain constructors.
 
@@ -15346,7 +15346,7 @@ Date birthday;
 birthday = new Date("Sat Sep 27 05:42:21 EDT 1986");  // Noncompliant
 birthday = new Date(528176541000L); // Compliant
 ```
-#### Rule 434: "Optional" should not be used for parameters
+### Rule 434: "Optional" should not be used for parameters
 ##### Quality Category: Code Smell
 The Java language authors have been quite frank that Optional was intended for use only as a return type, as a way to convey that a method may or may not return a value.
 
@@ -15374,7 +15374,7 @@ public String sayHello(String name) {
   }
 }
 ```
-#### Rule 435: Track uses of disallowed dependencies
+### Rule 435: Track uses of disallowed dependencies
 ##### Quality Category: Code Smell
 Whether they are disallowed locally for security, license, or dependability reasons, forbidden dependencies should not be used.
 
@@ -15391,7 +15391,7 @@ With a parameter of: *:.*log4j.*
     <version>1.2.17</version>
 </dependency>
 ```
-#### Rule 436: "this" should not be exposed from constructors
+### Rule 436: "this" should not be exposed from constructors
 ##### Quality Category: Code Smell
 In single-threaded environments, the use of this in constructors is normal, and expected. But in multi-threaded environments, it could expose partially-constructed objects to other threads, and should be used with caution.
 
@@ -15422,12 +15422,12 @@ public class Monument {
 This rule ignores instances of assigning this directly to a static field of the same class because that case is covered by S3010.
 
 ```
-*See*
+**See**
 
 CERT, TSM01-J. - Do not let the this reference escape during object construction
 CERT, TSM03-J. - Do not publish partially initialized objects
-
-#### Rule 437: Classes should not have too many "static" imports
+```
+### Rule 437: Classes should not have too many "static" imports
 ##### Quality Category: Code Smell
 Importing a class statically allows you to use its public static members without qualifying them with the class name. That can be handy, but if you import too many classes statically, your code can become confusing and difficult to maintain.
 
@@ -15442,7 +15442,7 @@ import static com.myco.corporate.Constants.*;
 import static com.myco.division.Constants.*;
 import static com.myco.department.Constants.*;  // Noncompliant
 ```
-#### Rule 438: Escaped Unicode characters should not be used
+### Rule 438: Escaped Unicode characters should not be used
 ##### Quality Category: Code Smell
 The use of Unicode escape sequences should be reserved for characters that would otherwise be ambiguous, such as unprintable characters.
 
@@ -15458,10 +15458,10 @@ String prefix = "n\u00E9e"; // Noncompliant
 ```java
 String prefix = "née";
 ```
-#### Rule 439: Inner classes should not have too many lines of code
+### Rule 439: Inner classes should not have too many lines of code
 ##### Quality Category: Code Smell
 Inner classes should be short and sweet, to manage complexity in the overall file. An inner class that has grown longer than a certain threshold should probably be externalized to its own file.
-#### Rule 440: Inner classes which do not reference their owning classes should be "static"
+### Rule 440: Inner classes which do not reference their owning classes should be "static"
 ##### Quality Category: Code Smell
 A non-static inner class has a reference to its outer class, and access to the outer class' fields and methods. That class reference makes the inner class larger and could cause the outer class instance to live in memory longer than necessary.
 
@@ -15477,11 +15477,11 @@ public class Fruit {
   // ...
 
   public class ```
-*See*
+**See**
 d {  // Noncompliant; there's no use of the outer class reference so make it static
     int germinationDays = 0;
     public ```
-*See*
+**See**
 d(int germinationDays) {
       this.germinationDays = germinationDays;
     }
@@ -15499,11 +15499,11 @@ public class Fruit {
   // ...
 
   public static class ```
-*See*
+**See**
 d {
     int germinationDays = 0;
     public ```
-*See*
+**See**
 d(int germinationDays) {
       this.germinationDays = germinationDays;
     }
@@ -15513,7 +15513,7 @@ d(int germinationDays) {
   }
 }
 
-#### Rule 441: "deleteOnExit" should not be used
+### Rule 441: "deleteOnExit" should not be used
 ##### Quality Category: Code Smell
 Use of File.deleteOnExit() is not recommended for the following reasons:
 
@@ -15524,7 +15524,7 @@ Use of File.deleteOnExit() is not recommended for the following reasons:
 File file = new File("file.txt");
 file.deleteOnExit();  // Noncompliant
 ```
-#### Rule 442: Public methods should not contain selector arguments
+### Rule 442: Public methods should not contain selector arguments
 ##### Quality Category: Code Smell
 A selector argument is a boolean argument that's used to determine which of two paths to take through a method. Specifying such a parameter may seem innocuous, particularly if it's well named.
 
@@ -15566,10 +15566,10 @@ public void corrupt() {
   age < legalAge ? temptChild("Joe") : temptAdult("Joe");
 }
 ```
-#### Rule 443: Java parser failure
+### Rule 443: Java parser failure
 ##### Quality Category: Code Smell
 When the Java parser fails, it is possible to record the failure as a violation on the file. This way, not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.
-#### Rule 444: Track uses of disallowed methods
+### Rule 444: Track uses of disallowed methods
 ##### Quality Category: Code Smell
 This rule allows banning certain methods.
 
@@ -15584,7 +15584,7 @@ Given parameters:
 String name;
 name.replace("A","a");  // Noncompliant
 ```
-#### Rule 445: Types should be used in lambdas
+### Rule 445: Types should be used in lambdas
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate effectively. While types for lambda arguments are optional, specifying them anyway makes the code clearer and easier to read.
 
@@ -15615,8 +15615,8 @@ When the lambda has one or two parameters and does not have a block this rule wi
 
 stream.map((a, b) -> a.length); // compliant
 
-```
-#### Rule 446: "java.time" classes should be used for dates and times
+``````
+### Rule 446: "java.time" classes should be used for dates and times
 ##### Quality Category: Code Smell
 The old, much-derided Date and Calendar classes have always been confusing and difficult to use properly, particularly in a multi-threaded context. JodaTime has long been a popular alternative, but now an even better option is built-in. Java 8's JSR 310 implementation offers specific classes for:
 
@@ -15649,7 +15649,7 @@ LocalDate now = LocalDate.now();  // gets calendar date. no time component
 LocalTime now2 = LocalTime.now(); // gets current time. no date component
 LocalDate christmas = LocalDate.of(2020,12,25);
 ```
-#### Rule 447: The names of methods with boolean return values should start with "is" or "has"
+### Rule 447: The names of methods with boolean return values should start with "is" or "has"
 ##### Quality Category: Code Smell
 Well-named functions can allow the users of your code to understand at a glance what to expect from the function - even before reading the documentation. Toward that end, methods returning a boolean should have names that start with "is" or "has" rather than with "get".
 
@@ -15695,16 +15695,16 @@ public boolean getFoo(){
   // ...
 }
 
-```
-#### Rule 448: Files should contain only one top-level class or interface each
+``````
+### Rule 448: Files should contain only one top-level class or interface each
 ##### Quality Category: Code Smell
 A file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. This is doubly true for a file with multiple top-level classes and interfaces. It is strongly advised to divide the file into one top-level class or interface per file.
-#### Rule 449: Classes should not have too many fields
+### Rule 449: Classes should not have too many fields
 ##### Quality Category: Code Smell
 A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain, and having a lot of fields is an indication that a class has grown too large.
 
 Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.
-#### Rule 450: The ternary operator should not be used
+### Rule 450: The ternary operator should not be used
 ##### Quality Category: Code Smell
 While the ternary operator is pleasingly compact, its use can make code more difficult to read. It should therefore be avoided in favor of the more verbose if/else structure.
 
@@ -15722,7 +15722,7 @@ if (i > 10) {
   System.out.println("no");
 }
 ```
-#### Rule 451: Standard functional interfaces should not be redefined
+### Rule 451: Standard functional interfaces should not be redefined
 ##### Quality Category: Code Smell
 Just as there is little justification for writing your own String class, there is no good reason to re-define one of the existing, standard functional interfaces.
 
@@ -15768,7 +15768,7 @@ public class MyClass {
     }
 }
 ```
-#### Rule 452: "NullPointerException" should not be caught
+### Rule 452: "NullPointerException" should not be caught
 ##### Quality Category: Code Smell
 NullPointerException should be avoided, not caught. Any situation in which NullPointerException is explicitly caught can easily be converted to a null test, and any behavior being carried out in the catch block can easily be moved to the "is null" branch of the conditional.
 
@@ -15802,11 +15802,11 @@ public int lengthPlus(String str) {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-395 - Use of NullPointerException Catch to Detect NULL Pointer Dereference
 CERT, ERR08-J. - Do not catch NullPointerException or any of its ancestors
-#### Rule 453: "NullPointerException" should not be explicitly thrown
+### Rule 453: "NullPointerException" should not be explicitly thrown
 ##### Quality Category: Code Smell
 A NullPointerException should indicate that a null value was unexpectedly encountered. Good programming practice dictates that code is structured to avoid NPE's.
 
@@ -15827,20 +15827,20 @@ public void doSomething (String aString) throws NullPointerException {
 public void doSomething (@NotNull String aString) {
 }
 ```
-#### Rule 454: Classes should not have too many methods
+### Rule 454: Classes should not have too many methods
 ##### Quality Category: Code Smell
 A class that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor the class into smaller ones which focus on well defined topics.
-#### Rule 455: Methods should not have too many lines
+### Rule 455: Methods should not have too many lines
 ##### Quality Category: Code Smell
 A method that grows too large tends to aggregate too many responsibilities. Such method inevitably become harder to understand and therefore harder to maintain.
 
 Above a specific threshold, it is strongly advised to refactor into smaller methods which focus on well-defined tasks. Those smaller methods will not only be easier to understand, but also probably easier to test.
-#### Rule 456: Track uses of "NOSONAR" comments
+### Rule 456: Track uses of "NOSONAR" comments
 ##### Quality Category: Code Smell
 Any issue to quality rule can be deactivated with the NOSONAR marker. This marker is pretty useful to exclude false-positive results but it can also be used abusively to hide real quality flaws.
 
 This rule raises an issue when NOSONAR is used.
-#### Rule 457: Classes and enums with private members should have a constructor
+### Rule 457: Classes and enums with private members should have a constructor
 ##### Quality Category: Code Smell
 Non-abstract classes and enums with non-static, private members should explicitly initialize those members, either in a constructor or with a default value.
 
@@ -15862,14 +15862,14 @@ class A {
   }
 }
 ```
-#### Rule 458: Track comments matching a regular expression
+### Rule 458: Track comments matching a regular expression
 ##### Quality Category: Code Smell
 This rule template can be used to create rules which will be triggered when the full content of a comment matches a given regular expression. Note that the regular expression should be expressed using the dotall format (where the . character matches any character).
 
 For example, one can create a rule with the regular expression .*REVIEW.* to match all comment containing "REVIEW".
 
 Note that, in order to match REVIEW regardless of the case, the (?i) modifier should be prepended to the expression, as in (?i).*REVIEW.*.
-#### Rule 459: Statements should be on separate lines
+### Rule 459: Statements should be on separate lines
 ##### Quality Category: Code Smell
 For better readability, do not put more than one statement on a single line.
 
@@ -15885,7 +15885,7 @@ if(someCondition) {
   doSomething();
 }
 ```
-#### Rule 460: Classes should not be coupled to too many other classes (Single Responsibility Principle)
+### Rule 460: Classes should not be coupled to too many other classes (Single Responsibility Principle)
 ##### Quality Category: Code Smell
 According to the Single Responsibility Principle, introduced by Robert C. Martin in his book "Principles of Object Oriented Design", a class should have only one responsibility:
 
@@ -15920,7 +15920,7 @@ class Foo {                        // Noncompliant - Foo depends on too many cla
   }
 }
 ```
-#### Rule 461: "java.lang.Error" should not be extended
+### Rule 461: "java.lang.Error" should not be extended
 ##### Quality Category: Code Smell
 java.lang.Error and its subclasses represent abnormal conditions, such as OutOfMemoryError, which should only be encountered by the Java Virtual Machine.
 
@@ -15934,10 +15934,10 @@ public class MyException extends Error { /* ... */ }       // Noncompliant
 ```java
 public class MyException extends Exception { /* ... */ }   // Compliant
 ```
-#### Rule 462: Lambdas and anonymous classes should not have too many lines of code
+### Rule 462: Lambdas and anonymous classes should not have too many lines of code
 ##### Quality Category: Code Smell
 Anonymous classes and lambdas (with Java 8) are a very convenient and compact way to inject a behavior without having to create a dedicated class. But those anonymous inner classes and lambdas should be used only if the behavior to be injected can be defined in a few lines of code, otherwise the source code can quickly become unreadable.
-#### Rule 463: Public types, methods and fields (API) should be documented with Javadoc
+### Rule 463: Public types, methods and fields (API) should be documented with Javadoc
 ##### Quality Category: Code Smell
 Try to imagine using the standard Java API (Collections, JDBC, IO, ...) without Javadoc. It would be a nightmare, because Javadoc is the only way to understand of the contract of the API. Documenting an API with Javadoc increases the productivity of the developers consuming it.
 
@@ -16047,7 +16047,7 @@ public class MyClass<T> implements Runnable {
   }
 }
 ```
-#### Rule 464: Exception handlers should preserve the original exceptions
+### Rule 464: Exception handlers should preserve the original exceptions
 ##### Quality Category: Code Smell
 When handling a caught exception, the original exception's message and stack trace should be logged or passed forward.
 
@@ -16124,13 +16124,13 @@ try {
 }
 
 ```
-*See*
+**See**
 
 CERT, ERR00-J. - Do not suppress or ignore checked exceptions
 MITRE, CWE-778 - Insufficient Logging
  OWASP Top 10 2017 Category A10 - Insufficient Logging & Monitoring
-
-#### Rule 465: Checked exceptions should not be thrown
+```
+### Rule 465: Checked exceptions should not be thrown
 ##### Quality Category: Code Smell
 The purpose of checked exceptions is to ensure that errors will be dealt with, either by propagating them or by handling them, but some believe that checked exceptions negatively impact the readability of source code, by spreading this error handling/propagation logic everywhere.
 
@@ -16149,7 +16149,7 @@ public void myMethod2() throws CheckedException {  // Compliant; propagation all
   myMethod1();
 }
 ```
-#### Rule 466: Public methods should throw at most one checked exception
+### Rule 466: Public methods should throw at most one checked exception
 ##### Quality Category: Code Smell
 Using checked exceptions forces method callers to deal with errors, either by propagating them or by handling them. Throwing exceptions makes them fully part of the API of the method.
 
@@ -16175,8 +16175,8 @@ public void delete() throws SomeApplicationLevelException {
 ```java
 
 Overriding methods are not checked by this rule and are allowed to throw several checked exceptions.
-```
-#### Rule 467: "switch case" clauses should not have too many lines of code
+``````
+### Rule 467: "switch case" clauses should not have too many lines of code
 ##### Quality Category: Code Smell
 The switch statement should be used only to clearly define some new branches in the control flow. As soon as a case clause contains too many statements this highly decreases the readability of the overall control flow statement. In such case, the content of the case clause should be extracted into a dedicated method.
 
@@ -16215,7 +16215,7 @@ private void doSomething(){
     methodCall4("");
 }
 ```
-#### Rule 468: Methods should not have too many return statements
+### Rule 468: Methods should not have too many return statements
 ##### Quality Category: Code Smell
 Having too many return statements in a method increases the method's essential complexity because the flow of execution is broken each time a return statement is encountered. This makes it harder to read and understand the logic of the method.
 
@@ -16237,7 +16237,7 @@ public boolean myMethod() { // Noncompliant; there are 4 return statements
   return false;
 }
 ```
-#### Rule 469: Labels should not be used
+### Rule 469: Labels should not be used
 ##### Quality Category: Code Smell
 Labels are not commonly used in Java, and many developers do not understand how they work. Moreover, their usage makes the control flow harder to follow, which reduces the code's readability.
 
@@ -16268,7 +16268,7 @@ for (int row = 1; row < matrix.length; row++) {          // Compliant
   }
 }
 ```
-#### Rule 470: Magic numbers should not be used
+### Rule 470: Magic numbers should not be used
 ##### Quality Category: Code Smell
 A magic number is a number that comes out of nowhere, and is directly used in a statement. Magic numbers are often used, for instance to limit the number of iterations of a loops, to test the value of a property, etc.
 
@@ -16303,14 +16303,14 @@ public static void doSomething() {
 ```java
 
 This rule ignores hashCode methods.
-```
-#### Rule 471: Files should not have too many lines of code
+``````
+### Rule 471: Files should not have too many lines of code
 ##### Quality Category: Code Smell
 A source file that grows too much tends to aggregate too many responsibilities and inevitably becomes harder to understand and therefore to maintain. Above a specific threshold, it is strongly advised to refactor it into smaller pieces of code which focus on well defined tasks. Those smaller files will not only be easier to understand but also probably easier to test.
-#### Rule 472: Lines should not be too long
+### Rule 472: Lines should not be too long
 ##### Quality Category: Code Smell
 Having to scroll horizontally makes it harder to get a quick overview and understanding of any piece of code.
-#### Rule 473: Mutable members should not be stored or returned directly
+### Rule 473: Mutable members should not be stored or returned directly
 ##### Quality Category: Vulnerability
 Mutable objects are those whose state can be changed. For instance, an array is mutable, but a String is not. Mutable class members should never be returned to a caller or accepted and stored directly. Doing so leaves you vulnerable to unexpected changes in your class state.
 
@@ -16376,14 +16376,14 @@ public class B {
 
 
 ```
-*See*
+**See**
 
 MITRE, CWE-374 - Passing Mutable Objects to an Untrusted Method
 MITRE, CWE-375 - Returning a Mutable Object to an Untrusted Caller
 CERT, OBJ05-J. - Do not return references to private mutable class members
 CERT, OBJ06-J. - Defensively copy mutable inputs and mutable internal components
 CERT, OBJ13-J. - Ensure that references to mutable objects are not exposed
-#### Rule 474: Member variable visibility should be specified
+### Rule 474: Member variable visibility should be specified
 ##### Quality Category: Vulnerability
 Failing to explicitly declare the visibility of a member variable could result it in having a visibility you don't expect, and potentially leave it open to unexpected modification by other classes.
 
@@ -16421,8 +16421,8 @@ class Cone {
   Logger logger; // Compliant
 }
 
-```
-#### Rule 475: Class variable fields should not have public accessibility
+``````
+### Rule 475: Class variable fields should not have public accessibility
 ##### Quality Category: Vulnerability
 Public class variable fields do not respect the encapsulation principle and has three main disadvantages:
 
@@ -16470,11 +16470,11 @@ public class MyClass {
 Because they are not modifiable, this rule ignores public final fields.
 
 ```
-*See*
+**See**
 
 MITRE, CWE-493 - Critical Public Variable Without Final Modifier
-
-#### Rule 476: JEE applications should not "getClassLoader"
+```
+### Rule 476: JEE applications should not "getClassLoader"
 ##### Quality Category: Bug
 Using the standard getClassLoader() may not return the right class loader in a JEE context. Instead, go through the currentThread.
 
@@ -16488,7 +16488,7 @@ ClassLoader cl = this.getClass().getClassLoader();  // Noncompliant
 ```java
 ClassLoader cl = Thread.currentThread().getContextClassLoader();
 ```
-#### Rule 477: Math should not be performed on floats
+### Rule 477: Math should not be performed on floats
 ##### Quality Category: Bug
 For small numbers, float math has enough precision to yield the expected value, but for larger numbers, it does not. BigDecimal is the best alternative, but if a primitive is required, use a double.
 
@@ -16521,11 +16521,11 @@ System.out.println("["+getName()+"] " +
            "\n\tMax time to retrieve connection:"+(max/1000f/1000f)+" ms.");
 
 ```
-*See*
+**See**
 
 CERT, FLP02-C. - Avoid using floating-point numbers when precise computation is needed
-
-#### Rule 478: "equals" methods should be symmetric and work for subclasses
+```
+### Rule 478: "equals" methods should be symmetric and work for subclasses
 ##### Quality Category: Bug
 A key facet of the equals contract is that if a.equals(b) then b.equals(a), i.e. that the relationship is symmetric.
 
@@ -16592,10 +16592,10 @@ public class Fruit extends Food {
 }
 
 ```
-*See*
+**See**
 
 CERT, MET08-J. - Preserve the equality contract when overriding the equals() method
-#### Rule 479: Literal suffixes should be upper case
+### Rule 479: Literal suffixes should be upper case
 ##### Quality Category: Code Smell
 Using upper case literal suffixes removes the potential ambiguity between "1" (digit 1) and "l" (letter el) for declaring literals.
 
@@ -16614,13 +16614,13 @@ float float1 = 1.0F;
 double double1 = 1.0D;
 
 ```
-*See*
+**See**
 
  MISRA C++:2008, 2-13-4 - Literal suffixes shall be upper case
  MISRA C:2012, 7.3 - The lowercase character "l" shall not be used in a literal suffix
 CERT DCL16-C. - Use "L," not "l," to indicate a long value
 CERT, DCL50-J. - Use visually distinct identifiers
-#### Rule 480: "serialVersionUID" should not be declared blindly
+### Rule 480: "serialVersionUID" should not be declared blindly
 ##### Quality Category: Code Smell
 Providing a serialVersionUID field on Serializable classes is strongly recommended by the Serializable documentation but blindly following that recommendation can be harmful.
 
@@ -16641,10 +16641,10 @@ public class BarException extends RuntimeException {
 }
 
 ```
-*See*
+**See**
 
  Vojtech Ruzicka's Programming Blog: Should I explicitly declare serialVersionUID?
-#### Rule 481: "Stream.collect()" calls should not be redundant
+### Rule 481: "Stream.collect()" calls should not be redundant
 ##### Quality Category: Code Smell
 When using the Stream API, call chains should be simplified as much as possible to improve readability and maintainability.
 
@@ -16669,7 +16669,7 @@ int count = stream.collect(counting());  // Noncompliant
 ```java
 int count = stream.count();
 ```
-#### Rule 482: Local constants should follow naming conventions for constants
+### Rule 482: Local constants should follow naming conventions for constants
 ##### Quality Category: Code Smell
 Shared coding conventions allow teams to collaborate efficiently. This rule checks that all local, final, initialized, primitive variables, have names that match a provided regular expression.
 
@@ -16692,7 +16692,7 @@ public void doSomething() {
   ...
 }
 ```
-#### Rule 483: Unit tests should throw exceptions
+### Rule 483: Unit tests should throw exceptions
 ##### Quality Category: Code Smell
 When the code under test in a unit test throws an exception, the test itself fails. Therefore, there is no need to surround the tested code with a try-catch structure to detect failure. Instead, you can simply move the exception type to the method signature.
 
@@ -16718,7 +16718,7 @@ public void testMethod() throws MyException {
     // Some code
 }
 ```
-#### Rule 484: Test methods should comply with a naming convention
+### Rule 484: Test methods should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate efficiently. This rule raises an issue when a test method name does not match the provided regular expression.
 
@@ -16741,7 +16741,7 @@ public void testFoo() {
   // ...
 }
 ```
-#### Rule 485: Test classes should comply with a naming convention
+### Rule 485: Test classes should comply with a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate efficiently. This rule raises an issue when a test class name does not match the provided regular expression.
 
@@ -16760,7 +16760,7 @@ class Foo {  // Noncompliant
 class FooTest {
 }
 ```
-#### Rule 486: Value-based objects should not be serialized
+### Rule 486: Value-based objects should not be serialized
 ##### Quality Category: Code Smell
 According to the documentation,
 
@@ -16803,10 +16803,10 @@ class MyClass implements Serializable {
 }
 
 ```
-*See*
+**See**
 
 Value-based classes
-#### Rule 487: pom elements should be in the recommended order
+### Rule 487: pom elements should be in the recommended order
 ##### Quality Category: Code Smell
 The POM Code Convention is the Maven project's internal recommendation for POM element ordering. It calls for listing modifiers in the following order:
 
@@ -16844,7 +16844,7 @@ Not following this convention has no technical impact, but will reduce the pom's
 
 See
 POM Code Convention
-#### Rule 488: Artifact ids should follow a naming convention
+### Rule 488: Artifact ids should follow a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when a pom's artifactId does not match the provided regular expression.
 
@@ -16869,7 +16869,7 @@ With the default regular expression: [a-z][a-z-0-9]+
   <!-- ... -->
 </project>
 ```
-#### Rule 489: Group ids should follow a naming convention
+### Rule 489: Group ids should follow a naming convention
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when the a pom's groupId does not match the provided regular expression.
 
@@ -16894,7 +16894,7 @@ With the default regular expression: (com|org)(\.[a-z][a-z-0-9]*)+
   <!-- ... -->
 </project>
 ```
-#### Rule 490: "action" mappings should not have too many "forward" entries
+### Rule 490: "action" mappings should not have too many "forward" entries
 ##### Quality Category: Code Smell
 It makes sense to handle all related actions in the same place. Thus, the same <action> might logically handle all facets of CRUD on an entity, with no confusion in the naming about which <forward/> handles which facet. But go very far beyond that, and it becomes difficult to maintain a transparent naming convention.
 
@@ -16928,7 +16928,7 @@ With the default threshold of 4:
   <forward name='authorRead' path='WEB-INF/jsp/AuthorDetails' redirect='false'/>
 </action>
 ```
-#### Rule 491: Annotation arguments should appear in the order in which they were declared
+### Rule 491: Annotation arguments should appear in the order in which they were declared
 ##### Quality Category: Code Smell
 For optimal code readability, annotation arguments should be specified in the same order that they were declared in the annotation definition.
 
@@ -16952,7 +16952,7 @@ For optimal code readability, annotation arguments should be specified in the sa
 
 @Pet(name ="", surname="") // Compliant
 ```
-#### Rule 492: Default annotation parameter values should not be passed as arguments
+### Rule 492: Default annotation parameter values should not be passed as arguments
 ##### Quality Category: Code Smell
 Specifying the default value for an annotation parameter is redundant. Such values should be omitted in the interests of readability.
 
@@ -16978,7 +16978,7 @@ public @interface MyAnnotation {
   String arg() default "def";
 }
 ```
-#### Rule 493: Method parameters should be declared with base types
+### Rule 493: Method parameters should be declared with base types
 ##### Quality Category: Code Smell
 For maximum reusability, methods should accept parameters with as little specialization as possible. So unless specific features from a child class are required by a method, a type higher up the class hierarchy should be used instead.
 
@@ -17014,8 +17014,8 @@ public static void loop(Iterable<?> list) { // java.lang.Iterable can be used in
 ```java
 
 Parameters in non-public methods are not checked, because such methods are not intended to be generally reusable. java.lang.String parameters are excluded, because String is immutable and can not be always substituted for more generic type. Parameters used in any other context than method invocation or enhanced for loop are also excluded.
-```
-#### Rule 494: Fields should not be initialized to default values
+``````
+### Rule 494: Fields should not be initialized to default values
 ##### Quality Category: Code Smell
 The compiler automatically initializes class fields to their default values before setting them with any initialization values, so there is no need to explicitly set a field to its default value. Further, under the logic that cleaner code is better code, it's considered poor style to do so.
 
@@ -17045,8 +17045,8 @@ public class MyClass {
 ```java
 
 final fields are ignored.
-```
-#### Rule 495: Multiple loops over the same set should be combined
+``````
+### Rule 495: Multiple loops over the same set should be combined
 ##### Quality Category: Code Smell
 When a method loops multiple over the same set of data, whether it's a list or a set of numbers, it is highly likely that the method could be made more efficient by combining the loops into a single set of iterations.
 
@@ -17072,7 +17072,7 @@ public void doSomethingToAList(List<String> strings) {
   }
 }
 ```
-#### Rule 496: Classes without "public" constructors should be "final"
+### Rule 496: Classes without "public" constructors should be "final"
 ##### Quality Category: Code Smell
 Classes with only private constructors should be marked final to prevent any mistaken extension attempts.
 
@@ -17102,7 +17102,7 @@ public final class PrivateConstructorClass {  // Compliant
   }
 }
 ```
-#### Rule 497: Unnecessary semicolons should be omitted
+### Rule 497: Unnecessary semicolons should be omitted
 ##### Quality Category: Code Smell
 Under the reasoning that cleaner code is better code, the semicolon at the end of a try-with-resources construct should be omitted because it can be omitted.
 
@@ -17124,7 +17124,7 @@ try (ByteArrayInputStream b = new ByteArrayInputStream(new byte[10]);
    //do stuff
 }
 ```
-#### Rule 498: JUnit assertions should include messages
+### Rule 498: JUnit assertions should include messages
 ##### Quality Category: Code Smell
 Adding messages to JUnit assertions is an investment in your future productivity. Spend a few seconds writing them now, and you'll save a lot of time on the other end when either the tests fail and you need to quickly diagnose the problem, or when you need to maintain the tests and the assertion messages work as a sort of documentation.
 
@@ -17150,7 +17150,7 @@ try {
   assertThat(list.get(0)).as("check first element").overridingErrorMessage("The first element should be a pear, not a %s", list.get(0)).isEqualTo("pear");
 }
 ```
-#### Rule 499: Redundant modifiers should not be used
+### Rule 499: Redundant modifiers should not be used
 ##### Quality Category: Code Smell
 The methods declared in an interface are public and abstract by default. Any variables are automatically public static final. There is no need to explicitly declare them so.
 
@@ -17172,7 +17172,7 @@ public interface Vehicle {
 
   void go(int speed, Direction direction);
 ```
-#### Rule 500: "private" methods that don't access instance data should be "static"
+### Rule 500: "private" methods that don't access instance data should be "static"
 ##### Quality Category: Code Smell
 private methods that don't access instance data can be static to prevent any misunderstanding about the contract of the method.
 
@@ -17218,8 +17218,8 @@ When java.io.Serializable is implemented the following three methods are exclude
 private void writeObject(java.io.ObjectOutputStream out) throws IOException;
 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException;
 private void readObjectNoData() throws ObjectStreamException;
-```
-#### Rule 501: Files should not be empty
+``````
+### Rule 501: Files should not be empty
 ##### Quality Category: Code Smell
 Files with no lines of code clutter a project and should be removed.
 
@@ -17229,7 +17229,7 @@ Files with no lines of code clutter a project and should be removed.
 //
 //public class Bar {}
 ```
-#### Rule 502: Collection methods with O(n) performance should be used carefully
+### Rule 502: Collection methods with O(n) performance should be used carefully
 ##### Quality Category: Code Smell
 The time complexity of method calls on collections is not always obvious. For instance, for most collections the size() method takes constant time, but the time required to execute ConcurrentLinkedQueue.size() is O(n), i.e. directly proportional to the number of elements in the collection. When the collection is large, this could therefore be an expensive operation.
 
@@ -17261,7 +17261,7 @@ ConcurrentLinkedQueue queue = new ConcurrentLinkedQueue();
 //...
 log.info("Queue contains " + queue.size() + " elements");  // Noncompliant
 ```
-#### Rule 503: "Exception" should not be caught when not required by called methods
+### Rule 503: "Exception" should not be caught when not required by called methods
 ##### Quality Category: Code Smell
 Catching Exception seems like an efficient way to handle multiple possible exceptions. Unfortunately, it traps all exception types, both checked and runtime exceptions, thereby casting too broad a net. Indeed, was it really the intention of developers to also catch runtime exceptions? To prevent any misunderstanding, if both checked and runtime exceptions are really expected to be caught, they should be explicitly listed in the catch clause.
 
@@ -17295,10 +17295,10 @@ try {
 }
 
 ```
-*See*
+**See**
 
 MITRE, CWE-396 - Declaration of Catch for Generic Exception
-#### Rule 504: "collect" should be used with "Streams" instead of "list::add"
+### Rule 504: "collect" should be used with "Streams" instead of "list::add"
 ##### Quality Category: Code Smell
 While you can use either forEach(list::add) or collect with a Stream, collect is by far the better choice because it's automatically thread-safe and parallellizable.
 
@@ -17317,7 +17317,7 @@ List<String> bookNames = books.stream().filter(book -> book.getIsbn().startsWith
                 .map(Book::getTitle)
                 .collect(Collectors.toList());
 ```
-#### Rule 505: Switches should be used for sequences of simple "String" tests
+### Rule 505: Switches should be used for sequences of simple "String" tests
 ##### Quality Category: Code Smell
 Since Java 7, Strings can be used as switch arguments. So when a single String is tested against three or more values in an if/else if structure, it should be converted to a switch instead for greater readability.
 
@@ -17354,7 +17354,7 @@ switch(choice) {
     break;
 }
 ```
-#### Rule 506: "final" classes should not have "protected" members
+### Rule 506: "final" classes should not have "protected" members
 ##### Quality Category: Code Smell
 The difference between private and protected visibility is that child classes can see and use protected members, but they cannot see private ones. Since a final class will have no children, marking the members of a final class protected is confusingly pointless.
 
@@ -17397,8 +17397,8 @@ public final class MyFinalClass {
   }
 }
 
-```
-#### Rule 507: Underscores should be used to make large numbers readable
+``````
+### Rule 507: Underscores should be used to make large numbers readable
 ##### Quality Category: Code Smell
 Beginning with Java 7, it is possible to add underscores ('_') to numeric literals to enhance readability. The addition of underscores in this manner has no semantic meaning, but makes it easier for maintainers to understand the code.
 
@@ -17428,7 +17428,7 @@ int i = 10_000_000;
 int  j = 0b01101001_01001101_11100101_01011110;
 long l = 0x7fff_ffff_ffff_ffffL;
 ```
-#### Rule 508: "Serializable" inner classes of "Serializable" classes should be static
+### Rule 508: "Serializable" inner classes of "Serializable" classes should be static
 ##### Quality Category: Code Smell
 Serializing a non-static inner class will result in an attempt at serializing the outer class as well. If the outer class is actually serializable, then the serialization will succeed but possibly write out far more data than was intended.
 
@@ -17459,10 +17459,10 @@ public class Raspberry implements Serializable {
 }
 
 ```
-*See*
+**See**
 
 CERT, SER05-J. - Do not serialize instances of inner classes
-#### Rule 509: Classes and methods that rely on the default system encoding should not be used
+### Rule 509: Classes and methods that rely on the default system encoding should not be used
 ##### Quality Category: Code Smell
 Using classes and methods that rely on the default system encoding can result in code that works fine in its "home" environment. But that code may break for customers who use different encodings in ways that are extremely difficult to diagnose and nearly, if not completely, impossible to reproduce when it's time to fix them.
 
@@ -17518,7 +17518,7 @@ FileUtils.writeStringToFile(File, String)
 See
 CERT, STR04-J. - Use compatible character encodings when communicating string data between JVMs
 CERT, STR50-J. - Use the appropriate method for counting characters in a string
-#### Rule 510: Simple class names should be used
+### Rule 510: Simple class names should be used
 ##### Quality Category: Code Smell
 Java's import mechanism allows the use of simple class names. Therefore, using a class' fully qualified name in a file that imports the class is redundant and confusing.
 
@@ -17544,7 +17544,7 @@ import java.sql.Timestamp;
 List<String> myList;
 Timestamp tStamp;
 ```
-#### Rule 511: Variables should not be declared before they are relevant
+### Rule 511: Variables should not be declared before they are relevant
 ##### Quality Category: Code Smell
 For the sake of clarity, variables should be declared as close to where they're used as possible. This is particularly true when considering methods that contain early returns and the potential to throw exceptions. In these cases, it is not only pointless, but also confusing to declare a variable that may never be used because conditions for an early return are met first.
 
@@ -17586,7 +17586,7 @@ public boolean isConditionMet(int a, int b) {
   return false;
 }
 ```
-#### Rule 512: Extensions and implementations should not be redundant
+### Rule 512: Extensions and implementations should not be redundant
 ##### Quality Category: Code Smell
 All classes extend Object implicitly. Doing so explicitly is redundant.
 
@@ -17624,7 +17624,7 @@ public class Foo implements MyOtherFace {
   //...
 }
 ```
-#### Rule 513: "==" and "!=" should not be used when "equals" is overridden
+### Rule 513: "==" and "!=" should not be used when "equals" is overridden
 ##### Quality Category: Code Smell
 It is equivalent to use the equality == operator and the equals method to compare two objects if the equals method inherited from Object has not been overridden. In this case both checks compare the object references.
 
@@ -17691,15 +17691,15 @@ Comparing with this will not raise an issue:
 Comparing with java.lang.String and boxed types java.lang.Integer, ... will not raise an issue.
 
 ```
-*See*
+**See**
 
  {rule:squid:S4973} - Strings and Boxed types should be compared using "equals()"
 MITRE, CWE-595 - Comparison of Object References Instead of Object Contents
 MITRE, CWE-597 - Use of Wrong Operator in String Comparison
 CERT, EXP03-J. - Do not use the equality operators when comparing values of boxed primitives
 CERT, EXP50-J. - Do not confuse abstract object equality with reference equality
-
-#### Rule 514: An abstract class should have both abstract and concrete methods
+```
+### Rule 514: An abstract class should have both abstract and concrete methods
 ##### Quality Category: Code Smell
 The purpose of an abstract class is to provide some heritable behaviors while also defining methods which must be implemented by sub-classes.
 
@@ -17759,7 +17759,7 @@ public abstract class Lamp {
   }
 }
 ```
-#### Rule 515: Sets with elements that are enum values should be replaced with EnumSet
+### Rule 515: Sets with elements that are enum values should be replaced with EnumSet
 ##### Quality Category: Code Smell
 When all the elements in a Set are values from the same enum, the Set can be replaced with an EnumSet, which can be much more efficient than other sets because the underlying data structure is a simple bitmap.
 
@@ -17793,7 +17793,7 @@ public class MyClass {
   }
 }
 ```
-#### Rule 516: Locale should be used in String operations
+### Rule 516: Locale should be used in String operations
 ##### Quality Category: Code Smell
 Failure to specify a locale when calling the methods toLowerCase(), toUpperCase() or format() on String objects means the system default encoding will be used, possibly creating problems with international characters or number representations. For instance with the Turkish language, when converting the small letter 'i' to upper case, the result is capital letter 'I' with a dot over it.
 
@@ -17810,10 +17810,10 @@ myString.toLowerCase()
 myString.toLowerCase(Locale.TR)
 
 ```
-*See*
+**See**
 
 CERT, STR02-J. - Specify an appropriate locale when comparing locale-dependent data
-#### Rule 517: Comments should not be located at the end of lines of code
+### Rule 517: Comments should not be located at the end of lines of code
 ##### Quality Category: Code Smell
 This rule verifies that single-line comments are not located at the ends of lines of code. The main idea behind this rule is that in order to be really readable, trailing comments would have to be properly written and formatted (correct alignment, no interference with the visual structure of the code, not too long to be visible) but most often, automatic code formatters would not handle this correctly: the code would end up less readable. Comments are far better placed on the previous empty line of code, where they will always be visible and properly formatted.
 
@@ -17828,7 +17828,7 @@ int a1 = b + c; // This is a trailing comment that can be very very long
 // This very long comment is better placed before the line of code
 int a2 = b + c;
 ```
-#### Rule 518: Track uses of "CHECKSTYLE:OFF" suppression comments
+### Rule 518: Track uses of "CHECKSTYLE:OFF" suppression comments
 ##### Quality Category: Code Smell
 This rule allows you to track the use of the Checkstyle suppression comment mechanism.
 
@@ -17836,7 +17836,7 @@ This rule allows you to track the use of the Checkstyle suppression comment mech
 ```java
 // CHECKSTYLE:OFF
 ```
-#### Rule 519: Loggers should be "private static final" and should share a naming convention
+### Rule 519: Loggers should be "private static final" and should share a naming convention
 ##### Quality Category: Code Smell
 Regardless of the logging framework in use (logback, log4j, commons-logging, java.util.logging, ...), loggers should be:
 
@@ -17862,8 +17862,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(Foo.class);
 ```java
 
 Variables of type org.apache.maven.plugin.logging.Log are ignored.
-```
-#### Rule 520: Track uses of "NOPMD" suppression comments
+``````
+### Rule 520: Track uses of "NOPMD" suppression comments
 ##### Quality Category: Code Smell
 This rule allows you to track the use of the PMD suppression comment mechanism.
 
@@ -17871,7 +17871,7 @@ This rule allows you to track the use of the PMD suppression comment mechanism.
 ```java
 // NOPMD
 ```
-#### Rule 521: Packages should have a javadoc file 'package-info.java'
+### Rule 521: Packages should have a javadoc file 'package-info.java'
 ##### Quality Category: Code Smell
 Each package in a Java project should include a package-info.java file. The purpose of this file is to document the Java package using javadoc and declare package annotations.
 
@@ -17882,7 +17882,7 @@ Compliant Solution
 @ParametersAreNonnullByDefault
 package org.foo.bar;
 
-#### Rule 522: The members of an interface or class declaration should appear in a pre-defined order
+### Rule 522: The members of an interface or class declaration should appear in a pre-defined order
 ##### Quality Category: Code Smell
 According to the Java Code Conventions as defined by Oracle, the members of a class or interface declaration should appear in the following order in the source files:
 
@@ -17909,7 +17909,7 @@ public class Foo{
    public boolean isTrue() {...}
 }
 ```
-#### Rule 523: Abstract class names should comply with a naming convention
+### Rule 523: Abstract class names should comply with a naming convention
 ##### Quality Category: Code Smell
 Sharing some naming conventions is a key point to make it possible for a team to efficiently collaborate. This rule allows to check that all abstract class names match a provided regular expression. If a non-abstract class match the regular expression, an issue is raised to suggest to either make it abstract or to rename it.
 
@@ -17934,7 +17934,7 @@ abstract class MyAbstractClass {
 class LikeClass {
 }
 ```
-#### Rule 524: Strings literals should be placed on the left side when checking for equality
+### Rule 524: Strings literals should be placed on the left side when checking for equality
 ##### Quality Category: Code Smell
 It is preferable to place string literals on the left-hand side of an equals() or equalsIgnoreCase() method call.
 
@@ -17953,7 +17953,7 @@ System.out.println("Equal? " + (myString != null && myString.equals("foo")));  /
 ```java
 System.out.println("Equal?" + "foo".equals(myString));                         // properly deals with the null case
 ```
-#### Rule 525: "throws" declarations should not be superfluous
+### Rule 525: "throws" declarations should not be superfluous
 ##### Quality Category: Code Smell
 An exception in a throws declaration in Java is superfluous if it is:
 
@@ -18010,8 +18010,8 @@ class A extends B {
   }
 }
 
-```
-#### Rule 526: Files should contain an empty newline at the end
+``````
+### Rule 526: Files should contain an empty newline at the end
 ##### Quality Category: Code Smell
 Some tools work better when files end with an empty line.
 
@@ -18023,7 +18023,7 @@ For example, a Git diff looks like this if the empty line is missing at the end 
 +}
 \ No newline at end of file
 
-#### Rule 527: Unnecessary imports should be removed
+### Rule 527: Unnecessary imports should be removed
 ##### Quality Category: Code Smell
 The imports part of a file should be handled by the Integrated Development Environment (IDE), not manually by the developer.
 
@@ -18055,8 +18055,8 @@ class ExampleClass {
 ```java
 
 Imports for types mentioned in comments, such as Javadocs, are ignored.
-```
-#### Rule 528: Modifiers should be declared in the correct order
+``````
+### Rule 528: Modifiers should be declared in the correct order
 ##### Quality Category: Code Smell
 The Java Language Specification recommends listing modifiers in the following order:
 
@@ -18098,7 +18098,7 @@ static public void main(String[] args) {   // Noncompliant
 public static void main(String[] args) {   // Compliant
 }
 ```
-#### Rule 529: Source code should be indented consistently
+### Rule 529: Source code should be indented consistently
 ##### Quality Category: Code Smell
 Proper indentation is a simple and effective way to improve the code's readability. Consistent indentation among the developers within a team also reduces the differences that are committed to source control systems, making code reviews easier.
 
@@ -18139,7 +18139,7 @@ class Foo {
   }
 }
 ```
-#### Rule 530: A close curly brace should be located at the beginning of a line
+### Rule 530: A close curly brace should be located at the beginning of a line
 ##### Quality Category: Code Smell
 Shared coding conventions make it possible for a team to efficiently collaborate. This rule makes it mandatory to place a close curly brace at the beginning of a line.
 
@@ -18165,8 +18165,8 @@ When blocks are inlined (open and close curly braces on the same line), no issue
 
 if(condition) {doSomething();}
 
-```
-#### Rule 531: Close curly brace and the next "else", "catch" and "finally" keywords should be on two different lines
+``````
+### Rule 531: Close curly brace and the next "else", "catch" and "finally" keywords should be on two different lines
 ##### Quality Category: Code Smell
 Shared coding conventions make it possible for a team to collaborate efficiently.
 
@@ -18220,7 +18220,7 @@ public void myMethod() {
   }
 }
 ```
-#### Rule 532: Close curly brace and the next "else", "catch" and "finally" keywords should be located on the same line
+### Rule 532: Close curly brace and the next "else", "catch" and "finally" keywords should be located on the same line
 ##### Quality Category: Code Smell
 Shared coding conventions make it possible for a team to collaborate efficiently.
 
@@ -18270,7 +18270,7 @@ public void myMethod() {
   }
 }
 ```
-#### Rule 533: An open curly brace should be located at the beginning of a line
+### Rule 533: An open curly brace should be located at the beginning of a line
 ##### Quality Category: Code Smell
 Shared coding conventions make it possible to collaborate efficiently. This rule makes it mandatory to place the open curly brace at the beginning of a line.
 
@@ -18299,7 +18299,7 @@ public void myMethod
   }
 }
 ```
-#### Rule 534: An open curly brace should be located at the end of a line
+### Rule 534: An open curly brace should be located at the end of a line
 ##### Quality Category: Code Smell
 Shared naming conventions allow teams to collaborate effectively. This rule raises an issue when an open curly brace is not placed at the end of a line of code.
 
@@ -18327,13 +18327,13 @@ When blocks are inlined (left and right curly braces on the same line), no issue
 
 if(condition) {doSomething();}
 
-```
-#### Rule 535: Tabulation characters should not be used
+``````
+### Rule 535: Tabulation characters should not be used
 ##### Quality Category: Code Smell
 Developers should not need to configure the tab width of their text editors in order to be able to read source code.
 
 So the use of the tabulation character must be banned.
-#### Rule 536: Functions should not be defined with a variable number of arguments
+### Rule 536: Functions should not be defined with a variable number of arguments
 ##### Quality Category: Code Smell
 As stated per effective java :
 
@@ -18347,12 +18347,12 @@ void fun ( String... strings )	// Noncompliant
 }
 
 ```
-*See*
+**See**
 
  MISRA C:2004, 16.1 - Functions shall not be defined with a variable number of arguments.
  MISRA C++:2008, 8-4-1 - Functions shall not be defined using the ellipsis notation.
 CERT, DCL50-CPP. - Do not define a C-style variadic function
-#### Rule 537: Track uses of disallowed classes
+### Rule 537: Track uses of disallowed classes
 ##### Quality Category: Code Smell
 This rule allows banning certain classes.
 
@@ -18364,7 +18364,7 @@ Given parameters:
  className:java.lang.String
 String name;  // Noncompliant
 ```
-#### Rule 538: Track uses of "@SuppressWarnings" annotations
+### Rule 538: Track uses of "@SuppressWarnings" annotations
 ##### Quality Category: Code Smell
 This rule allows you to track the usage of the @SuppressWarnings mechanism.
 
